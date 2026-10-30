@@ -8,9 +8,9 @@ A minimalist, monochrome personal portfolio website for **Kevin Christopher** (B
 My-Portfolio-main/
 ├── index.php                         # Main PHP portfolio page (Home, Profile, Projects, Skills, Blog, Playground)
 ├── contact.php                       # Two-step PHP & MySQL Contact Page ("What's Your Name?" -> "Welcome [Name] to my Portfolio!")
-├── index.html                        # Preserved static HTML backup
-├── circuit-connect.html              # Optional standalone route for Game 03: Circuit Connect
 ├── style.css                         # Minimalist monochrome stylesheet (Dark & Light modes + Admin & Contact styles)
+├── .htaccess                         # Apache directory index & security rules
+├── .gitignore                        # Git ignore rules for local overrides and private credentials
 ├── admin/
 │   ├── login.php                     # Secure session-based Admin Login (password_verify + rate limiting + CSRF)
 │   ├── dashboard.php                 # Protected "Portfolio Admin Dashboard" displaying contact_messages
@@ -60,15 +60,11 @@ My-Portfolio-main/
 │           ├── storage.js            # Game 03: Isolated localStorage save/reset manager
 │           ├── game-engine.js        # Game 03: Workbench session state, undo/reset, switches & testing
 │           ├── ui.js                 # Game 03: Main Menu, How to Play, Level Select, Achievements & Workbench UI
-│           └── main.js               # Game 03: Playground Hub & standalone page bootstrap
+│           └── main.js               # Game 03: Playground Hub & sidebar submenu bootstrap
 ├── image/
 │   ├── ako.png                       # Profile portrait
-│   ├── proj1.png                     # Calculator (C program screenshot)
-│   ├── proj2.png                     # Status Checker (C program screenshot)
-│   ├── proj3.png                     # Task Repeater (C program screenshot)
-│   ├── facebook.png                  # Preserved legacy asset
-│   ├── github.png                    # Preserved legacy asset
-│   ├── instagram.png                 # Preserved legacy asset
+│   ├── arduino-clock.jpg             # Arduino Clock project photo
+│   ├── arduino-joystick-game.jpg     # Arduino Game with Joystick project photo
 │   └── playground/                   # Local SVG hardware illustrations for the simulators
 │       ├── cpu.svg
 │       ├── ram.svg

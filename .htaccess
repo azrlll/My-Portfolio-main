@@ -1,5 +1,5 @@
 # Use index.php as the default directory index
-DirectoryIndex index.php index.html
+DirectoryIndex index.php
 
 # Prevent directory listing
 Options -Indexes

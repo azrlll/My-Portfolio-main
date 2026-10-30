@@ -1,8 +1,8 @@
 // ============================================================================
 // CIRCUIT CONNECT — ENTRY POINT & PLAYGROUND HUB INTEGRATION
 // Coordinates Game 03 (Circuit Connect) alongside Game 01 (Build a PC)
-// and Game 02 (Fix the PC), binds the Sidebar Playground hover submenu for
-// direct one-click game launching, and supports standalone circuit-connect.html.
+// and Game 02 (Fix the PC), and binds the Sidebar Playground hover submenu
+// for direct one-click game launching.
 // ============================================================================
 
 (function () {
@@ -14,7 +14,6 @@
         const fixPcView = document.getElementById("fixPcGameView");
         const circuitConnectView = document.getElementById("circuitConnectGameView");
         const circuitConnectMount = document.getElementById("circuitConnectAppRoot");
-        const standaloneMount = document.getElementById("circuitConnectStandaloneRoot");
 
         const playBuildPcBtn = document.getElementById("btnPlayBuildPc");
         const playFixPcBtn = document.getElementById("btnPlayFixPc");
@@ -138,7 +137,7 @@
             });
         });
 
-        // Mount inside index.html / index.php Playground section
+        // Mount inside index.php Playground section
         if (circuitConnectMount && window.CircuitConnectUI) {
             window.CircuitConnectUI.init(circuitConnectMount, {
                 onReturnToPlayground: showPlaygroundHub
@@ -158,15 +157,6 @@
             }
         } catch (err) {
             // Ignore URLSearchParams errors on older browsers
-        }
-
-        // Mount inside standalone circuit-connect.html if opened directly
-        if (standaloneMount && window.CircuitConnectUI) {
-            window.CircuitConnectUI.init(standaloneMount, {
-                onReturnToPlayground: () => {
-                    window.location.href = "index.html#playground";
-                }
-            });
         }
     });
 })();

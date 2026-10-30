@@ -52,7 +52,7 @@ const PERSONAL_INFO = {
     sidebarSubtitle: "BSIT STUDENT / VIBE CODER",
     primaryInterest: "Computer Hardware",
     additionalInterest: "Software Development",
-    heroHeadingLine1: "Kevin Christopher",
+    heroHeadingLine1: " Christopher",
     introduction: "A BSIT student with a strong interest in computer hardware and a passion for software development. I enjoy exploring how technology works, experimenting with ideas, and building functional digital projects through vibe coding.",
     profilePhoto: "image/ako.png"
 };
