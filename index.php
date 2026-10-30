@@ -75,8 +75,8 @@ require __DIR__ . '/includes/header.php';
             </section>
 
             <!-- =========================================================
-                 2. PROFILE SECTION — Personal Background & Interests
-            ========================================================== -->
+                    2. PROFILE SECTION — Personal Background & Interests
+                ========================================================== -->
             <section class="content-section" id="profile" aria-labelledby="profileHeading">
                 <div class="section-header">
                     <span class="section-eyebrow">01 / PROFILE</span>
@@ -88,10 +88,10 @@ require __DIR__ . '/includes/header.php';
                     <div class="bio-card">
                         <h3 class="card-heading">Who I Am</h3>
                         <p class="bio-paragraph">
-                            I'm Kevin Christopher, a BSIT student with a strong interest in computer hardware and a passion for software development. I enjoy exploring how technology works, experimenting with ideas, and building functional digital projects through vibe coding.
+                            I'm Kevin, an IT student who loves computer hardware and building software projects. I enjoy seeing how technology works, trying out new ideas, and creating cool digital projects through vibe coding.
                         </p>
                         <p class="bio-paragraph">
-                            Whether I'm studying for my coding classes, refining a web layout, or troubleshooting PC components, I learn best by getting hands-on. When I'm away from my code editor, I'm usually tinkering with computer hardware or unwinding with FPS games on my laptop and phone.
+                            Whether I'm studying for class, designing web layouts, or fixing PC parts, I learn best by getting hands-on. When I'm away from my code editor, I'm usually tinkering with hardware or playing FPS games on my laptop and phone.
                         </p>
                     </div>
 
