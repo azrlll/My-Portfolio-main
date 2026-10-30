@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 440" fill="none">
+  <!-- ATX Motherboard PCB -->
+  <rect x="8" y="8" width="384" height="424" rx="10" fill="#121212" stroke="#343434" stroke-width="2"/>
+  <!-- Standoff Mounting Holes -->
+  <circle cx="24" cy="24" r="4" fill="#0b0b0b" stroke="#525252" stroke-width="1.5"/>
+  <circle cx="376" cy="24" r="4" fill="#0b0b0b" stroke="#525252" stroke-width="1.5"/>
+  <circle cx="24" cy="220" r="4" fill="#0b0b0b" stroke="#525252" stroke-width="1.5"/>
+  <circle cx="376" cy="220" r="4" fill="#0b0b0b" stroke="#525252" stroke-width="1.5"/>
+  <circle cx="24" cy="416" r="4" fill="#0b0b0b" stroke="#525252" stroke-width="1.5"/>
+  <circle cx="376" cy="416" r="4" fill="#0b0b0b" stroke="#525252" stroke-width="1.5"/>
+  <!-- Rear I/O Shroud & VRM Heatsinks -->
+  <rect x="20" y="38" width="44" height="140" rx="4" fill="#1c1c1c" stroke="#3a3a3a" stroke-width="1.5"/>
+  <rect x="74" y="24" width="136" height="28" rx="4" fill="#1c1c1c" stroke="#3a3a3a" stroke-width="1.5"/>
+  <!-- Chipset Heatsink (Bottom Right) -->
+  <rect x="268" y="300" width="96" height="92" rx="6" fill="#191919" stroke="#343434" stroke-width="1.5"/>
+  <text x="316" y="350" text-anchor="middle" fill="#525252" font-family="monospace" font-size="10" font-weight="bold">CHIPSET</text>
+  <!-- 24-Pin ATX Power Header (Right Edge) -->
+  <rect x="366" y="88" width="14" height="72" rx="2" fill="#1c1c1c" stroke="#454545" stroke-width="1.5"/>
+  <!-- Subtle Circuit Traces -->
+  <path d="M140 180 V230 M160 180 V230 M220 120 H250 M100 320 H250" stroke="#222222" stroke-width="1.5"/>
+</svg>

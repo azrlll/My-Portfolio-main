@@ -1,0 +1,3 @@
+# Exclude sensitive local environment overrides and private instructor credentials
+admin_credentials.txt
+config/env.local.php

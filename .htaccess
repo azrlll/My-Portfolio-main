@@ -1,0 +1,16 @@
+# Use index.php as the default directory index
+DirectoryIndex index.php index.html
+
+# Prevent directory listing
+Options -Indexes
+
+# Block public access to any sensitive credential or SQL files if present
+<FilesMatch "^(admin_credentials\.txt|portfolio_db\.sql|\.gitignore)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

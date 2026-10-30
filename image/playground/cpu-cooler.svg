@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Mounting Bracket Ears -->
+  <rect x="8" y="8" width="16" height="16" rx="4" fill="#222222" stroke="#a3a3a3" stroke-width="1.8"/>
+  <rect x="96" y="8" width="16" height="16" rx="4" fill="#222222" stroke="#a3a3a3" stroke-width="1.8"/>
+  <rect x="8" y="96" width="16" height="16" rx="4" fill="#222222" stroke="#a3a3a3" stroke-width="1.8"/>
+  <rect x="96" y="96" width="16" height="16" rx="4" fill="#222222" stroke="#a3a3a3" stroke-width="1.8"/>
+  <!-- Heatsink Fin Array -->
+  <rect x="16" y="16" width="88" height="88" rx="10" fill="#1c1c1c" stroke="#f5f5f5" stroke-width="2.2"/>
+  <!-- Fan Ring -->
+  <circle cx="60" cy="60" r="34" fill="#121212" stroke="#d4d4d4" stroke-width="2"/>
+  <!-- Fan Blades -->
+  <path d="M60 26 C68 38 68 46 60 60 C74 52 82 52 94 60 C82 68 74 68 60 60 C68 74 68 82 60 94 C52 82 52 74 60 60 C46 68 38 68 26 60 C38 52 46 52 60 60 Z" fill="#292929" stroke="#a3a3a3" stroke-width="1.4"/>
+  <!-- Center Hub -->
+  <circle cx="60" cy="60" r="11" fill="#242424" stroke="#f5f5f5" stroke-width="2"/>
+  <circle cx="60" cy="60" r="3" fill="#f5f5f5"/>
+</svg>

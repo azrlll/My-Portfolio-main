@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 100" fill="none">
+  <!-- PCIe Bracket -->
+  <path d="M12 10 V90 M6 10 H18" stroke="#d4d4d4" stroke-width="3" stroke-linecap="round"/>
+  <!-- GPU Shroud -->
+  <rect x="16" y="16" width="152" height="64" rx="6" fill="#1c1c1c" stroke="#f5f5f5" stroke-width="2.2"/>
+  <!-- PCIe x16 Gold Edge Connector -->
+  <rect x="34" y="80" width="92" height="7" rx="1" fill="#2a2a2a" stroke="#a3a3a3" stroke-width="1.5"/>
+  <line x1="48" y1="80" x2="48" y2="87" stroke="#0b0b0b" stroke-width="2.5"/>
+  <!-- Dual Cooling Fans -->
+  <circle cx="62" cy="48" r="22" fill="#141414" stroke="#a3a3a3" stroke-width="1.8"/>
+  <circle cx="62" cy="48" r="6" fill="#2e2e2e" stroke="#e5e5e5" stroke-width="1.5"/>
+  <path d="M62 26 L66 42 M62 70 L58 54 M40 48 L56 44 M84 48 L68 52" stroke="#737373" stroke-width="1.5"/>
+  <circle cx="122" cy="48" r="22" fill="#141414" stroke="#a3a3a3" stroke-width="1.8"/>
+  <circle cx="122" cy="48" r="6" fill="#2e2e2e" stroke="#e5e5e5" stroke-width="1.5"/>
+  <path d="M122 26 L126 42 M122 70 L118 54 M100 48 L116 44 M144 48 L128 52" stroke="#737373" stroke-width="1.5"/>
+</svg>
