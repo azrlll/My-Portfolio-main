@@ -45,7 +45,7 @@ const GITHUB_CONFIG = {
 // PERSONAL INFORMATION
 // =====================================
 const PERSONAL_INFO = {
-    name: "Kevin",
+    name: "Kevin Christopher",
     fullName: "Kevin Christopher",
     course: "Bachelor of Science in Information Technology (BSIT)",
     identity: "BSIT Student, Hardware Enthusiast, and Vibe Coder",
