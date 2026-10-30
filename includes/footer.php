@@ -39,8 +39,11 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
     <!-- Subtle Notification Toast (for unconfigured social links or messages) -->
     <div class="toast-notification" id="toastNotification" role="status" aria-live="polite" hidden></div>
 
-    <script src="js/config.js"></script>
-    <script src="js/main.js"></script>
+<?php
+$jsVersion = (string)(@filemtime(__DIR__ . '/../js/main.js') ?: '20261030');
+?>
+    <script src="js/config.js?v=<?= $jsVersion ?>"></script>
+    <script src="js/main.js?v=<?= $jsVersion ?>"></script>
 <?php if ($includePlaygroundScripts): ?>
     <script src="js/playground/build-a-pc/components.js"></script>
     <script src="js/playground/build-a-pc/storage.js"></script>

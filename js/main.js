@@ -731,8 +731,7 @@
 
         const avatars = Array.from(avatarsContainer.querySelectorAll(".viewer-avatar"));
         const STORAGE_KEY = "kc_portfolio_active_tabs";
-        const TAB_TTL_MS = 35000;
-        const AMBIENT_BASELINE = 3; // Ambient concurrent readers + real active tabs/visitors
+        const TAB_TTL_MS = 18000;
 
         let clientId = "";
         try {
@@ -752,12 +751,10 @@
                 const now = Date.now();
                 const raw = localStorage.getItem(STORAGE_KEY);
                 const map = raw ? JSON.parse(raw) : {};
-                let changed = false;
 
                 Object.keys(map).forEach((id) => {
                     if (now - map[id] > TAB_TTL_MS) {
                         delete map[id];
-                        changed = true;
                     }
                 });
 
@@ -799,8 +796,7 @@
         function updateCombinedCount() {
             const localTabs = getLocalActiveTabCount();
             const realVisitors = Math.max(serverRealCount, localTabs);
-            const totalDisplay = AMBIENT_BASELINE + realVisitors;
-            renderViewerUI(totalDisplay);
+            renderViewerUI(realVisitors);
         }
 
         async function sendServerHeartbeat(action = "1") {
@@ -826,10 +822,17 @@
         updateCombinedCount();
         sendServerHeartbeat("1");
 
-        // Periodic heartbeat every 15 seconds
+        // Periodic heartbeat every 5 seconds for live responsiveness
         const heartbeatTimer = setInterval(() => {
             sendServerHeartbeat("1");
-        }, 15000);
+        }, 5000);
+
+        // Refresh immediately when user switches back to tab
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") {
+                sendServerHeartbeat("1");
+            }
+        });
 
         // Instant cross-tab updates when another tab opens or closes
         window.addEventListener("storage", (e) => {

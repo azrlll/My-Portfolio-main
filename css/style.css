@@ -1679,6 +1679,36 @@ button {
         transform: translateX(-100%);
     }
 
+    .sidebar-inner {
+        padding: 18px 18px 18px;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .sidebar-header {
+        padding: 0 8px 14px;
+    }
+
+    .sidebar-scroll-area {
+        flex: 1 0 auto;
+        overflow-y: visible;
+        gap: 14px;
+    }
+
+    .nav-item,
+    .social-nav-link {
+        padding: 7px 10px;
+    }
+
+    .sidebar-divider {
+        margin: 10px 0;
+    }
+
+    .sidebar-footer {
+        gap: 10px;
+        padding-top: 2px;
+    }
+
     .sidebar.is-open {
         transform: translateX(0);
     }
