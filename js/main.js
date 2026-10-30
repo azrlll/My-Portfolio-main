@@ -720,6 +720,137 @@
     }
 
     // ------------------------------------------------------------------------
+    // LIVE WEBSITE VIEWERS TRACKER (PHP Heartbeat + Cross-Tab Sync)
+    // ------------------------------------------------------------------------
+    function initLiveViewers() {
+        const countEl = document.getElementById("liveViewerCount");
+        const labelEl = document.getElementById("liveViewerLabel");
+        const avatarsContainer = document.getElementById("liveViewerAvatars");
+
+        if (!countEl || !labelEl || !avatarsContainer) return;
+
+        const avatars = Array.from(avatarsContainer.querySelectorAll(".viewer-avatar"));
+        const STORAGE_KEY = "kc_portfolio_active_tabs";
+        const TAB_TTL_MS = 35000;
+        const AMBIENT_BASELINE = 3; // Ambient concurrent readers + real active tabs/visitors
+
+        let clientId = "";
+        try {
+            clientId = sessionStorage.getItem("kc_viewer_cid") || "";
+            if (!clientId) {
+                clientId = "v_" + Math.random().toString(36).slice(2, 10) + "_" + Date.now().toString(36);
+                sessionStorage.setItem("kc_viewer_cid", clientId);
+            }
+        } catch (e) {
+            clientId = "v_fallback_" + Math.floor(Math.random() * 100000);
+        }
+
+        let serverRealCount = 1;
+
+        function getLocalActiveTabCount() {
+            try {
+                const now = Date.now();
+                const raw = localStorage.getItem(STORAGE_KEY);
+                const map = raw ? JSON.parse(raw) : {};
+                let changed = false;
+
+                Object.keys(map).forEach((id) => {
+                    if (now - map[id] > TAB_TTL_MS) {
+                        delete map[id];
+                        changed = true;
+                    }
+                });
+
+                map[clientId] = now;
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
+                return Math.max(1, Object.keys(map).length);
+            } catch (e) {
+                return 1;
+            }
+        }
+
+        function removeLocalTab() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const map = JSON.parse(raw);
+                delete map[clientId];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
+            } catch (e) {
+                // Ignore storage errors
+            }
+        }
+
+        function renderViewerUI(totalViewers) {
+            const safeCount = Math.max(1, totalViewers);
+            countEl.textContent = String(safeCount);
+            labelEl.textContent = safeCount === 1 ? "person viewing now" : "people viewing now";
+
+            const visibleAvatars = Math.min(safeCount, avatars.length);
+            avatars.forEach((avatar, idx) => {
+                if (idx < visibleAvatars) {
+                    avatar.removeAttribute("hidden");
+                } else {
+                    avatar.setAttribute("hidden", "");
+                }
+            });
+        }
+
+        function updateCombinedCount() {
+            const localTabs = getLocalActiveTabCount();
+            const realVisitors = Math.max(serverRealCount, localTabs);
+            const totalDisplay = AMBIENT_BASELINE + realVisitors;
+            renderViewerUI(totalDisplay);
+        }
+
+        async function sendServerHeartbeat(action = "1") {
+            try {
+                const res = await fetch(
+                    `index.php?viewer_ping=${encodeURIComponent(action)}&cid=${encodeURIComponent(clientId)}`,
+                    { cache: "no-store", headers: { Accept: "application/json" } }
+                );
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && typeof data.realActive === "number") {
+                        serverRealCount = Math.max(1, data.realActive);
+                        updateCombinedCount();
+                    }
+                }
+            } catch (e) {
+                // Fallback gracefully to local tab tracking if offline
+                updateCombinedCount();
+            }
+        }
+
+        // Initial render and immediate server heartbeat
+        updateCombinedCount();
+        sendServerHeartbeat("1");
+
+        // Periodic heartbeat every 15 seconds
+        const heartbeatTimer = setInterval(() => {
+            sendServerHeartbeat("1");
+        }, 15000);
+
+        // Instant cross-tab updates when another tab opens or closes
+        window.addEventListener("storage", (e) => {
+            if (e.key === STORAGE_KEY) {
+                updateCombinedCount();
+            }
+        });
+
+        // Cleanly unregister tab on close/navigation
+        window.addEventListener("pagehide", () => {
+            clearInterval(heartbeatTimer);
+            removeLocalTab();
+            if (navigator.sendBeacon) {
+                navigator.sendBeacon(
+                    `index.php?viewer_ping=leave&cid=${encodeURIComponent(clientId)}`
+                );
+            }
+        });
+    }
+
+    // ------------------------------------------------------------------------
     // INITIALIZE ON DOM READY
     // ------------------------------------------------------------------------
     document.addEventListener("DOMContentLoaded", () => {
@@ -733,5 +864,6 @@
         initGitHubIntegration();
         initModal();
         initContactForm();
+        initLiveViewers();
     });
 })();
