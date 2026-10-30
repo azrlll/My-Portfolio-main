@@ -45,15 +45,15 @@ const GITHUB_CONFIG = {
 // PERSONAL INFORMATION
 // =====================================
 const PERSONAL_INFO = {
-    name: "Kevin Christopher",
-    fullName: "Kevin Christopher",
+    name: "Kevin ",
+    fullName: "Kr",
     course: "Bachelor of Science in Information Technology (BSIT)",
     identity: "BSIT Student, Hardware Enthusiast, and Vibe Coder",
     sidebarSubtitle: "BSIT STUDENT / VIBE CODER",
     primaryInterest: "Computer Hardware",
     additionalInterest: "Software Development",
-    heroHeadingLine1: " Christopher",
-    introduction: " in computer hardware and a passion for software development. I enjoy exploring how technology works, experimenting with ideas, and building functional digital projects through vibe coding.",
+    heroHeadingLine1: "",
+    introduction: "A BSIT student with a strong interest in computer hardware and a passion for software development. I enjoy exploring how technology works, experimenting with ideas, and building functional digital projects through vibe coding.",
     profilePhoto: "image/ako.png"
 };
 
