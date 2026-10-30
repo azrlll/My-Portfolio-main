@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // CRITICAL: Verify that the submitted email has passed REAL OTP verification!
         if (!isEmailVerifiedForSession($emailInput)) {
-            $errors[] = 'Your email address has not been verified. Please enter the 6-digit verification code sent to your inbox.';
+            $errors[] = 'Add your real email cutie 😉 (and verify it with the 6-digit code sent to your inbox before submitting)';
         }
 
         if ($messageInput === '') {
@@ -395,7 +395,7 @@ require __DIR__ . '/includes/header.php';
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary" id="btnSubmitMessage" disabled>
+                                    <button type="submit" class="btn btn-primary" id="btnSubmitMessage">
                                         <span>SUBMIT MESSAGE</span>
                                     </button>
                                     <span class="form-feedback" id="submitButtonNotice">

@@ -1049,11 +1049,20 @@
             }
         });
 
-        // Auto-verify on typing 6 digits
-        if (otpCodeInput) {
-            otpCodeInput.addEventListener("input", () => {
-                if (otpCodeInput.value.trim().length === 6) {
-                    btnVerifyOtp.click();
+        // Form submission interceptor: friendly reminder if unverified
+        const stepTwoForm = document.getElementById("stepTwoContactForm");
+        if (stepTwoForm) {
+            stepTwoForm.addEventListener("submit", (e) => {
+                const currentEmail = emailInput.value.trim().toLowerCase();
+                if (!verifiedEmail || verifiedEmail !== currentEmail) {
+                    e.preventDefault();
+                    showStatus("error", "Real Email Required", "Add your real email cutie 😉 (and verify it with the 6-digit code sent to your inbox first)");
+                    if (otpPanel && otpPanel.style.display !== "none" && otpCodeInput) {
+                        otpCodeInput.focus();
+                    } else {
+                        btnSendOtp.focus();
+                    }
+                    return false;
                 }
             });
         }

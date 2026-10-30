@@ -41,9 +41,11 @@ function getEmailConfig(): array
     }
 
     // Default configuration (supports Brevo, Resend, or custom SMTP/API)
+    // Supports both BREVO_API_KEY and EMAIL_API_KEY in env.local.php
+    $apiKey = (string)($env['BREVO_API_KEY'] ?? $env['EMAIL_API_KEY'] ?? getenv('BREVO_API_KEY') ?: getenv('EMAIL_API_KEY') ?: '');
     $config = [
         'provider'     => strtolower((string)($env['EMAIL_PROVIDER'] ?? getenv('EMAIL_PROVIDER') ?: 'brevo')),
-        'api_key'      => (string)($env['EMAIL_API_KEY'] ?? getenv('EMAIL_API_KEY') ?: ''),
+        'api_key'      => $apiKey,
         'sender_email' => (string)($env['EMAIL_SENDER_EMAIL'] ?? getenv('EMAIL_SENDER_EMAIL') ?: 'kevinreal2006@gmail.com'),
         'sender_name'  => (string)($env['EMAIL_SENDER_NAME'] ?? getenv('EMAIL_SENDER_NAME') ?: 'Kevin Christopher Portfolio'),
     ];
