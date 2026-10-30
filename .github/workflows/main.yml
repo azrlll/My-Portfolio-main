@@ -37,6 +37,6 @@ jobs:
             **/portfolio_env.php
             **/.env
             **/.env.*
-            **/generate_hash.php
+            **/config/.live_viewers.json
             **/*.sql
             **/*.zip

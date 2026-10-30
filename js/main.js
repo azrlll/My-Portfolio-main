@@ -854,6 +854,212 @@
     }
 
     // ------------------------------------------------------------------------
+    // REAL EMAIL OTP VERIFICATION INTEGRATION
+    // ------------------------------------------------------------------------
+    function initOtpVerification() {
+        const emailInput = document.getElementById("senderEmail");
+        const btnSendOtp = document.getElementById("btnSendOtp");
+        const btnSendOtpText = document.getElementById("btnSendOtpText");
+        const otpPanel = document.getElementById("otpPanel");
+        const otpCodeInput = document.getElementById("otpCodeInput");
+        const btnVerifyOtp = document.getElementById("btnVerifyOtp");
+        const otpStatusBanner = document.getElementById("otpStatusBanner");
+        const otpStatusTitle = document.getElementById("otpStatusTitle");
+        const otpStatusDesc = document.getElementById("otpStatusDesc");
+        const btnSubmitMessage = document.getElementById("btnSubmitMessage");
+        const submitNotice = document.getElementById("submitButtonNotice");
+        const csrfTokenInput = document.getElementById("contactCsrfToken");
+        const expiryHint = document.getElementById("otpExpiryHint");
+
+        if (!emailInput || !btnSendOtp || !btnVerifyOtp) {
+            return; // Not on Step 2 of contact page
+        }
+
+        let cooldownSeconds = 0;
+        let cooldownTimer = null;
+        let expirySeconds = 300;
+        let expiryTimer = null;
+        let verifiedEmail = "";
+
+        function showStatus(type, title, desc) {
+            if (!otpStatusBanner) return;
+            otpStatusBanner.className = `otp-status-banner status-${type}`;
+            otpStatusTitle.textContent = title;
+            otpStatusDesc.textContent = desc;
+            otpStatusBanner.style.display = "flex";
+        }
+
+        function hideStatus() {
+            if (otpStatusBanner) {
+                otpStatusBanner.style.display = "none";
+            }
+        }
+
+        function startCooldown(sec) {
+            cooldownSeconds = sec;
+            btnSendOtp.disabled = true;
+            btnSendOtpText.textContent = `RESEND (${cooldownSeconds}s)`;
+
+            if (cooldownTimer) clearInterval(cooldownTimer);
+            cooldownTimer = setInterval(() => {
+                cooldownSeconds -= 1;
+                if (cooldownSeconds <= 0) {
+                    clearInterval(cooldownTimer);
+                    btnSendOtp.disabled = false;
+                    btnSendOtpText.textContent = "RESEND CODE";
+                } else {
+                    btnSendOtpText.textContent = `RESEND (${cooldownSeconds}s)`;
+                }
+            }, 1000);
+        }
+
+        function startExpiryCountdown(sec) {
+            expirySeconds = sec;
+            if (expiryTimer) clearInterval(expiryTimer);
+            expiryTimer = setInterval(() => {
+                expirySeconds -= 1;
+                if (expirySeconds <= 0) {
+                    clearInterval(expiryTimer);
+                    if (expiryHint) expiryHint.textContent = "Code expired";
+                    showStatus("error", "Code Expired", "Your 6-digit code has expired. Please click Resend Code to request a new one.");
+                } else {
+                    const min = Math.floor(expirySeconds / 60);
+                    const s = expirySeconds % 60;
+                    if (expiryHint) {
+                        expiryHint.textContent = `Expires in ${min}:${s < 10 ? "0" + s : s}`;
+                    }
+                }
+            }, 1000);
+        }
+
+        // When the user changes their email, invalidate verification immediately
+        emailInput.addEventListener("input", () => {
+            const currentVal = emailInput.value.trim().toLowerCase();
+            if (verifiedEmail !== "" && currentVal !== verifiedEmail) {
+                verifiedEmail = "";
+                emailInput.readOnly = false;
+                if (btnSubmitMessage) btnSubmitMessage.disabled = true;
+                if (submitNotice) {
+                    submitNotice.textContent = "Verify your email first to enable message submission.";
+                }
+                showStatus("info", "Email Changed", "You modified your email address. Please request and enter a new verification code.");
+            }
+        });
+
+        // SEND OTP CLICK
+        btnSendOtp.addEventListener("click", async () => {
+            const email = emailInput.value.trim();
+            if (!email || !email.includes("@") || !email.includes(".")) {
+                showStatus("error", "Invalid Email", "Please enter a valid email address before requesting a code.");
+                emailInput.focus();
+                return;
+            }
+
+            hideStatus();
+            btnSendOtp.disabled = true;
+            btnSendOtpText.textContent = "SENDING...";
+
+            const formData = new FormData();
+            formData.append("otp_action", "send");
+            formData.append("email", email);
+            formData.append("csrf_token", csrfTokenInput ? csrfTokenInput.value : "");
+
+            try {
+                const res = await fetch("contact.php?ajax_otp=1", {
+                    method: "POST",
+                    body: formData,
+                    headers: { Accept: "application/json" }
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showStatus("success", "Code Sent to Inbox", `We sent a real 6-digit verification code to ${email}. Check your inbox (or spam folder).`);
+                    if (otpPanel) otpPanel.style.display = "flex";
+                    if (otpCodeInput) {
+                        otpCodeInput.value = "";
+                        otpCodeInput.focus();
+                    }
+                    startCooldown(data.cooldown || 60);
+                    startExpiryCountdown(300);
+                } else {
+                    btnSendOtp.disabled = false;
+                    btnSendOtpText.textContent = "SEND CODE";
+                    showStatus("error", "Sending Failed", data.error || "Unable to send verification code. Please check your connection.");
+                    if (data.cooldown && data.cooldown > 0) {
+                        startCooldown(data.cooldown);
+                    }
+                }
+            } catch (err) {
+                btnSendOtp.disabled = false;
+                btnSendOtpText.textContent = "SEND CODE";
+                showStatus("error", "Network Error", "Could not reach the server. Please try again.");
+            }
+        });
+
+        // VERIFY OTP CLICK
+        btnVerifyOtp.addEventListener("click", async () => {
+            const email = emailInput.value.trim();
+            const code = (otpCodeInput ? otpCodeInput.value : "").trim();
+
+            if (!code || code.length !== 6 || !/^\d{6}$/.test(code)) {
+                showStatus("error", "Invalid Code Format", "Please enter the exact 6-digit code sent to your email.");
+                if (otpCodeInput) otpCodeInput.focus();
+                return;
+            }
+
+            btnVerifyOtp.disabled = true;
+            btnVerifyOtp.innerHTML = "<span>VERIFYING...</span>";
+
+            const formData = new FormData();
+            formData.append("otp_action", "verify");
+            formData.append("email", email);
+            formData.append("otp_code", code);
+            formData.append("csrf_token", csrfTokenInput ? csrfTokenInput.value : "");
+
+            try {
+                const res = await fetch("contact.php?ajax_otp=1", {
+                    method: "POST",
+                    body: formData,
+                    headers: { Accept: "application/json" }
+                });
+                const data = await res.json();
+
+                btnVerifyOtp.disabled = false;
+                btnVerifyOtp.innerHTML = "<span>VERIFY CODE</span>";
+
+                if (data.success) {
+                    verifiedEmail = email.toLowerCase();
+                    emailInput.readOnly = true;
+                    if (otpPanel) otpPanel.style.display = "none";
+                    if (btnSendOtp) btnSendOtp.style.display = "none";
+                    if (btnSubmitMessage) btnSubmitMessage.disabled = false;
+                    if (submitNotice) {
+                        submitNotice.textContent = "Email verified! You can now submit your message.";
+                    }
+                    showStatus("success", "Email Verified Successfully", "Your email address has been verified. You can now send your message.");
+                    if (expiryTimer) clearInterval(expiryTimer);
+                    if (cooldownTimer) clearInterval(cooldownTimer);
+                } else {
+                    showStatus("error", "Verification Failed", data.error || "Incorrect code. Please try again.");
+                }
+            } catch (err) {
+                btnVerifyOtp.disabled = false;
+                btnVerifyOtp.innerHTML = "<span>VERIFY CODE</span>";
+                showStatus("error", "Network Error", "Could not reach the server to verify. Please try again.");
+            }
+        });
+
+        // Auto-verify on typing 6 digits
+        if (otpCodeInput) {
+            otpCodeInput.addEventListener("input", () => {
+                if (otpCodeInput.value.trim().length === 6) {
+                    btnVerifyOtp.click();
+                }
+            });
+        }
+    }
+
+    // ------------------------------------------------------------------------
     // INITIALIZE ON DOM READY
     // ------------------------------------------------------------------------
     document.addEventListener("DOMContentLoaded", () => {
@@ -867,6 +1073,7 @@
         initGitHubIntegration();
         initModal();
         initContactForm();
+        initOtpVerification();
         initLiveViewers();
     });
 })();

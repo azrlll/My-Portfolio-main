@@ -2,16 +2,17 @@
 declare(strict_types=1);
 
 /**
- * Contact Page (contact.php) — Two-Step Interactive Form & MySQL Persistence
+ * Contact Page (contact.php) — Two-Step Interactive Form, Real Email OTP Verification & MySQL Persistence
  * Step 1: "What's Your Name?" -> Validates visitor name
- * Step 2: "Welcome [Name] to my Portfolio!" -> Collects Email & Message,
- *         validates CSRF + inputs, inserts into `contact_messages` via PDO
+ * Step 2: "Welcome [Name] to my Portfolio!" -> Collects Email, Real OTP Verification,
+ *         Message, validates CSRF + inputs, inserts into `contact_messages` via PDO
  *         prepared statement, and redirects via Post/Redirect/Get (PRG).
  */
 
 session_start();
 
 require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/config/otp.php';
 
 // Generate CSRF token if not yet present in session
 if (empty($_SESSION['contact_csrf_token'])) {
@@ -19,9 +20,53 @@ if (empty($_SESSION['contact_csrf_token'])) {
 }
 $csrfToken = $_SESSION['contact_csrf_token'];
 
+// ----------------------------------------------------------------------------
+// AJAX ENDPOINTS FOR REAL-TIME OTP SEND & VERIFY
+// ----------------------------------------------------------------------------
+if (isset($_GET['ajax_otp'])) {
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['success' => false, 'error' => 'Invalid request method.']);
+        exit;
+    }
+
+    $postedToken = (string)($_POST['csrf_token'] ?? '');
+    if (!hash_equals($csrfToken, $postedToken)) {
+        echo json_encode(['success' => false, 'error' => 'Session expired or invalid security token. Please refresh the page.']);
+        exit;
+    }
+
+    $otpAction = (string)($_POST['otp_action'] ?? '');
+    $email = trim((string)($_POST['email'] ?? ''));
+    $visitorName = trim((string)($_SESSION['contact_visitor_name'] ?? 'Visitor'));
+
+    if ($otpAction === 'send') {
+        $res = requestEmailOtp($email, $visitorName);
+        echo json_encode($res);
+        exit;
+    }
+
+    if ($otpAction === 'verify') {
+        $code = trim((string)($_POST['otp_code'] ?? ''));
+        $res = verifyEmailOtp($email, $code);
+        echo json_encode($res);
+        exit;
+    }
+
+    echo json_encode(['success' => false, 'error' => 'Unknown OTP action.']);
+    exit;
+}
+
 // Allow resetting Step 1 ("Change Name" or "Send Another Message")
 if (isset($_GET['reset_name']) && $_GET['reset_name'] === '1') {
-    unset($_SESSION['contact_visitor_name'], $_SESSION['contact_flash_success']);
+    unset(
+        $_SESSION['contact_visitor_name'],
+        $_SESSION['contact_flash_success'],
+        $_SESSION['contact_otp_data'],
+        $_SESSION['contact_verified_email']
+    );
     header('Location: contact.php');
     exit;
 }
@@ -102,6 +147,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Please enter a valid email address (e.g., name@example.com).';
         }
 
+        // CRITICAL: Verify that the submitted email has passed REAL OTP verification!
+        if (!isEmailVerifiedForSession($emailInput)) {
+            $errors[] = 'Your email address has not been verified. Please enter the 6-digit verification code sent to your inbox.';
+        }
+
         if ($messageInput === '') {
             $errors[] = 'Please enter a message before submitting.';
         } elseif (mb_strlen($messageInput) < 5) {
@@ -131,6 +181,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $_SESSION['last_contact_submit_time'] = time();
                 $_SESSION['contact_csrf_token'] = bin2hex(random_bytes(32));
+                unset($_SESSION['contact_verified_email'], $_SESSION['contact_otp_data']);
+
                 $_SESSION['contact_flash_success'] = sprintf(
                     'Thank you, %s! Your message has been sent successfully.',
                     $visitorName
@@ -149,6 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $currentPage = 'contact';
 $pageTitle = 'Contact | Kevin Christopher';
 $includePlaygroundScripts = false;
+$isEmailVerified = isEmailVerifiedForSession($emailInput);
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -237,13 +290,13 @@ require __DIR__ . '/includes/header.php';
                                     Welcome <?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?> to my Portfolio!
                                 </h2>
                                 <p class="card-subtext">
-                                    Fill in your email address and message below, and it will be saved directly to my portfolio inbox.
+                                    Fill in your email address and verify it with the 6-digit code sent to your inbox to submit your message.
                                 </p>
                             </div>
 
                             <form action="contact.php" method="post" class="contact-form" id="stepTwoContactForm" novalidate>
                                 <input type="hidden" name="action" value="send_message">
-                                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                                <input type="hidden" name="csrf_token" id="contactCsrfToken" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                                 <!-- Preserved Visitor Name from Step 1 -->
                                 <input type="hidden" name="name" value="<?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?>">
 
@@ -264,17 +317,69 @@ require __DIR__ . '/includes/header.php';
                                     >
                                 </div>
 
+                                <!-- Email Input & Send OTP Button -->
                                 <div class="form-group">
-                                    <label for="senderEmail">Email</label>
-                                    <input
-                                        type="email"
-                                        id="senderEmail"
-                                        name="email"
-                                        maxlength="100"
-                                        value="<?= htmlspecialchars($emailInput, ENT_QUOTES, 'UTF-8') ?>"
-                                        placeholder="your.email@example.com"
-                                        required
-                                    >
+                                    <label for="senderEmail">Email Address</label>
+                                    <div class="input-with-action">
+                                        <input
+                                            type="email"
+                                            id="senderEmail"
+                                            name="email"
+                                            maxlength="100"
+                                            value="<?= htmlspecialchars($emailInput, ENT_QUOTES, 'UTF-8') ?>"
+                                            placeholder="your.email@example.com"
+                                            required
+                                            autocomplete="email"
+                                        >
+                                        <button
+                                            type="button"
+                                            id="btnSendOtp"
+                                            class="btn btn-secondary btn-input-action"
+                                        >
+                                            <span id="btnSendOtpText">SEND CODE</span>
+                                        </button>
+                                    </div>
+                                    <span class="field-hint" id="emailOtpHint">
+                                        We will send a real 6-digit verification code to this email.
+                                    </span>
+                                </div>
+
+                                <!-- OTP Verification Section (Revealed once OTP is sent) -->
+                                <div class="otp-verification-panel" id="otpPanel" style="display: none;">
+                                    <div class="form-group">
+                                        <div class="otp-label-row">
+                                            <label for="otpCodeInput">6-Digit Verification Code</label>
+                                            <span class="otp-expiry-hint" id="otpExpiryHint">Expires in 5:00</span>
+                                        </div>
+                                        <div class="input-with-action">
+                                            <input
+                                                type="text"
+                                                id="otpCodeInput"
+                                                name="otp_code"
+                                                maxlength="6"
+                                                pattern="[0-9]{6}"
+                                                placeholder="123456"
+                                                inputmode="numeric"
+                                                autocomplete="one-time-code"
+                                            >
+                                            <button
+                                                type="button"
+                                                id="btnVerifyOtp"
+                                                class="btn btn-primary btn-input-action"
+                                            >
+                                                <span>VERIFY CODE</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Verification Status Banner -->
+                                <div class="otp-status-banner" id="otpStatusBanner" style="display: none;" role="status">
+                                    <div class="otp-status-icon" id="otpStatusIcon"></div>
+                                    <div class="otp-status-body">
+                                        <strong id="otpStatusTitle"></strong>
+                                        <p id="otpStatusDesc"></p>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -290,9 +395,12 @@ require __DIR__ . '/includes/header.php';
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" id="btnSubmitMessage" disabled>
                                         <span>SUBMIT MESSAGE</span>
                                     </button>
+                                    <span class="form-feedback" id="submitButtonNotice">
+                                        Verify your email first to enable message submission.
+                                    </span>
                                 </div>
                             </form>
                         <?php endif; ?>
