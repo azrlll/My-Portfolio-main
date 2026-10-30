@@ -41,7 +41,7 @@ require __DIR__ . '/includes/header.php';
 
                         <div class="hero-image-col">
                             <div class="hero-avatar-frame">
-                                <img src="image/ako.png" alt="Kevin Christopher B. Real" id="profileImage">
+                                <img src="image/profile.jpg" alt="Kevin Christopher" id="profileImage">
                             </div>
                         </div>
                     </div>

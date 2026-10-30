@@ -42,11 +42,11 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
     <script src="js/config.js"></script>
     <script src="js/main.js"></script>
 <?php if ($includePlaygroundScripts): ?>
-    <script src="js/playground/components.js"></script>
-    <script src="js/playground/storage.js"></script>
-    <script src="js/playground/game-state.js"></script>
-    <script src="js/playground/drag-drop.js"></script>
-    <script src="js/playground/pc-simulator.js"></script>
+    <script src="js/playground/build-a-pc/components.js"></script>
+    <script src="js/playground/build-a-pc/storage.js"></script>
+    <script src="js/playground/build-a-pc/game-state.js"></script>
+    <script src="js/playground/build-a-pc/drag-drop.js"></script>
+    <script src="js/playground/build-a-pc/pc-simulator.js"></script>
     <script src="js/playground/fix-the-pc/scenarios.js"></script>
     <script src="js/playground/fix-the-pc/diagnostics.js"></script>
     <script src="js/playground/fix-the-pc/scoring.js"></script>

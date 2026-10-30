@@ -1,4 +1,0 @@
-# Exclude sensitive local environment overrides, IDE configs, and private instructor credentials
-admin_credentials.txt
-config/env.local.php
-.vscode/

@@ -9,7 +9,7 @@ declare(strict_types=1);
  *
  * Plain-text passwords are NEVER stored here.
  * To generate a new password hash via CLI, run:
- *   php config/generate_hash.php "your_new_password"
+ *   php -r "echo password_hash('your_new_password', PASSWORD_DEFAULT);"
  */
 
 if (basename($_SERVER['PHP_SELF'] ?? '') === basename(__FILE__)) {
