@@ -94,10 +94,12 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
 </head>
 <body>
 
-    <!-- Cinematic Moving Black Hole Background (Global Shared Component) -->
-    <div id="blackHoleBg" class="cinematic-blackhole-bg" aria-hidden="true">
-        <canvas id="blackHoleCanvas"></canvas>
-        <div class="blackhole-vignette"></div>
+    <!-- Cinematic Interstellar Background (Actual Reference Image + Subtle Cosmic Ambiance) -->
+    <div id="interstellarBg" class="interstellar-background" aria-hidden="true">
+        <div class="interstellar-image-layer" id="interstellarImage"></div>
+        <div class="interstellar-nebula-glow"></div>
+        <canvas id="interstellarStarfieldCanvas" class="interstellar-starfield"></canvas>
+        <div class="interstellar-vignette"></div>
     </div>
 
     <!-- Mobile Top Header (Visible only on tablet/mobile) -->
