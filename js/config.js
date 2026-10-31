@@ -174,7 +174,28 @@ const SKILLS_DATA = [
         eyebrow: "CATEGORY 01 / HARDWARE",
         category: "Computer Hardware (Main Interest)",
         subtitle: "I enjoy learning about PC parts, building computers, and fixing hardware issues.",
-        previewTags: ["PC Assembly", "Diagnostics", "Architecture", "Cooling & Thermals"],
+        previewTags: [
+            {
+                tag: "PC Assembly",
+                fullName: "PC Assembly & Component Selection",
+                description: "I know how to choose computer parts and put them together."
+            },
+            {
+                tag: "Diagnostics",
+                fullName: "Hardware Diagnostics & Troubleshooting",
+                description: "I can check simple hardware problems like loose RAM, display errors, and high heat."
+            },
+            {
+                tag: "Architecture",
+                fullName: "System Architecture & Peripherals",
+                description: "I study how the CPU, motherboard, storage, and devices connect and work together."
+            },
+            {
+                tag: "Cooling & Thermals",
+                fullName: "Thermal & Performance Optimization",
+                description: "I like checking system temperatures and setting up case fans so the PC stays cool."
+            }
+        ],
         items: [
             {
                 name: "PC Assembly & Component Selection",
@@ -203,7 +224,33 @@ const SKILLS_DATA = [
         eyebrow: "CATEGORY 02 / SOFTWARE",
         category: "Software Development & Coding",
         subtitle: "Languages and tools I use to write code, make web pages, and practice what I learn in class.",
-        previewTags: ["HTML5 & CSS3", "JavaScript", "C Programming", "Vibe Coding", "AI & Tech"],
+        previewTags: [
+            {
+                tag: "HTML5 & CSS3",
+                fullName: "HTML5 & CSS3 Responsive Design",
+                description: "I use HTML and CSS to structure web pages and style them so they look good on phones and computers."
+            },
+            {
+                tag: "JavaScript",
+                fullName: "JavaScript (ES6+)",
+                description: "I use JavaScript to add buttons, animations, and other features to websites."
+            },
+            {
+                tag: "C Programming",
+                fullName: "C Programming Fundamentals",
+                description: "I learned basic programming logic in college using C, like variables, loops, and terminal programs."
+            },
+            {
+                tag: "Vibe Coding",
+                fullName: "AI-Assisted Web Development (Vibe Coding)",
+                description: "I use AI tools to help me build websites, fix errors, and learn coding."
+            },
+            {
+                tag: "AI & Tech",
+                fullName: "AI and Technology",
+                description: "I enjoy learning about AI and new tech tools, trying new ideas, and picking up new skills."
+            }
+        ],
         items: [
             {
                 name: "HTML5 & Semantic Markup",
@@ -242,7 +289,23 @@ const SKILLS_DATA = [
         eyebrow: "CATEGORY 03 / MINDSET",
         category: "Core Competencies & Mindset",
         subtitle: "Good habits and ways of thinking I use when doing school projects and studying IT.",
-        previewTags: ["Problem Solving", "Technical Communication", "Continuous Learning"],
+        previewTags: [
+            {
+                tag: "Problem Solving",
+                fullName: "Problem Solving & Algorithmic Thinking",
+                description: "When my code breaks or a computer won't boot, I stay calm and test things one by one."
+            },
+            {
+                tag: "Technical Communication",
+                fullName: "Technical Communication & Teamwork",
+                description: "I explain technical ideas and errors in simple words so classmates and others can understand."
+            },
+            {
+                tag: "Continuous Learning",
+                fullName: "Adaptability & Continuous Learning",
+                description: "Technology keeps changing, so I like learning new tools, asking questions, and improving."
+            }
+        ],
         items: [
             {
                 name: "Problem Solving & Algorithmic Thinking",

@@ -529,12 +529,139 @@
     }
 
     // ------------------------------------------------------------------------
-    // 8. INTERACTIVE SKILLS EXPLORER
+    // 8. INTERACTIVE SKILLS EXPLORER & TAG HOVER POPOVERS
     // ------------------------------------------------------------------------
     const skillsState = {
         activeCategoryIndex: null, // null = Hub view with 3 category cards
         activeSkillIndex: null     // null = no skill description expanded
     };
+
+    let tagPopoverEl = null;
+    let activeTagBtn = null;
+    let popoverHideTimeout = null;
+
+    function getTagPopover() {
+        if (!tagPopoverEl) {
+            tagPopoverEl = document.createElement("div");
+            tagPopoverEl.id = "skillTagPopover";
+            tagPopoverEl.className = "skill-tag-popover";
+            tagPopoverEl.setAttribute("role", "tooltip");
+            tagPopoverEl.setAttribute("aria-hidden", "true");
+            tagPopoverEl.innerHTML = `
+                <div class="skill-tag-popover-title" id="tagPopoverTitle"></div>
+                <p class="skill-tag-popover-desc" id="tagPopoverDesc"></p>
+            `;
+            document.body.appendChild(tagPopoverEl);
+
+            tagPopoverEl.addEventListener("mouseenter", () => {
+                if (popoverHideTimeout) {
+                    clearTimeout(popoverHideTimeout);
+                    popoverHideTimeout = null;
+                }
+            });
+
+            tagPopoverEl.addEventListener("mouseleave", () => {
+                scheduleHidePopover();
+            });
+        }
+        return tagPopoverEl;
+    }
+
+    function showTagPopover(btn) {
+        if (!btn) return;
+        if (popoverHideTimeout) {
+            clearTimeout(popoverHideTimeout);
+            popoverHideTimeout = null;
+        }
+
+        const title = btn.getAttribute("data-tag-name") || "";
+        const desc = btn.getAttribute("data-tag-desc") || "";
+        if (!desc) return;
+
+        const popover = getTagPopover();
+        const titleEl = popover.querySelector("#tagPopoverTitle");
+        const descEl = popover.querySelector("#tagPopoverDesc");
+
+        if (titleEl) titleEl.textContent = title;
+        if (descEl) descEl.textContent = desc;
+
+        // Position popover relative to button using getBoundingClientRect()
+        const rect = btn.getBoundingClientRect();
+        popover.style.display = "block";
+        popover.classList.remove("is-visible");
+
+        const popoverWidth = Math.min(290, window.innerWidth - 24);
+        popover.style.maxWidth = `${popoverWidth}px`;
+        const popoverHeight = popover.offsetHeight || 75;
+        const padding = 12;
+
+        // Center horizontally over button, clamped to screen margins
+        let left = rect.left + rect.width / 2 - popoverWidth / 2;
+        left = Math.max(padding, Math.min(left, window.innerWidth - popoverWidth - padding));
+
+        // Place above the button; if too close to viewport top, place below
+        let top = rect.top - popoverHeight - 10;
+        if (top < padding) {
+            top = rect.bottom + 10;
+        }
+
+        popover.style.left = `${Math.round(left)}px`;
+        popover.style.top = `${Math.round(top)}px`;
+
+        if (activeTagBtn && activeTagBtn !== btn) {
+            activeTagBtn.classList.remove("is-active");
+            activeTagBtn.removeAttribute("aria-describedby");
+        }
+        activeTagBtn = btn;
+        activeTagBtn.classList.add("is-active");
+        activeTagBtn.setAttribute("aria-describedby", "skillTagPopover");
+
+        requestAnimationFrame(() => {
+            popover.classList.add("is-visible");
+            popover.setAttribute("aria-hidden", "false");
+        });
+    }
+
+    function scheduleHidePopover() {
+        if (popoverHideTimeout) clearTimeout(popoverHideTimeout);
+        popoverHideTimeout = setTimeout(() => {
+            hideTagPopover();
+        }, 140);
+    }
+
+    function hideTagPopover() {
+        if (popoverHideTimeout) {
+            clearTimeout(popoverHideTimeout);
+            popoverHideTimeout = null;
+        }
+        if (tagPopoverEl) {
+            tagPopoverEl.classList.remove("is-visible");
+            tagPopoverEl.setAttribute("aria-hidden", "true");
+            setTimeout(() => {
+                if (tagPopoverEl && !tagPopoverEl.classList.contains("is-visible")) {
+                    tagPopoverEl.style.display = "none";
+                }
+            }, 140);
+        }
+        if (activeTagBtn) {
+            activeTagBtn.classList.remove("is-active");
+            activeTagBtn.removeAttribute("aria-describedby");
+            activeTagBtn = null;
+        }
+    }
+
+    // Dismiss popover on outside click or page scroll
+    document.addEventListener("click", (e) => {
+        if (!e.target.closest(".js-skill-tag") && !e.target.closest("#skillTagPopover")) {
+            hideTagPopover();
+        }
+    });
+
+    window.addEventListener("scroll", () => {
+        if (activeTagBtn) {
+            hideTagPopover();
+        }
+    }, { passive: true });
 
     function renderSkills() {
         const container = document.getElementById("skillsContainer");
@@ -579,7 +706,22 @@
 
             const countText = `${(cat.items || []).length} Skills`;
             const tagsHtml = (cat.previewTags || [])
-                .map((tag) => `<span class="skills-preview-tag">${escapeHtml(tag)}</span>`)
+                .map((tagItem) => {
+                    const tagLabel = typeof tagItem === "string" ? tagItem : (tagItem.tag || "");
+                    const fullName = typeof tagItem === "object" ? (tagItem.fullName || tagLabel) : tagLabel;
+                    const desc = typeof tagItem === "object" ? (tagItem.description || "") : "";
+
+                    return `
+                        <button type="button" 
+                                class="skills-preview-tag js-skill-tag" 
+                                data-tag-name="${escapeHtml(fullName)}" 
+                                data-tag-desc="${escapeHtml(desc)}" 
+                                aria-label="${escapeHtml(fullName)}"
+                                tabindex="0">
+                            <span>${escapeHtml(tagLabel)}</span>
+                        </button>
+                    `;
+                })
                 .join("");
 
             card.innerHTML = `
@@ -605,6 +747,7 @@
 
             const handleSelect = (e) => {
                 e.preventDefault();
+                hideTagPopover();
                 skillsState.activeCategoryIndex = catIdx;
                 skillsState.activeSkillIndex = null;
                 renderSkills();
@@ -619,6 +762,53 @@
                 if (e.key === "Enter" || e.key === " ") {
                     handleSelect(e);
                 }
+            });
+
+            // Attach interactive hover & tap listeners to each skill tag
+            card.querySelectorAll(".js-skill-tag").forEach((tagBtn) => {
+                // Desktop Hover
+                tagBtn.addEventListener("mouseenter", () => {
+                    showTagPopover(tagBtn);
+                });
+                tagBtn.addEventListener("mouseleave", () => {
+                    scheduleHidePopover();
+                });
+
+                // Keyboard Tab Focus & Blur
+                tagBtn.addEventListener("focus", () => {
+                    showTagPopover(tagBtn);
+                });
+                tagBtn.addEventListener("blur", () => {
+                    scheduleHidePopover();
+                });
+
+                // Click / Tap (Mobile & Desktop)
+                tagBtn.addEventListener("click", (e) => {
+                    // STOP PROPAGATION so clicking a tag NEVER triggers the parent category card!
+                    e.stopPropagation();
+                    e.preventDefault();
+
+                    if (activeTagBtn === tagBtn && tagPopoverEl && tagPopoverEl.classList.contains("is-visible")) {
+                        hideTagPopover();
+                    } else {
+                        showTagPopover(tagBtn);
+                    }
+                });
+
+                tagBtn.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        if (activeTagBtn === tagBtn && tagPopoverEl && tagPopoverEl.classList.contains("is-visible")) {
+                            hideTagPopover();
+                        } else {
+                            showTagPopover(tagBtn);
+                        }
+                    } else if (e.key === "Escape") {
+                        e.stopPropagation();
+                        hideTagPopover();
+                    }
+                });
             });
 
             grid.appendChild(card);
