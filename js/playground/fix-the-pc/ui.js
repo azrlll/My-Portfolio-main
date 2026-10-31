@@ -46,9 +46,6 @@ window.FixPCUI = (function () {
         rootEl.innerHTML = `
             <div class="fixpc-screen fixpc-menu-screen">
                 <div class="fixpc-top-nav">
-                    <button type="button" class="pc-ctrl-btn" id="fixPcBackToHubBtn">
-                        &larr; Back to Playground
-                    </button>
                     <span class="fixpc-rank-pill">RANK: ${escapeHtml(summary.rankTitle.toUpperCase())} &bull; ${summary.totalXp} XP</span>
                 </div>
 
@@ -170,7 +167,6 @@ window.FixPCUI = (function () {
                 <div class="fixpc-top-nav">
                     <div class="fixpc-nav-left-group">
                         <button type="button" class="pc-ctrl-btn" id="fixPcBackToMenuBtn">&larr; Fix the PC Menu</button>
-                        <button type="button" class="pc-ctrl-btn" id="fixPcDashToHubBtn">Back to Playground</button>
                     </div>
                     <div class="pc-difficulty-group" role="group" aria-label="Difficulty selector">
                         ${renderDifficultyButtonsHtml(saved.selectedDifficulty)}
@@ -348,7 +344,6 @@ window.FixPCUI = (function () {
                 <div class="fixpc-top-nav">
                     <div class="fixpc-nav-left-group">
                         <button type="button" class="pc-ctrl-btn" id="fixPcFreeToMenuBtn">&larr; Fix the PC Menu</button>
-                        <button type="button" class="pc-ctrl-btn" id="fixPcFreeToHubBtn">Back to Playground</button>
                     </div>
                     <div class="pc-difficulty-group" role="group" aria-label="Difficulty selector">
                         ${renderDifficultyButtonsHtml(saved.selectedDifficulty)}

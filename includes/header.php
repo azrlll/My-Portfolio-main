@@ -191,8 +191,8 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
                                     <span>Blog</span>
                                 </a>
                             </li>
-                            <li class="nav-group-playground">
-                                <a href="<?= $basePrefix ?>#playground" class="nav-item nav-item-playground" data-section="playground" id="navPlaygroundHubLink">
+                            <li class="nav-group-playground" id="navGroupPlayground">
+                                <a href="<?= $currentPage === 'index' ? '#playground' : 'index.php?game=build-pc#playground' ?>" class="nav-item nav-item-playground" data-section="playground" id="navPlaygroundHubLink" role="button" aria-expanded="false" aria-haspopup="true">
                                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                         <line x1="6" y1="12" x2="10" y2="12"></line>
                                         <line x1="8" y1="10" x2="8" y2="14"></line>
@@ -205,7 +205,7 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
                                         <polyline points="6 9 12 15 18 9"></polyline>
                                     </svg>
                                 </a>
-                                <ul class="nav-submenu" aria-label="Playground Games">
+                                <ul class="nav-submenu" id="navPlaygroundSubmenu" aria-label="Playground Games">
                                     <li>
                                         <a href="<?= $currentPage === 'index' ? '#playground' : 'index.php?game=build-pc#playground' ?>" class="nav-subitem" data-open-game="build-pc">
                                             <span class="nav-subitem-index">01</span>

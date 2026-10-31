@@ -558,20 +558,6 @@
 
     function showHub() {
         cleanup();
-        if (hubView) hubView.hidden = false;
-        if (snakeView) snakeView.hidden = true;
-
-        const buildPcView = document.getElementById("buildPcGameView");
-        const fixPcView = document.getElementById("fixPcGameView");
-        const circuitConnectView = document.getElementById("circuitConnectGameView");
-
-        if (buildPcView) buildPcView.hidden = true;
-        if (fixPcView) fixPcView.hidden = true;
-        if (circuitConnectView) circuitConnectView.hidden = true;
-
-        document.querySelectorAll(".nav-subitem[data-open-game]").forEach((item) => {
-            item.classList.remove("active");
-        });
     }
 
     function openSnakeGame() {
@@ -656,10 +642,6 @@
         spawnFood();
         render();
 
-        // Bind Hub & Navigation
-        if (btnPlaySnake) btnPlaySnake.addEventListener("click", openSnakeGame);
-        if (btnBackFromSnake) btnBackFromSnake.addEventListener("click", showHub);
-
         // Bind Overlay Buttons
         if (btnOverlayStart) btnOverlayStart.addEventListener("click", startGame);
         if (btnOverlayResume) btnOverlayResume.addEventListener("click", resumeGame);
@@ -708,21 +690,6 @@
 
         // Keyboard Event Listener
         window.addEventListener("keydown", handleKeyDown);
-
-        // Sidebar link listener
-        document.querySelectorAll('.nav-subitem[data-open-game="snake"]').forEach((item) => {
-            item.addEventListener("click", openSnakeGame);
-        });
-
-        // Auto-open if query param ?game=snake
-        try {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get("game") === "snake") {
-                openSnakeGame();
-            }
-        } catch (e) {
-            // Ignore URLSearchParams error
-        }
     }
 
     // Expose API for playground hub coordination

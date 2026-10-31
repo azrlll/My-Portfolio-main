@@ -44,7 +44,6 @@ window.CircuitConnectUI = (function () {
         rootEl.innerHTML = `
             <div class="cc-screen cc-main-menu">
                 <div class="cc-top-nav">
-                    <button type="button" class="pc-ctrl-btn" id="ccBtnBackToPlayground">&larr; BACK TO PLAYGROUND</button>
                     <div class="cc-menu-badges">
                         <span class="cc-pill">CURRENT LEVEL: <strong>LEVEL ${String(currentLevel).padStart(2, "0")}</strong></span>
                         <span class="cc-pill">COMPLETED: <strong>${completedCount} / ${totalLevels}</strong></span>

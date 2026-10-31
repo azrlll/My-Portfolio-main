@@ -177,88 +177,9 @@ require __DIR__ . '/includes/header.php';
             <!-- =========================================================
                  6. PLAYGROUND SECTION — Interactive Hardware Simulators
             ========================================================== -->
-            <section class="content-section playground-section" id="playground" aria-labelledby="playgroundHeading">
-                <!-- Playground Hub View: Select between Game 01, Game 02, and Game 03 -->
-                <div class="playground-hub-view" id="playgroundHubView">
-                    <div class="section-header">
-                        <span class="section-eyebrow">04.5 / PLAYGROUND</span>
-                        <h2 class="section-title" id="playgroundHeading">Interactive Hardware Simulators</h2>
-                        <p class="section-subtitle">Hands-on virtual PC assembly, hardware troubleshooting, and electronics simulators built right into my portfolio.</p>
-                    </div>
-
-                    <div class="playground-game-cards">
-                        <!-- GAME 01 — BUILD A PC -->
-                        <article class="playground-game-card">
-                            <span class="game-card-eyebrow">GAME 01 &mdash; BUILD A PC</span>
-                            <h3 class="game-card-title">BUILD A PC</h3>
-                            <span class="game-card-subtitle">Hardware Assembly Simulator</span>
-                            <p class="game-card-desc">Assemble a virtual computer by placing components into their correct slots.</p>
-                            <div class="game-card-meta">
-                                <span class="game-meta-tag">6 Hardware Components</span>
-                                <span class="game-meta-tag">3 Difficulty Modes</span>
-                                <span class="game-meta-tag">Personal Best Timer</span>
-                            </div>
-                            <button type="button" class="btn btn-primary" id="btnPlayBuildPc">
-                                <span>PLAY BUILD A PC</span>
-                            </button>
-                        </article>
-
-                        <!-- GAME 02 — FIX THE PC -->
-                        <article class="playground-game-card">
-                            <span class="game-card-eyebrow">GAME 02 &mdash; FIX THE PC</span>
-                            <h3 class="game-card-title">FIX THE PC</h3>
-                            <span class="game-card-subtitle">Hardware Troubleshooting Simulator</span>
-                            <p class="game-card-desc">Diagnose computer problems, perform repairs, and build your career as a virtual PC technician.</p>
-                            <div class="game-card-meta">
-                                <span class="game-meta-tag">12 Diagnostic Cases</span>
-                                <span class="game-meta-tag">Career &amp; Free Play Modes</span>
-                                <span class="game-meta-tag">XP, Ranks &amp; Achievements</span>
-                            </div>
-                            <button type="button" class="btn btn-primary" id="btnPlayFixPc">
-                                <span>PLAY FIX THE PC</span>
-                            </button>
-                        </article>
-
-                        <!-- GAME 03 — CIRCUIT CONNECT -->
-                        <article class="playground-game-card">
-                            <span class="game-card-eyebrow">GAME 03 &mdash; CIRCUIT CONNECT</span>
-                            <h3 class="game-card-title">CIRCUIT CONNECT</h3>
-                            <span class="game-card-subtitle">Electronics Puzzle Simulator</span>
-                            <p class="game-card-desc">Connect the components. Complete the circuit. Power up your creation.</p>
-                            <div class="game-card-meta">
-                                <span class="game-meta-tag">Category: Electronics Puzzle</span>
-                                <span class="game-meta-tag">Difficulty: Medium</span>
-                                <span class="game-meta-tag">15 Circuit Levels</span>
-                            </div>
-                            <button type="button" class="btn btn-primary" id="btnPlayCircuitConnect">
-                                <span>PLAY CIRCUIT CONNECT</span>
-                            </button>
-                        </article>
-
-                        <!-- GAME 04 — MINIMAL SNAKE -->
-                        <article class="playground-game-card">
-                            <span class="game-card-eyebrow">GAME 04 &mdash; MINIMAL SNAKE</span>
-                            <h3 class="game-card-title">MINIMAL SNAKE</h3>
-                            <span class="game-card-subtitle">Classic Arcade Simulator</span>
-                            <p class="game-card-desc">Navigate the grid, collect food, and grow your snake in a sleek monochrome arcade experience.</p>
-                            <div class="game-card-meta">
-                                <span class="game-meta-tag">3 Difficulty Modes</span>
-                                <span class="game-meta-tag">Persistent High Scores</span>
-                                <span class="game-meta-tag">Mobile &amp; Keyboard Ready</span>
-                            </div>
-                            <button type="button" class="btn btn-primary" id="btnPlaySnake">
-                                <span>PLAY MINIMAL SNAKE</span>
-                            </button>
-                        </article>
-                    </div>
-                </div>
-
+            <section class="content-section playground-section" id="playground" aria-label="Playground Hardware Simulators and Games">
                 <!-- GAME 01 VIEW: Build a PC — Mini Simulator (Preserved Intact) -->
-                <div class="playground-game-view" id="buildPcGameView" hidden>
-                    <div class="game-view-backbar">
-                        <button type="button" class="pc-ctrl-btn" id="btnBackFromBuildPc">&larr; Back to Playground</button>
-                    </div>
-
+                <div class="playground-game-view" id="buildPcGameView">
                     <div class="section-header">
                         <span class="section-eyebrow">PLAYGROUND / GAME 01</span>
                         <h2 class="section-title">BUILD A PC.</h2>
@@ -442,10 +363,6 @@ require __DIR__ . '/includes/header.php';
 
                 <!-- GAME 04 VIEW: Minimal Snake — Classic Arcade Simulator -->
                 <div class="playground-game-view" id="snakeGameView" hidden>
-                    <div class="game-view-backbar">
-                        <button type="button" class="btn-snake-back" id="btnBackFromSnake">&larr; Back to Playground</button>
-                    </div>
-
                     <div class="snake-game-wrapper">
                         <div class="snake-header">
                             <span class="snake-eyebrow">PLAYGROUND / GAME 04</span>

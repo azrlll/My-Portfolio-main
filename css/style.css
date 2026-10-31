@@ -278,7 +278,8 @@ button {
 }
 
 .nav-group-playground:hover .nav-chevron,
-.nav-group-playground:focus-within .nav-chevron {
+.nav-group-playground:focus-within .nav-chevron,
+.nav-group-playground.is-expanded .nav-chevron {
     transform: rotate(180deg);
     opacity: 1;
 }
@@ -294,12 +295,13 @@ button {
     opacity: 0;
     overflow: hidden;
     pointer-events: none;
-    transition: max-height 0.22s ease, opacity 0.18s ease, padding-top 0.18s ease;
+    transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease, padding-top 0.22s ease;
 }
 
 .nav-group-playground:hover .nav-submenu,
-.nav-group-playground:focus-within .nav-submenu {
-    max-height: 160px;
+.nav-group-playground:focus-within .nav-submenu,
+.nav-group-playground.is-expanded .nav-submenu {
+    max-height: 220px;
     opacity: 1;
     padding-top: 4px;
     pointer-events: auto;

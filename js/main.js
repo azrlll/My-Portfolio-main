@@ -97,6 +97,10 @@
 
         navItems.forEach((link) => {
             link.addEventListener("click", () => {
+                // Playground dropdown toggle is handled specifically to prevent premature mobile menu closure
+                if (link.classList.contains("nav-item-playground") || link.id === "navPlaygroundHubLink") {
+                    return;
+                }
                 navItems.forEach((item) => item.classList.remove("active"));
                 link.classList.add("active");
                 closeMobileMenu();
