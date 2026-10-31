@@ -7,8 +7,8 @@
     RewriteEngine On
     RewriteBase /
 
-    # 1. Allow Google Search Console verification files directly without rewriting
-    RewriteRule ^google[a-f0-9]+\.html$ - [L]
+    # 1. Allow Google Search Console verification files, robots.txt, and sitemap.xml directly
+    RewriteRule ^(google[a-f0-9]+\.html|robots\.txt|sitemap\.xml)$ - [L]
 
     # 2. Allow all existing files and directories to be served directly
     RewriteCond %{REQUEST_FILENAME} -f [OR]

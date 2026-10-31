@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Allow: /contact.php
+Disallow: /admin/
+Disallow: /config/
+Disallow: /database/
+Disallow: /includes/
+
+# XML Sitemap Location
+Sitemap: https://kevin-portfolio.free.nf/sitemap.xml
