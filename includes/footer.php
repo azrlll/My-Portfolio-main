@@ -44,6 +44,7 @@ $jsVersion = (string)(@filemtime(__DIR__ . '/../js/main.js') ?: '20261030');
 ?>
     <script src="js/config.js?v=<?= $jsVersion ?>"></script>
     <script src="js/main.js?v=<?= $jsVersion ?>"></script>
+    <script src="js/blackhole-bg.js?v=<?= $jsVersion ?>"></script>
 <?php if ($includePlaygroundScripts): ?>
     <script src="js/playground/build-a-pc/components.js"></script>
     <script src="js/playground/build-a-pc/storage.js"></script>
@@ -70,6 +71,7 @@ $jsVersion = (string)(@filemtime(__DIR__ . '/../js/main.js') ?: '20261030');
     <script src="js/playground/circuit-connect/game-engine.js"></script>
     <script src="js/playground/circuit-connect/ui.js"></script>
     <script src="js/playground/circuit-connect/main.js"></script>
+    <script src="js/playground/minimal-snake/snake.js"></script>
 <?php endif; ?>
 </body>
 </html>

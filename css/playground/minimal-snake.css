@@ -1,0 +1,570 @@
+/* ============================================================================
+   MINIMAL SNAKE — CLASSIC ARCADE SIMULATOR STYLESHEET
+   Monochrome Minimalist Aesthetic with Retro Modern Arcade Accents
+   Inspired by Reference Image (Dark subtle grid, rounded snake segments,
+   contrasting glowing food, clean typography & touch D-pad)
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   1. PLAYGROUND HUB FOUR-CARD GRID
+   ---------------------------------------------------------------------------- */
+.playground-game-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 22px;
+}
+
+@media (max-width: 860px) {
+    .playground-game-cards {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   2. MINIMAL SNAKE CONTAINER & BACK BAR
+   ---------------------------------------------------------------------------- */
+.snake-game-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 680px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.btn-snake-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn-snake-back:hover {
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+    background-color: var(--bg-surface);
+}
+
+.snake-header {
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.snake-eyebrow {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+
+.snake-title {
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin: 0 0 6px;
+}
+
+.snake-subtitle {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* ----------------------------------------------------------------------------
+   3. DIFFICULTY MODE SELECTOR
+   ---------------------------------------------------------------------------- */
+.snake-difficulty-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 14px 18px;
+}
+
+.snake-diff-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.snake-diff-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.snake-diff-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 10px 12px;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: all var(--transition-fast);
+}
+
+.snake-diff-btn span {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.snake-diff-btn small {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+}
+
+.snake-diff-btn:hover {
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+}
+
+.snake-diff-btn.active {
+    background-color: var(--text-primary);
+    color: var(--bg-canvas);
+    border-color: var(--text-primary);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.snake-diff-btn.active small {
+    color: var(--bg-canvas);
+    opacity: 0.85;
+}
+
+/* ----------------------------------------------------------------------------
+   4. SCOREBOARD CARD
+   ---------------------------------------------------------------------------- */
+.snake-scoreboard-card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 14px 20px;
+}
+
+.snake-stat-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    text-align: center;
+}
+
+.snake-stat-pill .stat-name {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.snake-stat-pill .stat-val {
+    font-family: var(--font-mono);
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.snake-stat-pill .stat-val.highlight {
+    color: #4ade80;
+}
+
+.snake-stat-pill .stat-val.mode-text {
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    margin-top: 3px;
+}
+
+/* ----------------------------------------------------------------------------
+   5. GAME BOARD & CANVAS FRAME
+   ---------------------------------------------------------------------------- */
+.snake-board-frame {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    aspect-ratio: 1 / 1;
+    border-radius: 18px;
+    border: 2px solid rgba(139, 92, 246, 0.35);
+    background-color: #0b0e17;
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.16), 0 10px 30px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+#snakeCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* ----------------------------------------------------------------------------
+   6. OVERLAYS (START, PAUSE, GAME OVER)
+   ---------------------------------------------------------------------------- */
+.snake-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(11, 14, 23, 0.88);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 20;
+    animation: fadeInOverlay 0.2s ease-out;
+}
+
+.snake-overlay[hidden] {
+    display: none !important;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.snake-overlay-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 26px 22px;
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    box-shadow: var(--shadow-elevated);
+}
+
+.overlay-badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+}
+
+.overlay-badge.alert {
+    background-color: rgba(248, 113, 113, 0.12);
+    border-color: rgba(248, 113, 113, 0.4);
+    color: #f87171;
+}
+
+.snake-overlay-card h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.snake-overlay-card p {
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin: 0;
+}
+
+.game-over-stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+    padding: 10px 0;
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.go-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.go-stat span {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+}
+
+.go-stat strong {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    color: var(--text-primary);
+}
+
+.new-record-banner {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #4ade80;
+    background-color: rgba(74, 222, 128, 0.12);
+    border: 1px solid rgba(74, 222, 128, 0.4);
+    padding: 6px 14px;
+    border-radius: 999px;
+    animation: pulseRecord 1.2s infinite ease-in-out;
+}
+
+@keyframes pulseRecord {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.04); }
+}
+
+/* ----------------------------------------------------------------------------
+   7. ACTION BUTTONS & CONTROLS
+   ---------------------------------------------------------------------------- */
+.snake-actions-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.snake-actions-row .btn {
+    flex: 1;
+    justify-content: center;
+    min-height: 44px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+}
+
+/* ----------------------------------------------------------------------------
+   8. MOBILE VIRTUAL D-PAD
+   ---------------------------------------------------------------------------- */
+.snake-touch-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    max-width: 240px;
+    margin: 8px auto 0;
+    width: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+.snake-dpad-middle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.snake-dpad-center {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background-color: var(--bg-surface);
+    border: 1px dashed var(--border-subtle);
+    opacity: 0.4;
+}
+
+.snake-dpad-btn {
+    width: 64px;
+    height: 58px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: background-color var(--transition-fast), transform 0.08s ease, border-color var(--transition-fast);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.snake-dpad-btn svg {
+    width: 24px;
+    height: 24px;
+    pointer-events: none;
+}
+
+.snake-dpad-btn:active {
+    background-color: var(--text-primary);
+    color: var(--bg-canvas);
+    transform: scale(0.92);
+}
+
+/* ----------------------------------------------------------------------------
+   9. KEYBOARD INSTRUCTIONS HINT
+   ---------------------------------------------------------------------------- */
+.snake-help-note {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-top: 4px;
+}
+
+.help-key {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* ----------------------------------------------------------------------------
+   10. RESPONSIVE BREAKPOINTS (MOBILE & TABLET)
+   ---------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+    .snake-game-wrapper {
+        gap: 16px;
+    }
+
+    .snake-difficulty-bar {
+        padding: 10px 12px;
+    }
+
+    .snake-diff-options {
+        gap: 6px;
+    }
+
+    .snake-diff-btn {
+        padding: 8px 4px;
+        min-width: 0;
+    }
+
+    .snake-diff-btn span {
+        font-size: clamp(0.68rem, 2.4vw, 0.78rem);
+        letter-spacing: 0.01em;
+    }
+
+    .snake-diff-btn small {
+        font-size: 0.6rem;
+    }
+
+    .snake-scoreboard-card {
+        padding: 12px 10px;
+        gap: 8px;
+    }
+
+    .snake-stat-pill .stat-val {
+        font-size: 1.25rem;
+    }
+
+    .snake-stat-pill .stat-val.mode-text {
+        font-size: clamp(0.68rem, 2.4vw, 0.82rem);
+        letter-spacing: 0.01em;
+    }
+
+    .snake-board-frame {
+        max-width: min(380px, 100%);
+        border-radius: 14px;
+    }
+
+    .snake-help-note {
+        display: none; /* Hide keyboard note on mobile to give room for D-pad */
+    }
+}
+
+@media (min-width: 641px) {
+    .snake-touch-controls {
+        display: none; /* Hide virtual D-pad on desktop since keyboard is available */
+    }
+}
+
+@media (max-width: 380px) {
+    .snake-board-frame {
+        max-width: 100%;
+        border-radius: 12px;
+    }
+
+    .snake-difficulty-bar {
+        padding: 8px 10px;
+    }
+
+    .snake-diff-options {
+        gap: 4px;
+    }
+
+    .snake-diff-btn {
+        padding: 6px 2px;
+    }
+
+    .snake-diff-btn span {
+        font-size: 0.64rem;
+    }
+
+    .snake-diff-btn small {
+        font-size: 0.54rem;
+    }
+
+    .snake-scoreboard-card {
+        padding: 10px 6px;
+    }
+
+    .snake-stat-pill .stat-val {
+        font-size: 1.15rem;
+    }
+
+    .snake-stat-pill .stat-val.mode-text {
+        font-size: 0.68rem;
+    }
+
+    .snake-dpad-btn {
+        width: 58px;
+        height: 52px;
+    }
+
+    .snake-dpad-center {
+        width: 48px;
+        height: 48px;
+    }
+}

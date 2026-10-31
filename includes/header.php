@@ -89,8 +89,16 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
     <link rel="stylesheet" href="css/playground/pc-simulator.css?v=<?= $assetVersion ?>">
     <link rel="stylesheet" href="css/playground/fix-the-pc.css?v=<?= $assetVersion ?>">
     <link rel="stylesheet" href="css/playground/circuit-connect.css?v=<?= $assetVersion ?>">
+    <link rel="stylesheet" href="css/playground/minimal-snake.css?v=<?= $assetVersion ?>">
+    <link rel="stylesheet" href="css/blackhole-bg.css?v=<?= $assetVersion ?>">
 </head>
 <body>
+
+    <!-- Cinematic Moving Black Hole Background (Global Shared Component) -->
+    <div id="blackHoleBg" class="cinematic-blackhole-bg" aria-hidden="true">
+        <canvas id="blackHoleCanvas"></canvas>
+        <div class="blackhole-vignette"></div>
+    </div>
 
     <!-- Mobile Top Header (Visible only on tablet/mobile) -->
     <header class="mobile-header" aria-label="Mobile Navigation Bar">
@@ -212,6 +220,12 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
                                         <a href="<?= $currentPage === 'index' ? '#playground' : 'index.php?game=circuit-connect#playground' ?>" class="nav-subitem" data-open-game="circuit-connect">
                                             <span class="nav-subitem-index">03</span>
                                             <span>Circuit Connect</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?= $currentPage === 'index' ? '#playground' : 'index.php?game=snake#playground' ?>" class="nav-subitem" data-open-game="snake">
+                                            <span class="nav-subitem-index">04</span>
+                                            <span>Minimal Snake</span>
                                         </a>
                                     </li>
                                 </ul>

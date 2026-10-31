@@ -1,0 +1,146 @@
+/* ============================================================================
+   CINEMATIC MOVING BLACK HOLE BACKGROUND — KEVIN CHRISTOPHER PORTFOLIO
+   Interstellar Gargantua-inspired realistic space environment with
+   accretion disk flow, drifting starfield, subtle parallax & camera drift.
+   ============================================================================ */
+
+/* ----------------------------------------------------------------------------
+   1. FIXED BACKGROUND CONTAINER & CANVAS
+   ---------------------------------------------------------------------------- */
+.cinematic-blackhole-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: #030307;
+    contain: strict;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+}
+
+#blackHoleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+}
+
+/* ----------------------------------------------------------------------------
+   2. CINEMATIC VIGNETTE & READABILITY VEIL
+   Ensures deep space periphery & crystal-clear foreground text contrast.
+   ---------------------------------------------------------------------------- */
+.blackhole-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse at 60% 48%, rgba(3, 3, 7, 0.15) 0%, rgba(3, 3, 7, 0.55) 55%, rgba(2, 2, 5, 0.88) 85%, #020205 100%),
+        linear-gradient(to bottom, rgba(3, 3, 7, 0.45) 0%, transparent 20%, transparent 80%, rgba(2, 2, 5, 0.75) 100%);
+    mix-blend-mode: multiply;
+}
+
+/* Base transparent body so canvas shows through */
+body {
+    background-color: transparent !important;
+}
+
+/* ----------------------------------------------------------------------------
+   3. FROSTED GLASS & ELEVATED READABILITY ON PORTFOLIO COMPONENTS
+   Preserves 100% crisp typography while letting celestial cosmic glow peek through.
+   ---------------------------------------------------------------------------- */
+[data-theme="dark"] .sidebar {
+    background-color: rgba(13, 13, 18, 0.85) !important;
+    backdrop-filter: blur(18px) saturate(135%);
+    -webkit-backdrop-filter: blur(18px) saturate(135%);
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .mobile-header {
+    background-color: rgba(13, 13, 18, 0.88) !important;
+    backdrop-filter: blur(18px) saturate(135%);
+    -webkit-backdrop-filter: blur(18px) saturate(135%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .project-card,
+[data-theme="dark"] .skills-category-card,
+[data-theme="dark"] .experience-item,
+[data-theme="dark"] .contact-channels-card,
+[data-theme="dark"] .contact-form-card,
+[data-theme="dark"] .playground-card,
+[data-theme="dark"] .playground-active-game,
+[data-theme="dark"] .about-profile-card,
+[data-theme="dark"] .theme-switch-card,
+[data-theme="dark"] .viewer-counter-pill {
+    background-color: rgba(17, 17, 24, 0.78) !important;
+    backdrop-filter: blur(16px) saturate(130%);
+    -webkit-backdrop-filter: blur(16px) saturate(130%);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .project-card:hover,
+[data-theme="dark"] .playground-card:hover,
+[data-theme="dark"] .skills-category-card:hover {
+    background-color: rgba(24, 24, 34, 0.88) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+[data-theme="dark"] .contact-input,
+[data-theme="dark"] .contact-form-card textarea,
+[data-theme="dark"] .otp-input-field {
+    background-color: rgba(10, 10, 15, 0.85) !important;
+}
+
+/* Modals & overlays */
+.modal-overlay {
+    background-color: rgba(3, 3, 7, 0.82) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.modal-card {
+    background-color: rgba(16, 16, 22, 0.94) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+/* ----------------------------------------------------------------------------
+   4. LIGHT THEME COMPATIBILITY
+   Maintains crisp text contrast if visitor selects Light Theme
+   ---------------------------------------------------------------------------- */
+[data-theme="light"] .cinematic-blackhole-bg {
+    opacity: 0.18;
+    filter: grayscale(40%) contrast(110%);
+}
+
+[data-theme="light"] body {
+    background-color: #f4f4f7 !important;
+}
+
+/* ----------------------------------------------------------------------------
+   5. RESPONSIVE MOBILE OPTIMIZATIONS
+   ---------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+    .blackhole-vignette {
+        background:
+            radial-gradient(circle at 50% 40%, rgba(3, 3, 7, 0.1) 0%, rgba(3, 3, 7, 0.58) 55%, rgba(2, 2, 5, 0.92) 85%, #020205 100%),
+            linear-gradient(to bottom, rgba(3, 3, 7, 0.5) 0%, transparent 20%, transparent 80%, rgba(2, 2, 5, 0.85) 100%);
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   6. ACCESSIBILITY: PREFERS-REDUCED-MOTION
+   ---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    .cinematic-blackhole-bg {
+        animation: none !important;
+        transform: none !important;
+    }
+}

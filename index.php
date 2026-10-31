@@ -189,7 +189,7 @@ require __DIR__ . '/includes/header.php';
                     <div class="playground-game-cards">
                         <!-- GAME 01 — BUILD A PC -->
                         <article class="playground-game-card">
-                            <span class="game-card-eyebrow">GAME 01 — BUILD A PC</span>
+                            <span class="game-card-eyebrow">GAME 01 &mdash; BUILD A PC</span>
                             <h3 class="game-card-title">BUILD A PC</h3>
                             <span class="game-card-subtitle">Hardware Assembly Simulator</span>
                             <p class="game-card-desc">Assemble a virtual computer by placing components into their correct slots.</p>
@@ -205,7 +205,7 @@ require __DIR__ . '/includes/header.php';
 
                         <!-- GAME 02 — FIX THE PC -->
                         <article class="playground-game-card">
-                            <span class="game-card-eyebrow">GAME 02 — FIX THE PC</span>
+                            <span class="game-card-eyebrow">GAME 02 &mdash; FIX THE PC</span>
                             <h3 class="game-card-title">FIX THE PC</h3>
                             <span class="game-card-subtitle">Hardware Troubleshooting Simulator</span>
                             <p class="game-card-desc">Diagnose computer problems, perform repairs, and build your career as a virtual PC technician.</p>
@@ -221,7 +221,7 @@ require __DIR__ . '/includes/header.php';
 
                         <!-- GAME 03 — CIRCUIT CONNECT -->
                         <article class="playground-game-card">
-                            <span class="game-card-eyebrow">GAME 03 — CIRCUIT CONNECT</span>
+                            <span class="game-card-eyebrow">GAME 03 &mdash; CIRCUIT CONNECT</span>
                             <h3 class="game-card-title">CIRCUIT CONNECT</h3>
                             <span class="game-card-subtitle">Electronics Puzzle Simulator</span>
                             <p class="game-card-desc">Connect the components. Complete the circuit. Power up your creation.</p>
@@ -232,6 +232,22 @@ require __DIR__ . '/includes/header.php';
                             </div>
                             <button type="button" class="btn btn-primary" id="btnPlayCircuitConnect">
                                 <span>PLAY CIRCUIT CONNECT</span>
+                            </button>
+                        </article>
+
+                        <!-- GAME 04 — MINIMAL SNAKE -->
+                        <article class="playground-game-card">
+                            <span class="game-card-eyebrow">GAME 04 &mdash; MINIMAL SNAKE</span>
+                            <h3 class="game-card-title">MINIMAL SNAKE</h3>
+                            <span class="game-card-subtitle">Classic Arcade Simulator</span>
+                            <p class="game-card-desc">Navigate the grid, collect food, and grow your snake in a sleek monochrome arcade experience.</p>
+                            <div class="game-card-meta">
+                                <span class="game-meta-tag">3 Difficulty Modes</span>
+                                <span class="game-meta-tag">Persistent High Scores</span>
+                                <span class="game-meta-tag">Mobile &amp; Keyboard Ready</span>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="btnPlaySnake">
+                                <span>PLAY MINIMAL SNAKE</span>
                             </button>
                         </article>
                     </div>
@@ -422,6 +438,147 @@ require __DIR__ . '/includes/header.php';
                 <!-- GAME 03 VIEW: Circuit Connect — Electronics Puzzle Simulator -->
                 <div class="playground-game-view" id="circuitConnectGameView" hidden>
                     <div id="circuitConnectAppRoot"></div>
+                </div>
+
+                <!-- GAME 04 VIEW: Minimal Snake — Classic Arcade Simulator -->
+                <div class="playground-game-view" id="snakeGameView" hidden>
+                    <div class="game-view-backbar">
+                        <button type="button" class="btn-snake-back" id="btnBackFromSnake">&larr; Back to Playground</button>
+                    </div>
+
+                    <div class="snake-game-wrapper">
+                        <div class="snake-header">
+                            <span class="snake-eyebrow">PLAYGROUND / GAME 04</span>
+                            <h2 class="snake-title">MINIMAL SNAKE</h2>
+                            <p class="snake-subtitle">A classic arcade experience with a modern monochrome aesthetic.</p>
+                        </div>
+
+                        <!-- Mode & Difficulty Selection Bar -->
+                        <div class="snake-difficulty-bar">
+                            <span class="snake-diff-label">DIFFICULTY SELECTION</span>
+                            <div class="snake-diff-options" role="radiogroup" aria-label="Game Difficulty">
+                                <button type="button" class="snake-diff-btn" data-diff="easy" aria-label="Easy mode: 180 milliseconds, 10 points per food">
+                                    <span>Easy</span>
+                                    <small>180ms &bull; 10pts</small>
+                                </button>
+                                <button type="button" class="snake-diff-btn active" data-diff="intermediate" aria-label="Intermediate mode: 120 milliseconds, 20 points per food">
+                                    <span>Intermediate</span>
+                                    <small>120ms &bull; 20pts</small>
+                                </button>
+                                <button type="button" class="snake-diff-btn" data-diff="hard" aria-label="Hard mode: 75 milliseconds, 30 points per food">
+                                    <span>Hard</span>
+                                    <small>75ms &bull; 30pts</small>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Scoreboard Card -->
+                        <div class="snake-scoreboard-card">
+                            <div class="snake-stat-pill">
+                                <span class="stat-name">SCORE</span>
+                                <strong class="stat-val" id="snakeScore">0</strong>
+                            </div>
+                            <div class="snake-stat-pill">
+                                <span class="stat-name">BEST</span>
+                                <strong class="stat-val highlight" id="snakeBest">0</strong>
+                            </div>
+                            <div class="snake-stat-pill">
+                                <span class="stat-name">MODE</span>
+                                <strong class="stat-val mode-text" id="snakeModeLabel">INTERMEDIATE</strong>
+                            </div>
+                        </div>
+
+                        <!-- Game Board Canvas Container -->
+                        <div class="snake-board-frame">
+                            <canvas id="snakeCanvas" width="400" height="400" aria-label="Minimal Snake Game Board"></canvas>
+
+                            <!-- Start / Ready Overlay -->
+                            <div class="snake-overlay snake-overlay-start" id="snakeStartOverlay">
+                                <div class="snake-overlay-card">
+                                    <span class="overlay-badge">ARCADE READY</span>
+                                    <h3>MINIMAL SNAKE</h3>
+                                    <p>Press <strong>Start Game</strong> or any <strong>Arrow Key / WASD</strong> to begin.</p>
+                                    <button type="button" class="btn btn-primary" id="btnOverlayStart">
+                                        <span>START GAME</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Pause Overlay -->
+                            <div class="snake-overlay" id="snakePauseOverlay" hidden>
+                                <div class="snake-overlay-card">
+                                    <span class="overlay-badge">PAUSED</span>
+                                    <h3>GAME PAUSED</h3>
+                                    <p>Take a breath. Press <strong>Resume</strong> or <strong>Space</strong> to continue.</p>
+                                    <button type="button" class="btn btn-primary" id="btnOverlayResume">
+                                        <span>RESUME GAME</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Game Over Overlay -->
+                            <div class="snake-overlay" id="snakeGameOverOverlay" hidden>
+                                <div class="snake-overlay-card">
+                                    <span class="overlay-badge alert">GAME OVER</span>
+                                    <h3>CRASHED!</h3>
+                                    <div class="game-over-stats">
+                                        <div class="go-stat">
+                                            <span>FINAL SCORE</span>
+                                            <strong id="goFinalScore">0</strong>
+                                        </div>
+                                        <div class="go-stat">
+                                            <span>BEST RECORD</span>
+                                            <strong id="goBestScore">0</strong>
+                                        </div>
+                                    </div>
+                                    <div class="new-record-banner" id="goNewRecordBanner" hidden>
+                                        &starf; NEW HIGH SCORE! &starf;
+                                    </div>
+                                    <button type="button" class="btn btn-primary" id="btnOverlayRestart">
+                                        <span>PLAY AGAIN</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Control Buttons -->
+                        <div class="snake-actions-row">
+                            <button type="button" class="btn btn-secondary" id="btnSnakeActionPause" disabled>
+                                <span id="btnSnakePauseText">PAUSE</span>
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="btnSnakeActionRestart">
+                                <span>RESTART</span>
+                            </button>
+                        </div>
+
+                        <!-- Mobile Touch Virtual D-Pad -->
+                        <div class="snake-touch-controls" id="snakeTouchControls" aria-label="Mobile Virtual D-Pad">
+                            <button type="button" class="snake-dpad-btn dpad-up" id="btnDpadUp" aria-label="Move Up">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                            </button>
+                            <div class="snake-dpad-middle">
+                                <button type="button" class="snake-dpad-btn dpad-left" id="btnDpadLeft" aria-label="Move Left">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                                </button>
+                                <div class="snake-dpad-center"></div>
+                                <button type="button" class="snake-dpad-btn dpad-right" id="btnDpadRight" aria-label="Move Right">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                </button>
+                            </div>
+                            <button type="button" class="snake-dpad-btn dpad-down" id="btnDpadDown" aria-label="Move Down">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                            </button>
+                        </div>
+
+                        <!-- Keyboard Controls Help Note -->
+                        <div class="snake-help-note">
+                            <span class="help-key">W</span> / <span class="help-key">&uarr;</span> Up &bull;
+                            <span class="help-key">A</span> / <span class="help-key">&larr;</span> Left &bull;
+                            <span class="help-key">S</span> / <span class="help-key">&darr;</span> Down &bull;
+                            <span class="help-key">D</span> / <span class="help-key">&rarr;</span> Right &bull;
+                            <span class="help-key">Space</span> / <span class="help-key">P</span> Pause
+                        </div>
+                    </div>
                 </div>
             </section>
 
