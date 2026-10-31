@@ -66,7 +66,7 @@ const PERSONAL_INFO = {
 const PROJECTS_DATA = [
     {
         id: "jennina-18th-birthday",
-        title: "Jennina's 18th Birthday Invitation",
+        title: "18th Birthday Invitation",
         category: "Digital Invitation Website",
         featured: true,
         description: "I made a digital invitation website for an 18th birthday celebration. It has a royal green and gold design with an invitation that visitors can open to see the event details.",
@@ -77,7 +77,7 @@ const PROJECTS_DATA = [
     },
     {
         id: "hanz-and-jane-wedding",
-        title: "Hanz and Jane's Wedding Invitation",
+        title: "Wedding Invitation",
         category: "Wedding Invitation Website",
         featured: true,
         description: "This is the first website project I worked on. It's a wedding invitation website with a welcome screen, falling flowers, and pages where guests can see the wedding details. Special thanks to Adrian and Lawrence for helping me with my first website project. I learned a lot while working with them.",
