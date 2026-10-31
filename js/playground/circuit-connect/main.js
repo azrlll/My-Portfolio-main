@@ -57,6 +57,11 @@
         function switchGame(gameKey, shouldScroll) {
             cleanupAllGames();
 
+            const playgroundSection = document.getElementById("playground");
+            if (playgroundSection) {
+                playgroundSection.hidden = false;
+            }
+
             if (buildPcView) buildPcView.hidden = true;
             if (fixPcView) fixPcView.hidden = true;
             if (circuitConnectView) circuitConnectView.hidden = true;

@@ -11,6 +11,7 @@ $currentPage = 'index';
 $pageTitle = 'Kevin Christopher | Portfolio';
 $includePlaygroundScripts = true;
 
+require_once __DIR__ . '/includes/contact-handler.php';
 require __DIR__ . '/includes/header.php';
 ?>
 
@@ -175,9 +176,220 @@ require __DIR__ . '/includes/header.php';
             </section>
 
             <!-- =========================================================
+                 5. CONTACT SECTION — Two-Step Interactive Form, Real Email OTP & MySQL
+            ========================================================== -->
+            <section class="content-section" id="contact" aria-labelledby="contactHeading">
+                <div class="section-header">
+                    <span class="section-eyebrow">05 / CONTACT</span>
+                    <h2 class="section-title" id="contactHeading">Get In Touch</h2>
+                    <p class="section-subtitle">Have a question, project idea, or want to talk about PC hardware and code? Reach out below.</p>
+                </div>
+
+                <div class="contact-layout">
+                    <!-- Direct Social & Communication Channels -->
+                    <div class="contact-channels-card">
+                        <h3 class="card-heading">Communication Channels</h3>
+                        <p class="card-subtext">
+                            Connect with me through my social profiles or send a direct message using the two-step form.
+                        </p>
+                        <div class="contact-links-list" id="contactSocialGrid">
+                            <!-- Populated from SOCIAL_LINKS in js/config.js -->
+                        </div>
+                    </div>
+
+                    <!-- Two-Step PHP & MySQL Contact Card -->
+                    <div class="contact-form-card">
+                        <?php if ($successMessage !== ''): ?>
+                            <div class="php-alert php-alert-success" role="status" aria-live="polite">
+                                <strong>Message Sent</strong>
+                                <p><?= htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8') ?></p>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($errors)): ?>
+                            <div class="php-alert php-alert-error" role="alert">
+                                <strong>Please check the following:</strong>
+                                <ul class="php-error-list">
+                                    <?php foreach ($errors as $err): ?>
+                                        <li><?= htmlspecialchars($err, ENT_QUOTES, 'UTF-8') ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if ($visitorName === ''): ?>
+                            <!-- =====================================================
+                                 STEP 1 — ASK FOR VISITOR'S NAME
+                            ====================================================== -->
+                            <div class="contact-step-header">
+                                <span class="step-indicator-pill">STEP 1 OF 2</span>
+                                <h3 class="card-heading">What's Your Name?</h3>
+                                <p class="card-subtext">Please enter your name below to continue to the contact form.</p>
+                            </div>
+
+                            <form action="index.php#contact" method="post" class="contact-form" id="stepOneNameForm" novalidate>
+                                <input type="hidden" name="action" value="set_name">
+                                <div class="form-group">
+                                    <label for="visitorNameInput">Name</label>
+                                    <input
+                                        type="text"
+                                        id="visitorNameInput"
+                                        name="visitor_name"
+                                        maxlength="100"
+                                        placeholder="Enter your name"
+                                        required
+                                        autofocus
+                                    >
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">
+                                        <span>CONTINUE</span>
+                                    </button>
+                                </div>
+                            </form>
+
+                        <?php else: ?>
+                            <!-- =====================================================
+                                 STEP 2 — PERSONALIZED WELCOME & CONTACT FORM
+                            ====================================================== -->
+                            <div class="contact-step-header">
+                                <div class="step-header-row">
+                                    <span class="step-indicator-pill">STEP 2 OF 2</span>
+                                    <a href="index.php?reset_name=1#contact" class="step-change-name-link">Change Name</a>
+                                </div>
+                                <h3 class="card-heading welcome-personalized-heading" id="welcomeVisitorHeading">
+                                    Welcome <?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?> to my Portfolio!
+                                </h3>
+                                <p class="card-subtext">
+                                    Fill in your email address and verify it with the 6-digit code sent to your inbox to submit your message.
+                                </p>
+                            </div>
+
+                            <form action="index.php#contact" method="post" class="contact-form" id="stepTwoContactForm" novalidate>
+                                <input type="hidden" name="action" value="send_message">
+                                <input type="hidden" name="csrf_token" id="contactCsrfToken" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                                <input type="hidden" name="name" value="<?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?>">
+
+                                <!-- Honeypot field hidden from human visitors -->
+                                <div class="hp-field-wrap" aria-hidden="true">
+                                    <label for="websiteUrlHp">Website</label>
+                                    <input type="text" id="websiteUrlHp" name="website_url_hp" tabindex="-1" autocomplete="off">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="senderNameDisplay">Sending As</label>
+                                    <input
+                                        type="text"
+                                        id="senderNameDisplay"
+                                        value="<?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?>"
+                                        readonly
+                                        class="input-readonly"
+                                    >
+                                </div>
+
+                                <!-- Email Input & Send OTP Button -->
+                                <div class="form-group">
+                                    <label for="senderEmail">Email Address</label>
+                                    <div class="input-with-action">
+                                        <input
+                                            type="email"
+                                            id="senderEmail"
+                                            name="email"
+                                            maxlength="100"
+                                            value="<?= htmlspecialchars($emailInput, ENT_QUOTES, 'UTF-8') ?>"
+                                            placeholder="your.email@example.com"
+                                            required
+                                            autocomplete="email"
+                                        >
+                                        <button
+                                            type="button"
+                                            id="btnSendOtp"
+                                            class="btn btn-secondary btn-input-action"
+                                        >
+                                            <span id="btnSendOtpText">SEND CODE</span>
+                                        </button>
+                                    </div>
+                                    <span class="field-hint" id="emailOtpHint">
+                                        We will send a real 6-digit verification code to this email.
+                                    </span>
+                                </div>
+
+                                <!-- OTP Verification Section (Revealed once OTP is sent) -->
+                                <div class="otp-verification-panel" id="otpPanel" style="display: none;">
+                                    <div class="form-group">
+                                        <div class="otp-label-row">
+                                            <label for="otpCodeInput">6-Digit Verification Code</label>
+                                            <span class="otp-expiry-hint" id="otpExpiryHint">Expires in 5:00</span>
+                                        </div>
+                                        <div class="input-with-action">
+                                            <input
+                                                type="text"
+                                                id="otpCodeInput"
+                                                name="otp_code"
+                                                maxlength="6"
+                                                pattern="[0-9]{6}"
+                                                placeholder="123456"
+                                                inputmode="numeric"
+                                                autocomplete="one-time-code"
+                                            >
+                                            <button
+                                                type="button"
+                                                id="btnVerifyOtp"
+                                                class="btn btn-primary btn-input-action"
+                                            >
+                                                <span>VERIFY CODE</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Verification Status Banner -->
+                                <div class="otp-status-banner" id="otpStatusBanner" style="display: none;" role="status">
+                                    <div class="otp-status-icon" id="otpStatusIcon"></div>
+                                    <div class="otp-status-body">
+                                        <strong id="otpStatusTitle"></strong>
+                                        <p id="otpStatusDesc"></p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="senderMessage">Message</label>
+                                    <textarea
+                                        id="senderMessage"
+                                        name="message"
+                                        rows="5"
+                                        maxlength="5000"
+                                        placeholder="Write your message here..."
+                                        required
+                                    ><?= htmlspecialchars($messageInput, ENT_QUOTES, 'UTF-8') ?></textarea>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary" id="btnSubmitMessage">
+                                        <span>SUBMIT MESSAGE</span>
+                                    </button>
+                                    <span class="form-feedback" id="submitButtonNotice">
+                                        Verify your email first to enable message submission.
+                                    </span>
+                                </div>
+                            </form>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="section-footer-nav">
+                    <a href="#home" class="back-to-top-link">
+                        <span>BACK TO TOP</span>
+                        <span aria-hidden="true">&uarr;</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- =========================================================
                  6. PLAYGROUND SECTION — Interactive Hardware Simulators
             ========================================================== -->
-            <section class="content-section playground-section" id="playground" aria-label="Playground Hardware Simulators and Games">
+            <section class="content-section playground-section" id="playground" aria-label="Playground Hardware Simulators and Games" hidden>
                 <!-- GAME 01 VIEW: Build a PC — Mini Simulator (Preserved Intact) -->
                 <div class="playground-game-view" id="buildPcGameView">
                     <div class="section-header">
@@ -496,59 +708,6 @@ require __DIR__ . '/includes/header.php';
                             <span class="help-key">Space</span> / <span class="help-key">P</span> Pause
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <!-- =========================================================
-                 7. CONTACT SECTION — Direct Link & Two-Step Entry to contact.php
-            ========================================================== -->
-            <section class="content-section" id="contact" aria-labelledby="contactHeading">
-                <div class="section-header">
-                    <span class="section-eyebrow">05 / CONTACT</span>
-                    <h2 class="section-title" id="contactHeading">Get In Touch</h2>
-                    <p class="section-subtitle">Have a question, project idea, or want to talk about PC hardware and code? Reach out below.</p>
-                </div>
-
-                <div class="contact-layout">
-                    <!-- Direct Social & Communication Channels -->
-                    <div class="contact-channels-card">
-                        <h3 class="card-heading">Communication Channels</h3>
-                        <p class="card-subtext">
-                            Connect with me through my social profiles or send a direct message using the interactive two-step contact page.
-                        </p>
-                        <div class="contact-links-list" id="contactSocialGrid">
-                            <!-- Populated from SOCIAL_LINKS in js/config.js -->
-                        </div>
-                    </div>
-
-                    <!-- Step 1 Entry Card Posting Directly to contact.php -->
-                    <div class="contact-form-card">
-                        <span class="section-eyebrow">STEP 1 OF 2</span>
-                        <h3 class="card-heading">What's Your Name?</h3>
-                        <p class="card-subtext">Enter your name below to unlock the personalized contact form and send me a message.</p>
-                        <form action="contact.php" method="post" class="contact-form">
-                            <input type="hidden" name="action" value="set_name">
-                            <div class="form-group">
-                                <label for="homeVisitorName">Your Name</label>
-                                <input type="text" id="homeVisitorName" name="visitor_name" maxlength="100" placeholder="Enter your name..." required>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">
-                                    <span>CONTINUE</span>
-                                </button>
-                                <a href="contact.php" class="btn btn-secondary">
-                                    <span>OPEN CONTACT PAGE</span>
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="section-footer-nav">
-                    <a href="#home" class="back-to-top-link">
-                        <span>BACK TO TOP</span>
-                        <span aria-hidden="true">&uarr;</span>
-                    </a>
                 </div>
             </section>
 
