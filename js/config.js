@@ -48,7 +48,7 @@ const PERSONAL_INFO = {
     name: "Kevin Christopher",
     fullName: "Kevin Christopher",
     course: "Bachelor of Science in Information Technology (BSIT)",
-    identity: "BSIT Student, Hardware Enthusiast, and Vibe Coder",
+    identity: "IT Student, Hardware Enthusiast, and Vibe Coder",
     sidebarSubtitle: "BSIT STUDENT / VIBE CODER",
     primaryInterest: "Computer Hardware",
     additionalInterest: "Software Development",
