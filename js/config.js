@@ -98,6 +98,18 @@ const PROJECTS_DATA = [
         liveUrl: ""
     },
     {
+        id: "old-portfolio",
+        title: "My Old Portfolio Website",
+        category: "Web Development / Personal Project",
+        featured: false,
+        description: "This is my old personal portfolio website that I created when I was still learning web development. It has a simple design with sections for my profile, skills, projects, and contact information. This project helped me practice HTML and CSS and improve my website design skills.",
+        tags: ["HTML", "CSS", "JavaScript"],
+        technologies: ["HTML", "CSS", "JavaScript"],
+        image: "image/project-old-portfolio.png",
+        githubUrl: "",
+        liveUrl: ""
+    },
+    {
         id: "arduino-clock",
         title: "Arduino Clock",
         category: "Arduino • Hardware Prototyping",

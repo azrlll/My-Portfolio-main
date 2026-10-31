@@ -1068,46 +1068,112 @@
     }
 
     // ------------------------------------------------------------------------
-    // 10. CONTACT FORM HANDLER
+    // 10. CONTACT FORM STEP 1 & NAME HANDLER (SEAMLESS IN-PLACE TRANSITIONS)
     // ------------------------------------------------------------------------
     function initContactForm() {
-        const form = document.getElementById("contactForm");
-        const feedback = document.getElementById("formFeedback");
-        if (!form) return;
+        const stepOneContainer = document.getElementById("contactStepOne");
+        const stepTwoContainer = document.getElementById("contactStepTwo");
+        const stepOneForm = document.getElementById("stepOneNameForm");
+        const visitorNameInput = document.getElementById("visitorNameInput");
+        const btnContinueStepOne = document.getElementById("btnContinueStepOne");
+        const welcomeVisitorHeading = document.getElementById("welcomeVisitorHeading");
+        const senderNameDisplay = document.getElementById("senderNameDisplay");
+        const hiddenSenderName = document.getElementById("hiddenSenderName");
+        const linkChangeName = document.getElementById("linkChangeName");
+        const alertArea = document.getElementById("contactAlertArea");
+        const emailInput = document.getElementById("senderEmail");
 
-        form.addEventListener("submit", (e) => {
-            e.preventDefault();
+        function showAlert(type, title, message) {
+            if (!alertArea) return;
+            alertArea.innerHTML = `
+                <div class="php-alert php-alert-${type}" role="${type === 'success' ? 'status' : 'alert'}">
+                    <strong>${title}</strong>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
 
-            const name = (form.elements.name?.value || "").trim();
-            const email = (form.elements.email?.value || "").trim();
-            const message = (form.elements.message?.value || "").trim();
+        // Handle Step 1 In-Place Submission (No page reload, no jumping to top)
+        if (stepOneForm) {
+            stepOneForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                if (alertArea) alertArea.innerHTML = "";
 
-            if (!name || !email || !message) {
-                if (feedback) {
-                    feedback.textContent = "Please complete all fields before sending.";
+                const name = visitorNameInput ? visitorNameInput.value.trim() : "";
+                if (!name || name.length < 2) {
+                    showAlert("error", "Name Required", "Please enter at least 2 characters for your name before continuing.");
+                    if (visitorNameInput) visitorNameInput.focus();
+                    return;
                 }
-                return;
-            }
 
-            const configuredEmail =
-                typeof SOCIAL_LINKS !== "undefined" && SOCIAL_LINKS.email
-                    ? SOCIAL_LINKS.email.trim()
-                    : "";
+                if (btnContinueStepOne) {
+                    btnContinueStepOne.disabled = true;
+                    btnContinueStepOne.innerHTML = "<span>SAVING...</span>";
+                }
 
-            if (configuredEmail) {
-                const subject = encodeURIComponent(`Portfolio Inquiry from ${name}`);
-                const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-                window.location.href = `mailto:${configuredEmail}?subject=${subject}&body=${body}`;
-            }
+                try {
+                    const fd = new FormData();
+                    fd.append("action", "set_name");
+                    fd.append("visitor_name", name);
 
-            if (feedback) {
-                feedback.textContent = configuredEmail
-                    ? "Opening your email client..."
-                    : "Message noted! (Configure SOCIAL_LINKS.email in js/config.js to enable direct email routing.)";
-            }
+                    const res = await fetch("index.php?ajax_name=1", {
+                        method: "POST",
+                        body: fd
+                    });
+                    const data = await res.json();
 
-            form.reset();
-        });
+                    if (data.success) {
+                        const resolvedName = data.name || name;
+                        if (welcomeVisitorHeading) {
+                            welcomeVisitorHeading.textContent = `Welcome ${resolvedName} to my Portfolio!`;
+                        }
+                        if (senderNameDisplay) {
+                            senderNameDisplay.value = resolvedName;
+                        }
+                        if (hiddenSenderName) {
+                            hiddenSenderName.value = resolvedName;
+                        }
+
+                        if (stepOneContainer) stepOneContainer.hidden = true;
+                        if (stepTwoContainer) stepTwoContainer.hidden = false;
+
+                        if (emailInput) {
+                            emailInput.focus();
+                        }
+                    } else {
+                        showAlert("error", "Error", data.error || "Unable to save your name. Please try again.");
+                    }
+                } catch (err) {
+                    showAlert("error", "Network Error", "Could not connect to the server. Please check your connection.");
+                } finally {
+                    if (btnContinueStepOne) {
+                        btnContinueStepOne.disabled = false;
+                        btnContinueStepOne.innerHTML = "<span>CONTINUE</span>";
+                    }
+                }
+            });
+        }
+
+        // Handle Change Name In-Place (No page reload)
+        if (linkChangeName) {
+            linkChangeName.addEventListener("click", async (e) => {
+                e.preventDefault();
+                if (alertArea) alertArea.innerHTML = "";
+
+                try {
+                    await fetch("index.php?reset_name=1&ajax=1");
+                } catch (err) {
+                    // Ignore background network error
+                }
+
+                if (stepTwoContainer) stepTwoContainer.hidden = true;
+                if (stepOneContainer) stepOneContainer.hidden = false;
+                if (visitorNameInput) {
+                    visitorNameInput.focus();
+                    visitorNameInput.select();
+                }
+            });
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -1456,13 +1522,27 @@
             }
         });
 
-        // Form submission interceptor: friendly reminder if unverified
+        // Form submission interceptor: friendly reminder if unverified, seamless AJAX on verified
         const stepTwoForm = document.getElementById("stepTwoContactForm");
+        const alertArea = document.getElementById("contactAlertArea");
+
+        function showCardAlert(type, title, message) {
+            if (!alertArea) return;
+            alertArea.innerHTML = `
+                <div class="php-alert php-alert-${type}" role="${type === 'success' ? 'status' : 'alert'}">
+                    <strong>${title}</strong>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
         if (stepTwoForm) {
-            stepTwoForm.addEventListener("submit", (e) => {
+            stepTwoForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                if (alertArea) alertArea.innerHTML = "";
+
                 const currentEmail = emailInput.value.trim().toLowerCase();
                 if (!verifiedEmail || verifiedEmail !== currentEmail) {
-                    e.preventDefault();
                     showStatus("error", "Real Email Required", "Add your real email cutie 😉 (and verify it with the 6-digit code sent to your inbox first)");
                     if (otpPanel && otpPanel.style.display !== "none" && otpCodeInput) {
                         otpCodeInput.focus();
@@ -1470,6 +1550,53 @@
                         btnSendOtp.focus();
                     }
                     return false;
+                }
+
+                const messageEl = document.getElementById("senderMessage");
+                if (!messageEl || !messageEl.value.trim() || messageEl.value.trim().length < 5) {
+                    showStatus("error", "Message Required", "Please enter a message at least 5 characters long.");
+                    if (messageEl) messageEl.focus();
+                    return false;
+                }
+
+                if (btnSubmitMessage) {
+                    btnSubmitMessage.disabled = true;
+                    btnSubmitMessage.innerHTML = "<span>SENDING MESSAGE...</span>";
+                }
+
+                try {
+                    const fd = new FormData(stepTwoForm);
+                    const res = await fetch("index.php?ajax_submit=1", {
+                        method: "POST",
+                        body: fd
+                    });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        showCardAlert("success", "Message Sent", data.message || "Thank you! Your message has been sent successfully.");
+                        if (messageEl) messageEl.value = "";
+                        verifiedEmail = "";
+                        emailInput.readOnly = false;
+                        if (btnSendOtp) {
+                            btnSendOtp.style.display = "";
+                            btnSendOtp.disabled = false;
+                            btnSendOtpText.textContent = "SEND CODE";
+                        }
+                        if (btnSubmitMessage) btnSubmitMessage.disabled = true;
+                        if (submitNotice) {
+                            submitNotice.textContent = "Your message was sent! You may send another message above.";
+                            submitNotice.style.color = "var(--color-success, #22c55e)";
+                        }
+                    } else {
+                        showCardAlert("error", "Submission Error", data.error || "Could not send your message. Please check the form and try again.");
+                    }
+                } catch (err) {
+                    showCardAlert("error", "Network Error", "Could not reach the server to submit your message. Please check your connection.");
+                } finally {
+                    if (btnSubmitMessage) {
+                        btnSubmitMessage.disabled = false;
+                        btnSubmitMessage.innerHTML = "<span>SUBMIT MESSAGE</span>";
+                    }
                 }
             });
         }

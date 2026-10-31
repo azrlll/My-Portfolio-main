@@ -2587,6 +2587,21 @@ button {
     pointer-events: none;
 }
 
+.contact-step-container {
+    animation: contactStepFadeIn 0.22s ease-out;
+}
+
+@keyframes contactStepFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .contact-step-header {
     margin-bottom: 18px;
 }

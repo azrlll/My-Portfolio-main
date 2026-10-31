@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 /**
  * Shared Contact Handler (includes/contact-handler.php)
- * Handles CSRF generation, AJAX OTP verification, two-step form validation,
- * and MySQL persistence for both index.php and legacy contact.php.
+ * Handles CSRF generation, AJAX endpoints (name, OTP, submission),
+ * two-step form validation, and MySQL persistence.
  */
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -21,7 +21,40 @@ if (empty($_SESSION['contact_csrf_token'])) {
 $csrfToken = (string)$_SESSION['contact_csrf_token'];
 
 // ----------------------------------------------------------------------------
-// 1. AJAX ENDPOINTS FOR REAL-TIME OTP SEND & VERIFY
+// 1. AJAX ENDPOINT FOR SAVING STEP 1 NAME (IN-PLACE TRANSITION)
+// ----------------------------------------------------------------------------
+if (isset($_GET['ajax_name'])) {
+    header('Content-Type: application/json; charset=UTF-8');
+    header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        echo json_encode(['success' => false, 'error' => 'Invalid request method.']);
+        exit;
+    }
+
+    $submittedName = trim((string)($_POST['visitor_name'] ?? ''));
+    $submittedName = preg_replace('/[\x00-\x1F\x7F]/u', '', $submittedName) ?? '';
+
+    if ($submittedName === '') {
+        echo json_encode(['success' => false, 'error' => 'Please enter your name before continuing.']);
+        exit;
+    }
+    if (mb_strlen($submittedName) < 2) {
+        echo json_encode(['success' => false, 'error' => 'Please enter at least 2 characters for your name.']);
+        exit;
+    }
+    if (mb_strlen($submittedName) > 100) {
+        echo json_encode(['success' => false, 'error' => 'Name must not exceed 100 characters.']);
+        exit;
+    }
+
+    $_SESSION['contact_visitor_name'] = $submittedName;
+    echo json_encode(['success' => true, 'name' => $submittedName]);
+    exit;
+}
+
+// ----------------------------------------------------------------------------
+// 2. AJAX ENDPOINTS FOR REAL-TIME OTP SEND & VERIFY
 // ----------------------------------------------------------------------------
 if (isset($_GET['ajax_otp'])) {
     header('Content-Type: application/json; charset=UTF-8');
@@ -60,7 +93,7 @@ if (isset($_GET['ajax_otp'])) {
 }
 
 // ----------------------------------------------------------------------------
-// 2. RESET STEP 1 ("Change Name" or "Send Another Message")
+// 3. RESET STEP 1 ("Change Name" or "Send Another Message")
 // ----------------------------------------------------------------------------
 if (isset($_GET['reset_name']) && $_GET['reset_name'] === '1') {
     unset(
@@ -69,12 +102,19 @@ if (isset($_GET['reset_name']) && $_GET['reset_name'] === '1') {
         $_SESSION['contact_otp_data'],
         $_SESSION['contact_verified_email']
     );
+
+    if (isset($_GET['ajax']) || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false)) {
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode(['success' => true]);
+        exit;
+    }
+
     header('Location: index.php#contact');
     exit;
 }
 
 // ----------------------------------------------------------------------------
-// 3. INITIALIZE VARIABLES
+// 4. INITIALIZE VARIABLES
 // ----------------------------------------------------------------------------
 $errors = [];
 $visitorName = trim((string)($_SESSION['contact_visitor_name'] ?? ''));
@@ -89,10 +129,11 @@ if (!empty($_SESSION['contact_flash_success'])) {
 }
 
 // ----------------------------------------------------------------------------
-// 4. FORM SUBMISSION PROCESSING
+// 5. FORM SUBMISSION PROCESSING
 // ----------------------------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = (string)($_POST['action'] ?? '');
+    $isAjaxSubmit = isset($_GET['ajax_submit']);
 
     // Step 1 Submission: Validate and store visitor's name
     if ($action === 'set_name') {
@@ -107,7 +148,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Name must not exceed 100 characters.';
         } else {
             $_SESSION['contact_visitor_name'] = $submittedName;
+            if ($isAjaxSubmit) {
+                header('Content-Type: application/json; charset=UTF-8');
+                echo json_encode(['success' => true, 'name' => $submittedName]);
+                exit;
+            }
             header('Location: index.php#contact');
+            exit;
+        }
+
+        if ($isAjaxSubmit && !empty($errors)) {
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode(['success' => false, 'error' => $errors[0]]);
             exit;
         }
     }
@@ -166,6 +218,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['contact_visitor_name'] = $visitorName;
         }
 
+        if ($isAjaxSubmit && !empty($errors)) {
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode(['success' => false, 'error' => implode(' ', $errors)]);
+            exit;
+        }
+
         // Insert into database if all validations pass
         if (empty($errors)) {
             try {
@@ -183,15 +241,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['contact_csrf_token'] = bin2hex(random_bytes(32));
                 unset($_SESSION['contact_verified_email'], $_SESSION['contact_otp_data']);
 
-                $_SESSION['contact_flash_success'] = sprintf(
+                $successText = sprintf(
                     'Thank you, %s! Your message has been sent successfully.',
                     $visitorName
                 );
 
+                if ($isAjaxSubmit) {
+                    header('Content-Type: application/json; charset=UTF-8');
+                    echo json_encode(['success' => true, 'message' => $successText, 'name' => $visitorName]);
+                    exit;
+                }
+
+                $_SESSION['contact_flash_success'] = $successText;
                 header('Location: index.php?status=sent#contact');
                 exit;
             } catch (Throwable $e) {
-                $errors[] = 'We could not save your message right now because the database is unavailable. Please ensure MySQL is running and try again.';
+                $dbError = 'We could not save your message right now because the database is unavailable. Please ensure MySQL is running and try again.';
+                if ($isAjaxSubmit) {
+                    header('Content-Type: application/json; charset=UTF-8');
+                    echo json_encode(['success' => false, 'error' => $dbError]);
+                    exit;
+                }
+                $errors[] = $dbError;
             }
         }
     }

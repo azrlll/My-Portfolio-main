@@ -199,28 +199,30 @@ require __DIR__ . '/includes/header.php';
 
                     <!-- Two-Step PHP & MySQL Contact Card -->
                     <div class="contact-form-card">
-                        <?php if ($successMessage !== ''): ?>
-                            <div class="php-alert php-alert-success" role="status" aria-live="polite">
-                                <strong>Message Sent</strong>
-                                <p><?= htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8') ?></p>
-                            </div>
-                        <?php endif; ?>
+                        <div id="contactAlertArea">
+                            <?php if ($successMessage !== ''): ?>
+                                <div class="php-alert php-alert-success" role="status" aria-live="polite">
+                                    <strong>Message Sent</strong>
+                                    <p><?= htmlspecialchars($successMessage, ENT_QUOTES, 'UTF-8') ?></p>
+                                </div>
+                            <?php endif; ?>
 
-                        <?php if (!empty($errors)): ?>
-                            <div class="php-alert php-alert-error" role="alert">
-                                <strong>Please check the following:</strong>
-                                <ul class="php-error-list">
-                                    <?php foreach ($errors as $err): ?>
-                                        <li><?= htmlspecialchars($err, ENT_QUOTES, 'UTF-8') ?></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
+                            <?php if (!empty($errors)): ?>
+                                <div class="php-alert php-alert-error" role="alert">
+                                    <strong>Please check the following:</strong>
+                                    <ul class="php-error-list">
+                                        <?php foreach ($errors as $err): ?>
+                                            <li><?= htmlspecialchars($err, ENT_QUOTES, 'UTF-8') ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endif; ?>
+                        </div>
 
-                        <?php if ($visitorName === ''): ?>
-                            <!-- =====================================================
-                                 STEP 1 — ASK FOR VISITOR'S NAME
-                            ====================================================== -->
+                        <!-- =====================================================
+                             STEP 1 — ASK FOR VISITOR'S NAME
+                        ====================================================== -->
+                        <div class="contact-step-container" id="contactStepOne" <?= $visitorName !== '' ? 'hidden' : '' ?>>
                             <div class="contact-step-header">
                                 <span class="step-indicator-pill">STEP 1 OF 2</span>
                                 <h3 class="card-heading">What's Your Name?</h3>
@@ -236,6 +238,7 @@ require __DIR__ . '/includes/header.php';
                                         id="visitorNameInput"
                                         name="visitor_name"
                                         maxlength="100"
+                                        value="<?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?>"
                                         placeholder="Enter your name"
                                         required
                                         autofocus
@@ -243,23 +246,24 @@ require __DIR__ . '/includes/header.php';
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" id="btnContinueStepOne">
                                         <span>CONTINUE</span>
                                     </button>
                                 </div>
                             </form>
+                        </div>
 
-                        <?php else: ?>
-                            <!-- =====================================================
-                                 STEP 2 — PERSONALIZED WELCOME & CONTACT FORM
-                            ====================================================== -->
+                        <!-- =====================================================
+                             STEP 2 — PERSONALIZED WELCOME & CONTACT FORM
+                        ====================================================== -->
+                        <div class="contact-step-container" id="contactStepTwo" <?= $visitorName === '' ? 'hidden' : '' ?>>
                             <div class="contact-step-header">
                                 <div class="step-header-row">
                                     <span class="step-indicator-pill">STEP 2 OF 2</span>
-                                    <a href="index.php?reset_name=1#contact" class="step-change-name-link">Change Name</a>
+                                    <a href="index.php?reset_name=1#contact" class="step-change-name-link" id="linkChangeName">Change Name</a>
                                 </div>
                                 <h3 class="card-heading welcome-personalized-heading" id="welcomeVisitorHeading">
-                                    Welcome <?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?> to my Portfolio!
+                                    Welcome <?= htmlspecialchars($visitorName !== '' ? $visitorName : 'Visitor', ENT_QUOTES, 'UTF-8') ?> to my Portfolio!
                                 </h3>
                                 <p class="card-subtext">
                                     Fill in your email address and verify it with the 6-digit code sent to your inbox to submit your message.
@@ -269,7 +273,7 @@ require __DIR__ . '/includes/header.php';
                             <form action="index.php#contact" method="post" class="contact-form" id="stepTwoContactForm" novalidate>
                                 <input type="hidden" name="action" value="send_message">
                                 <input type="hidden" name="csrf_token" id="contactCsrfToken" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
-                                <input type="hidden" name="name" value="<?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?>">
+                                <input type="hidden" name="name" id="hiddenSenderName" value="<?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?>">
 
                                 <!-- Honeypot field hidden from human visitors -->
                                 <div class="hp-field-wrap" aria-hidden="true">
@@ -374,7 +378,7 @@ require __DIR__ . '/includes/header.php';
                                     </span>
                                 </div>
                             </form>
-                        <?php endif; ?>
+                        </div>
                     </div>
                 </div>
 
