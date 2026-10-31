@@ -1,0 +1,39 @@
+# ==============================================================================
+# InfinityFree Portfolio Configuration
+# ==============================================================================
+
+# Enable Rewrite Engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 1. Allow Google Search Console verification files directly without rewriting
+    RewriteRule ^google[a-f0-9]+\.html$ - [L]
+
+    # 2. Allow all existing files and directories to be served directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+</IfModule>
+
+# Disable directory listing
+Options -Indexes
+
+# Cache control for verification files to prevent stale browser caching
+<FilesMatch "^google[a-f0-9]+\.html$">
+    <IfModule mod_headers.c>
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+    </IfModule>
+</FilesMatch>
+
+# Protect sensitive files and credentials
+<FilesMatch "(^\.env|composer\.(json|lock)|package(-lock)?\.json|\.git)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
