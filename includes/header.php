@@ -242,10 +242,10 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
                 <div class="sidebar-footer">
                     <!-- Live Website Viewers Widget -->
                     <div class="live-viewers-widget" id="liveViewersWidget" aria-live="polite" title="Active visitors viewing this portfolio right now">
-                        <div class="viewer-avatars" id="liveViewerAvatars" aria-hidden="true" style="display:flex;align-items:center;">
+                        <div class="viewer-avatars" id="liveViewerAvatars" aria-hidden="true" style="display:inline-flex;align-items:center;">
                             <!-- Avatar 1: Bun + Glasses + Suspenders -->
-                            <span class="viewer-avatar" data-avatar-index="0" style="width:30px;height:30px;border-radius:50%;overflow:hidden;display:inline-flex;flex-shrink:0;">
-                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <span class="viewer-avatar" data-avatar-index="0" style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;border-radius:50%;overflow:hidden;display:inline-flex;flex-shrink:0;">
+                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;display:block;flex-shrink:0;">
                                     <circle cx="18" cy="18" r="18" fill="#EDEDED"/>
                                     <path d="M7 36C7 28.5 11.5 25 18 25C24.5 25 29 28.5 29 36H7Z" fill="#FAFAFA" stroke="#141414" stroke-width="1.6"/>
                                     <path d="M12.5 26V36M23.5 26V36" stroke="#141414" stroke-width="2.2"/>
@@ -259,8 +259,8 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
                                 </svg>
                             </span>
                             <!-- Avatar 2: Light Hair + Dark Collar Shirt + Badge -->
-                            <span class="viewer-avatar" data-avatar-index="1" hidden style="width:30px;height:30px;margin-left:-9px;border-radius:50%;overflow:hidden;display:inline-flex;flex-shrink:0;">
-                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <span class="viewer-avatar is-hidden" data-avatar-index="1" hidden style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;margin-left:-9px;border-radius:50%;overflow:hidden;display:none;flex-shrink:0;">
+                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;display:block;flex-shrink:0;">
                                     <circle cx="18" cy="18" r="18" fill="#EDEDED"/>
                                     <path d="M6.5 36C6.5 28.2 11.2 24.8 18 24.8C24.8 24.8 29.5 28.2 29.5 36H6.5Z" fill="#141414"/>
                                     <path d="M15 24.8L18 28.5L21 24.8" fill="#EDEDED"/>
@@ -273,8 +273,8 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
                                 </svg>
                             </span>
                             <!-- Avatar 3: Dark Swept Hair + Pinstripe Jacket -->
-                            <span class="viewer-avatar" data-avatar-index="2" hidden style="width:30px;height:30px;margin-left:-9px;border-radius:50%;overflow:hidden;display:inline-flex;flex-shrink:0;">
-                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <span class="viewer-avatar is-hidden" data-avatar-index="2" hidden style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;margin-left:-9px;border-radius:50%;overflow:hidden;display:none;flex-shrink:0;">
+                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;display:block;flex-shrink:0;">
                                     <circle cx="18" cy="18" r="18" fill="#EDEDED"/>
                                     <path d="M6.5 36C6.5 28.2 11.2 24.8 18 24.8C24.8 24.8 29.5 28.2 29.5 36H6.5Z" fill="#141414"/>
                                     <line x1="14" y1="26" x2="14" y2="36" stroke="#EDEDED" stroke-width="1.1"/>
@@ -288,8 +288,8 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
                                 </svg>
                             </span>
                             <!-- Avatar 4: Dark Bob/Cap Hair + White Collar Sweater -->
-                            <span class="viewer-avatar" data-avatar-index="3" hidden style="width:30px;height:30px;margin-left:-9px;border-radius:50%;overflow:hidden;display:inline-flex;flex-shrink:0;">
-                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <span class="viewer-avatar is-hidden" data-avatar-index="3" hidden style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;margin-left:-9px;border-radius:50%;overflow:hidden;display:none;flex-shrink:0;">
+                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;display:block;flex-shrink:0;">
                                     <circle cx="18" cy="18" r="18" fill="#EDEDED"/>
                                     <path d="M6.5 36C6.5 28.4 11.2 25 18 25C24.8 25 29.5 28.4 29.5 36H6.5Z" fill="#141414"/>
                                     <path d="M14.2 25.2C15.5 27.2 20.5 27.2 21.8 25.2" stroke="#EDEDED" stroke-width="1.8" stroke-linecap="round"/>
@@ -301,8 +301,8 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
                                 </svg>
                             </span>
                             <!-- Avatar 5: Tousled Hair + Hoodie (Shown when 5+ viewers) -->
-                            <span class="viewer-avatar" data-avatar-index="4" hidden style="width:30px;height:30px;margin-left:-9px;border-radius:50%;overflow:hidden;display:inline-flex;flex-shrink:0;">
-                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <span class="viewer-avatar is-hidden" data-avatar-index="4" hidden style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;margin-left:-9px;border-radius:50%;overflow:hidden;display:none;flex-shrink:0;">
+                                <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:30px;min-width:30px;max-width:30px;height:30px;min-height:30px;max-height:30px;display:block;flex-shrink:0;">
                                     <circle cx="18" cy="18" r="18" fill="#EDEDED"/>
                                     <path d="M6.5 36C6.5 28.2 11.2 24.8 18 24.8C24.8 24.8 29.5 28.2 29.5 36H6.5Z" fill="#141414"/>
                                     <path d="M15.5 26.5V33M20.5 26.5V33" stroke="#EDEDED" stroke-width="1.3" stroke-linecap="round"/>

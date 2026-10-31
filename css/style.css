@@ -417,16 +417,22 @@ button {
 }
 
 .viewer-avatars {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     padding-left: 2px;
+    max-width: 100%;
 }
 
 .viewer-avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    overflow: hidden;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    flex: 0 0 30px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -435,6 +441,7 @@ button {
     box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
     transition: transform var(--transition-fast), opacity var(--transition-fast);
     position: relative;
+    box-sizing: border-box !important;
 }
 
 [data-theme="light"] .viewer-avatar {
@@ -442,10 +449,11 @@ button {
 }
 
 .viewer-avatar + .viewer-avatar {
-    margin-left: -9px;
+    margin-left: -9px !important;
 }
 
-.viewer-avatar[hidden] {
+.viewer-avatar[hidden],
+.viewer-avatar.is-hidden {
     display: none !important;
 }
 
@@ -455,9 +463,14 @@ button {
 }
 
 .viewer-avatar svg {
-    width: 100%;
-    height: 100%;
-    display: block;
+    width: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    max-height: 30px !important;
+    display: block !important;
+    flex-shrink: 0 !important;
 }
 
 .viewer-status-text {
@@ -1790,7 +1803,8 @@ button {
         top: 64px;
         left: 0;
         bottom: 0;
-        width: 270px;
+        width: min(280px, 84vw);
+        max-width: calc(100vw - 44px);
         border-radius: 0;
         border-top: none;
         border-left: none;
@@ -1841,23 +1855,23 @@ button {
 
     .main-content {
         margin-left: 0;
-        padding: 84px 24px 60px;
+        padding: 80px 16px 50px;
     }
 
     .hero-section {
         min-height: auto;
-        padding-top: 24px;
+        padding-top: 16px;
     }
 
     .hero-top-grid {
         flex-direction: column-reverse;
         align-items: flex-start;
-        gap: 24px;
+        gap: 20px;
     }
 
     .hero-avatar-frame {
-        width: 160px;
-        height: 180px;
+        width: 140px;
+        height: 160px;
     }
 
     .contact-layout,
@@ -1865,6 +1879,11 @@ button {
     .projects-grid,
     .github-repos-grid {
         grid-template-columns: 1fr;
+    }
+
+    .contact-channels-card,
+    .contact-form-card {
+        padding: 20px 16px;
     }
 
     .project-card.featured-highlight {
@@ -1885,7 +1904,7 @@ button {
     }
 
     .hero-title {
-        font-size: 1.85rem;
+        font-size: clamp(1.65rem, 6.5vw, 2.1rem);
     }
 
     .hero-actions {
@@ -1893,7 +1912,8 @@ button {
         align-items: stretch;
     }
 
-    .btn {
+    /* Regular action buttons full width on small screens */
+    .btn:not(.btn-input-action) {
         width: 100%;
     }
 
@@ -1901,6 +1921,172 @@ button {
     .block-label-row {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    /* Contact Card adjustments for small screens */
+    .contact-channels-card,
+    .contact-form-card {
+        padding: 18px 14px;
+        border-radius: var(--radius-md);
+    }
+
+    .card-heading {
+        font-size: 1.2rem;
+        word-break: break-word;
+    }
+
+    .contact-step-header .step-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .welcome-personalized-heading {
+        font-size: clamp(1.1rem, 4.5vw, 1.35rem);
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    /* Modals & Popups on mobile */
+    .modal-overlay {
+        padding: 16px 12px;
+    }
+
+    .modal-card {
+        border-radius: var(--radius-md);
+    }
+
+    .modal-header {
+        padding: 16px;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 520px) {
+    /* Stack input and action buttons cleanly for touchscreen comfort */
+    .input-with-action {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .input-with-action input {
+        width: 100%;
+        min-height: 44px;
+    }
+
+    .btn-input-action {
+        width: 100% !important;
+        min-height: 44px;
+        justify-content: center;
+        padding: 12px 14px;
+        font-size: 0.8rem;
+    }
+
+    #otpCodeInput {
+        min-height: 48px;
+        font-size: 1.25rem;
+        letter-spacing: 0.25em;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+        min-height: 46px;
+    }
+
+    .form-feedback {
+        text-align: center;
+        font-size: 0.82rem;
+    }
+
+    .contact-channels-card,
+    .contact-form-card {
+        padding: 16px 14px;
+    }
+
+    .otp-status-banner {
+        padding: 12px;
+        font-size: 0.82rem;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .otp-status-body {
+        min-width: 0;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .otp-status-body p {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .otp-verification-panel {
+        padding: 14px 12px;
+    }
+
+    .otp-label-row {
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: space-between;
+    }
+
+    .toast-notification {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+        max-width: none;
+        text-align: center;
+    }
+}
+
+@media (max-width: 360px) {
+    .main-content {
+        padding: 76px 10px 40px;
+    }
+
+    .contact-channels-card,
+    .contact-form-card {
+        padding: 14px 10px;
+    }
+
+    .section-title {
+        font-size: 1.55rem;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .contact-channel-item {
+        padding: 10px 10px;
+    }
+
+    .channel-info {
+        gap: 8px;
+    }
+
+    .channel-label {
+        font-size: 0.82rem;
+    }
+
+    .step-indicator-pill {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+    }
+
+    .step-change-name-link {
+        font-size: 0.72rem;
     }
 }
 

@@ -787,8 +787,12 @@
             avatars.forEach((avatar, idx) => {
                 if (idx < visibleAvatars) {
                     avatar.removeAttribute("hidden");
+                    avatar.classList.remove("is-hidden");
+                    avatar.style.display = "inline-flex";
                 } else {
                     avatar.setAttribute("hidden", "");
+                    avatar.classList.add("is-hidden");
+                    avatar.style.display = "none";
                 }
             });
         }
