@@ -8,7 +8,9 @@ declare(strict_types=1);
  * and strict output escaping.
  */
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Prevent caching so logged-out users cannot view the dashboard via browser Back button
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -95,7 +97,7 @@ $adminUser = (string)($_SESSION['admin_username'] ?? 'admin');
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css?v=<?= (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261031') ?>">
 </head>
 <body class="admin-body">
     <header class="admin-topbar">

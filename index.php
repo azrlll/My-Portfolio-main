@@ -136,7 +136,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="projects-block">
                     <div class="block-label-row">
                         <h3 class="block-title">Curated Projects</h3>
-                        <span class="block-count" id="manualProjectsCount">2 Projects</span>
+                        <span class="block-count" id="manualProjectsCount">6 Projects</span>
                     </div>
                     <div class="projects-grid" id="projectsGrid">
                         <!-- Rendered from PROJECTS_DATA in js/config.js -->

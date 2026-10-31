@@ -85,6 +85,50 @@ const PROJECTS_DATA = [
         image: "image/arduino-joystick-game.jpg",
         githubUrl: "",
         liveUrl: ""
+    },
+    {
+        id: "arduino-led-button",
+        title: "Arduino LED & Push Button",
+        category: "Arduino • Circuit Basics",
+        featured: false,
+        description: "A simple circuit using an Arduino Uno, breadboard, LEDs, and a push button. Pressing the button turns the LED lights on and off.",
+        tags: ["Arduino Uno", "Breadboard", "LED Lights", "Push Button"],
+        image: "image/arduino-led-button.jpg",
+        githubUrl: "",
+        liveUrl: ""
+    },
+    {
+        id: "arduino-lcd-hello-world",
+        title: "Arduino LCD \"Hello World\"",
+        category: "Arduino • Display Output",
+        featured: false,
+        description: "My first test connecting an Arduino Uno to a 16x2 LCD screen. It shows basic text and displays \"Hello World\" on the blue screen.",
+        tags: ["Arduino Uno", "16x2 LCD", "Jumper Wires", "Text Output"],
+        image: "image/arduino-lcd-hello-world.png",
+        githubUrl: "",
+        liveUrl: ""
+    },
+    {
+        id: "arduino-mode-selector",
+        title: "Arduino Mode Switcher",
+        category: "Arduino • Interactive Control",
+        featured: false,
+        description: "An interactive Arduino project with a push button and an LCD screen. Each time you press the button, it switches to a different mode on the display.",
+        tags: ["Arduino Uno", "16x2 LCD", "Push Button", "State Switching"],
+        image: "image/arduino-mode-selector.jpg",
+        githubUrl: "",
+        liveUrl: ""
+    },
+    {
+        id: "arduino-custom-characters",
+        title: "Arduino LCD Custom Characters",
+        category: "Arduino • Pixel Graphics",
+        featured: false,
+        description: "A creative Arduino project that makes custom pixel icons on a 16x2 LCD screen, such as a heart, a bell, a robot, a music note, and a lock.",
+        tags: ["Arduino Uno", "16x2 LCD", "Custom Icons", "Pixel Art"],
+        image: "image/arduino-custom-characters.png",
+        githubUrl: "",
+        liveUrl: ""
     }
 ];
 

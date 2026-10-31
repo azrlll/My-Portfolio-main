@@ -7,7 +7,9 @@ declare(strict_types=1);
  * basic login attempt rate limiting, password_verify(), and session_regenerate_id(true).
  */
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Prevent browser caching of auth pages
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
@@ -98,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css?v=<?= (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261031') ?>">
 </head>
 <body class="admin-body">
     <main class="admin-auth-wrapper">
