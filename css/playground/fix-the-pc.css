@@ -594,6 +594,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 8px;
+    margin-top: 10px;
     margin-bottom: 14px;
 }
 
@@ -635,10 +636,23 @@
     gap: 10px;
 }
 
-.fixpc-safety-info img {
-    width: 28px;
-    height: 28px;
+.fixpc-safety-icon {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    background-color: var(--sim-bg-main, #0B0B0B);
+    border: 1px solid var(--sim-border, #343434);
+    color: var(--sim-text-secondary, #B8B8B8);
     flex-shrink: 0;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.fixpc-safety-icon svg {
+    width: 16px;
+    height: 16px;
 }
 
 .fixpc-safety-info strong {
@@ -862,6 +876,13 @@
 
     .fixpc-safety-bar {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .fixpc-safety-bar .pc-ctrl-btn {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
     }
 }

@@ -692,16 +692,13 @@ window.FixPCUI = (function () {
                             </blockquote>
                         </div>
 
-                        <!-- Computer & Monitor Illustration + Telemetry -->
+                        <!-- Workstation Telemetry & Safety Controls -->
                         <div class="fixpc-panel-card">
                             <div class="pc-panel-title-row">
                                 <span class="pc-panel-heading">WORKSTATION BENCH</span>
                                 <span class="pc-panel-subtag">${
                                     snap.powerOffSafetyActive ? "AC UNPLUGGED (SAFE)" : "AC LIVE"
                                 }</span>
-                            </div>
-                            <div class="fixpc-bench-illustration">
-                                <img src="image/playground/fix-the-pc/workstation.svg" alt="Desktop computer and monitor workstation" />
                             </div>
                             <div class="fixpc-telemetry-boxes">
                                 <div class="fixpc-telemetry-item">
@@ -721,7 +718,12 @@ window.FixPCUI = (function () {
                             <!-- Electrical Safety Switch -->
                             <div class="fixpc-safety-bar">
                                 <div class="fixpc-safety-info">
-                                    <img src="image/playground/fix-the-pc/safety-power.svg" alt="" aria-hidden="true" />
+                                    <span class="fixpc-safety-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                                            <line x1="12" y1="2" x2="12" y2="12"></line>
+                                        </svg>
+                                    </span>
                                     <div>
                                         <strong>Electrical Safety Switch</strong>
                                         <p>Power off PC &amp; unplug AC before internal hardware repairs.</p>

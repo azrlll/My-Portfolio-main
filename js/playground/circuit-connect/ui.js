@@ -60,7 +60,6 @@ window.CircuitConnectUI = (function () {
                             <p class="cc-hero-subtitle">BUILD THE CONNECTION. POWER THE SYSTEM.</p>
                             <p class="cc-hero-desc">Explore the fundamentals of electronics through interactive circuit puzzles.</p>
                         </div>
-                        <img src="image/playground/circuit-connect/circuit-icons.svg" alt="Electronic schematic symbols" class="cc-hero-banner-svg">
                     </div>
 
                     <div class="cc-menu-actions-grid">
