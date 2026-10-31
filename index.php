@@ -151,7 +151,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="section-header">
                     <span class="section-eyebrow">03 / SKILLS</span>
                     <h2 class="section-title" id="skillsHeading">Hardware &amp; Software Interests</h2>
-                    <p class="section-subtitle">Technical areas I actively explore, study, and build with.</p>
+                    <p class="section-subtitle">Things I like working with, studying in college, and learning as I build projects.</p>
                 </div>
 
                 <div class="skills-categories-grid" id="skillsContainer">

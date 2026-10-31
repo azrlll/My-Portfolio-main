@@ -544,8 +544,11 @@
                 .map(
                     (item) => `
                     <div class="skill-row">
-                        <span class="skill-name">${escapeHtml(item.name)}</span>
-                        <span class="skill-badge">${escapeHtml(item.level || "")}</span>
+                        <div class="skill-row-header">
+                            <span class="skill-name">${escapeHtml(item.name)}</span>
+                            ${item.level ? `<span class="skill-badge">${escapeHtml(item.level)}</span>` : ""}
+                        </div>
+                        ${item.description ? `<p class="skill-desc">${escapeHtml(item.description)}</p>` : ""}
                     </div>
                 `
                 )

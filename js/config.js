@@ -137,33 +137,86 @@ const PROJECTS_DATA = [
 // =====================================
 const SKILLS_DATA = [
     {
-        category: "Computer Hardware (Primary Interest)",
-        subtitle: "Hands-on exploration of PC architecture, components, and diagnostics",
+        category: "Computer Hardware (Main Interest)",
+        subtitle: "I enjoy learning about PC parts, building computers, and fixing hardware issues.",
         items: [
-            { name: "PC Assembly & Component Selection", level: "Core Interest" },
-            { name: "Hardware Diagnostics & Troubleshooting", level: "Hands-On" },
-            { name: "System Architecture & Peripherals", level: "Exploration" },
-            { name: "Thermal & Performance Optimization", level: "Enthusiast" }
+            {
+                name: "PC Assembly & Component Selection",
+                level: "Core Interest",
+                description: "I know how to choose matching parts and put together a desktop PC. I am still practicing cable management and finding good deals on components."
+            },
+            {
+                name: "Hardware Diagnostics & Troubleshooting",
+                level: "Hands-On",
+                description: "I can check simple hardware problems like loose RAM, display errors, and high heat. I like testing each part to find what is causing the issue."
+            },
+            {
+                name: "System Architecture & Peripherals",
+                level: "Learning",
+                description: "I study how the CPU, motherboard, storage, and devices talk to each other. It helps me understand how computers actually work."
+            },
+            {
+                name: "Thermal & Performance Optimization",
+                level: "Tinkering",
+                description: "I like checking system temperatures, setting up case fans for good airflow, and tuning basic BIOS settings so the PC stays cool."
+            }
         ]
     },
     {
-        category: "Software Development & Vibe Coding",
-        subtitle: "Building functional digital projects and learning core programming foundations",
+        category: "Software Development & Coding",
+        subtitle: "Languages and tools I use to write code, make web pages, and practice what I learn in class.",
         items: [
-            { name: "HTML5 & Semantic Markup", level: "Frontend" },
-            { name: "CSS3 & Responsive Layout Design", level: "Frontend" },
-            { name: "JavaScript (ES6+)", level: "Frontend" },
-            { name: "C Programming Fundamentals", level: "Academic / Core" },
-            { name: "AI-Assisted Vibe Coding & Rapid Prototyping", level: "Workflow" }
+            {
+                name: "HTML5 & Semantic Markup",
+                level: "Frontend",
+                description: "I use HTML to build the basic structure of websites with proper headings, sections, and forms so the page is easy to read."
+            },
+            {
+                name: "CSS3 & Responsive Layout Design",
+                level: "Frontend",
+                description: "I use CSS to style web pages, adjust spacing, and make sure layouts look good on both phones and computer screens."
+            },
+            {
+                name: "JavaScript (ES6+)",
+                level: "Frontend",
+                description: "I write basic JavaScript to add buttons that work, open popups, and make web pages interactive."
+            },
+            {
+                name: "C Programming Fundamentals",
+                level: "College Coursework",
+                description: "I learned basic coding logic in college using C, like working with variables, loops, switch cases, and small terminal programs."
+            },
+            {
+                name: "AI-Assisted Web Development (Vibe Coding)",
+                level: "Workflow",
+                description: "I use AI tools to help me build websites and create projects. I am still learning how to improve designs, fix errors, and make websites work properly."
+            },
+            {
+                name: "AI and Technology",
+                level: "Interest",
+                description: "I enjoy learning about AI and new technology. I like trying different tools, exploring new ideas, and learning new skills."
+            }
         ]
     },
     {
         category: "Core Competencies & Mindset",
-        subtitle: "Essential problem-solving and collaboration skills from BSIT studies",
+        subtitle: "Good habits and ways of thinking I use when doing school projects and studying IT.",
         items: [
-            { name: "Problem Solving & Algorithmic Thinking", level: "Foundation" },
-            { name: "Technical Communication", level: "Collaboration" },
-            { name: "Adaptability & Continuous Learning", level: "Mindset" }
+            {
+                name: "Problem Solving & Algorithmic Thinking",
+                level: "Mindset",
+                description: "When my code breaks or a computer will not boot, I stay calm and test things one by one until I figure out the problem."
+            },
+            {
+                name: "Technical Communication",
+                level: "Teamwork",
+                description: "I try to explain technical ideas and errors in simple everyday words so classmates and others can easily understand."
+            },
+            {
+                name: "Adaptability & Continuous Learning",
+                level: "Growth",
+                description: "Technology keeps changing, so I like learning new tools, asking questions when I get stuck, and growing as an IT student."
+            }
         ]
     }
 ];
