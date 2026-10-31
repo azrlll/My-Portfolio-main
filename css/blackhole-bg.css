@@ -119,6 +119,9 @@ body {
 
 [data-theme="dark"] .project-card,
 [data-theme="dark"] .skills-category-card,
+[data-theme="dark"] .skills-cat-card,
+[data-theme="dark"] .skills-detail-view,
+[data-theme="dark"] .skill-interactive-item,
 [data-theme="dark"] .experience-item,
 [data-theme="dark"] .contact-channels-card,
 [data-theme="dark"] .contact-form-card,
@@ -136,8 +139,17 @@ body {
 
 [data-theme="dark"] .project-card:hover,
 [data-theme="dark"] .playground-card:hover,
-[data-theme="dark"] .skills-category-card:hover {
+[data-theme="dark"] .skills-category-card:hover,
+[data-theme="dark"] .skills-cat-card:hover,
+[data-theme="dark"] .skill-interactive-item:hover {
     background-color: rgba(24, 24, 34, 0.88) !important;
+    border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+[data-theme="dark"] .skill-interactive-item.is-open {
+    border-color: rgba(255, 255, 255, 0.28) !important;
+    background-color: rgba(26, 26, 36, 0.94) !important;
+}
     border-color: rgba(255, 255, 255, 0.16) !important;
 }
 

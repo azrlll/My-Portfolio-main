@@ -129,7 +129,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="section-header">
                     <span class="section-eyebrow">02 / PROJECTS</span>
                     <h2 class="section-title" id="projectsHeading">Projects &amp; Builds</h2>
-                    <p class="section-subtitle">Hands-on hardware prototypes and interactive projects.</p>
+                    <p class="section-subtitle">Websites, hardware prototypes, and interactive projects.</p>
                 </div>
 
                 <!-- Curated / Manual Projects -->
@@ -154,8 +154,8 @@ require __DIR__ . '/includes/header.php';
                     <p class="section-subtitle">Things I like working with, studying in college, and learning as I build projects.</p>
                 </div>
 
-                <div class="skills-categories-grid" id="skillsContainer">
-                    <!-- Rendered from SKILLS_DATA in js/config.js -->
+                <div class="skills-explorer-wrapper" id="skillsContainer">
+                    <!-- Interactive Skills Explorer rendered from SKILLS_DATA in js/config.js -->
                 </div>
             </section>
 

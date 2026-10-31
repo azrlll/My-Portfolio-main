@@ -529,40 +529,246 @@
     }
 
     // ------------------------------------------------------------------------
-    // 8. SKILLS & BLOG RENDERING
+    // 8. INTERACTIVE SKILLS EXPLORER
     // ------------------------------------------------------------------------
+    const skillsState = {
+        activeCategoryIndex: null, // null = Hub view with 3 category cards
+        activeSkillIndex: null     // null = no skill description expanded
+    };
+
     function renderSkills() {
         const container = document.getElementById("skillsContainer");
         if (!container || typeof SKILLS_DATA === "undefined" || !Array.isArray(SKILLS_DATA)) return;
 
-        container.innerHTML = "";
-        SKILLS_DATA.forEach((group) => {
-            const card = document.createElement("div");
-            card.className = "skill-category-card";
+        // Check for deep link query params on initial load
+        if (skillsState.activeCategoryIndex === null && typeof window !== "undefined" && window.location) {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has("skill_cat")) {
+                const paramCat = parseInt(urlParams.get("skill_cat"), 10);
+                if (!isNaN(paramCat) && paramCat >= 0 && paramCat < SKILLS_DATA.length) {
+                    skillsState.activeCategoryIndex = paramCat;
+                    if (urlParams.has("skill_open")) {
+                        const paramSkill = parseInt(urlParams.get("skill_open"), 10);
+                        if (!isNaN(paramSkill)) {
+                            skillsState.activeSkillIndex = paramSkill;
+                        }
+                    }
+                }
+            }
+        }
 
-            const itemsHtml = (group.items || [])
-                .map(
-                    (item) => `
-                    <div class="skill-row">
-                        <div class="skill-row-header">
-                            <span class="skill-name">${escapeHtml(item.name)}</span>
-                            ${item.level ? `<span class="skill-badge">${escapeHtml(item.level)}</span>` : ""}
-                        </div>
-                        ${item.description ? `<p class="skill-desc">${escapeHtml(item.description)}</p>` : ""}
-                    </div>
-                `
-                )
+        if (skillsState.activeCategoryIndex === null) {
+            renderSkillsHub(container);
+        } else {
+            renderSkillsDetail(container, skillsState.activeCategoryIndex, skillsState.activeSkillIndex);
+        }
+    }
+
+    function renderSkillsHub(container) {
+        container.innerHTML = "";
+
+        const grid = document.createElement("div");
+        grid.className = "skills-categories-grid";
+
+        SKILLS_DATA.forEach((cat, catIdx) => {
+            const card = document.createElement("article");
+            card.className = "skills-cat-card";
+            card.setAttribute("tabindex", "0");
+            card.setAttribute("role", "button");
+            card.setAttribute("aria-label", `Explore ${cat.category} skills`);
+
+            const countText = `${(cat.items || []).length} Skills`;
+            const tagsHtml = (cat.previewTags || [])
+                .map((tag) => `<span class="skills-preview-tag">${escapeHtml(tag)}</span>`)
                 .join("");
 
             card.innerHTML = `
-                <h3 class="skill-cat-title">${escapeHtml(group.category)}</h3>
-                <p class="skill-cat-subtitle">${escapeHtml(group.subtitle || "")}</p>
-                <div class="skill-items-list">${itemsHtml}</div>
+                <div>
+                    <div class="skills-cat-card-header">
+                        <span class="skills-cat-eyebrow">${escapeHtml(cat.eyebrow || `CATEGORY 0${catIdx + 1}`)}</span>
+                        <span class="skills-cat-count">${countText}</span>
+                    </div>
+                    <h3 class="skills-cat-title">${escapeHtml(cat.category)}</h3>
+                    <p class="skills-cat-subtitle">${escapeHtml(cat.subtitle || "")}</p>
+                    <div class="skills-cat-preview-tags">${tagsHtml}</div>
+                </div>
+                <div class="skills-cat-card-footer">
+                    <span class="skills-cat-cta">
+                        <span>EXPLORE SKILLS</span>
+                        <svg class="skills-arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </span>
+                </div>
             `;
 
-            container.appendChild(card);
+            const handleSelect = (e) => {
+                e.preventDefault();
+                skillsState.activeCategoryIndex = catIdx;
+                skillsState.activeSkillIndex = null;
+                renderSkills();
+                const skillsSection = document.getElementById("skills");
+                if (skillsSection) {
+                    skillsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            };
+
+            card.addEventListener("click", handleSelect);
+            card.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    handleSelect(e);
+                }
+            });
+
+            grid.appendChild(card);
         });
+
+        container.appendChild(grid);
     }
+
+    function renderSkillsDetail(container, catIdx, openSkillIdx) {
+        container.innerHTML = "";
+
+        const cat = SKILLS_DATA[catIdx];
+        if (!cat) {
+            skillsState.activeCategoryIndex = null;
+            renderSkillsHub(container);
+            return;
+        }
+
+        const detailCard = document.createElement("div");
+        detailCard.className = "skills-detail-view";
+
+        const tabsHtml = SKILLS_DATA.map((c, idx) => `
+            <button type="button" class="skills-tab-btn ${idx === catIdx ? 'active' : ''}" data-cat-idx="${idx}">
+                <span>${escapeHtml(c.id === 'hardware' ? '01 Hardware' : (c.id === 'software' ? '02 Software' : '03 Mindset'))}</span>
+            </button>
+        `).join("");
+
+        const skillsListHtml = (cat.items || []).map((item, sIdx) => {
+            const isOpen = openSkillIdx === sIdx;
+            const itemNum = sIdx < 9 ? `0${sIdx + 1}` : `${sIdx + 1}`;
+
+            return `
+                <div class="skill-interactive-item ${isOpen ? 'is-open' : ''}" data-skill-idx="${sIdx}">
+                    <button type="button" class="skill-interactive-trigger" aria-expanded="${isOpen}">
+                        <div class="skill-trigger-left">
+                            <span class="skill-number">${itemNum}</span>
+                            <span class="skill-name">${escapeHtml(item.name)}</span>
+                        </div>
+                        <div class="skill-trigger-right">
+                            ${item.level ? `<span class="skill-badge">${escapeHtml(item.level)}</span>` : ''}
+                            <span class="skill-expand-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </span>
+                        </div>
+                    </button>
+                    ${isOpen ? `
+                        <div class="skill-description-panel" role="region">
+                            <p class="skill-description-text">${escapeHtml(item.description)}</p>
+                            <div class="skill-description-footer">
+                                <button type="button" class="skill-close-btn" data-close-skill="${sIdx}" aria-label="Close this description">
+                                    <span>CLOSE DESCRIPTION</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }).join("");
+
+        detailCard.innerHTML = `
+            <div class="skills-detail-backbar">
+                <button type="button" class="btn btn-secondary skills-back-btn" id="btnBackToSkillsHub" aria-label="Back to all categories">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>BACK TO ALL CATEGORIES</span>
+                </button>
+                <div class="skills-category-tabs" role="tablist" aria-label="Skill Categories">
+                    ${tabsHtml}
+                </div>
+            </div>
+
+            <div class="skills-active-cat-header">
+                <span class="skills-cat-eyebrow">${escapeHtml(cat.eyebrow || `CATEGORY 0${catIdx + 1}`)}</span>
+                <h3 class="skills-active-cat-title">${escapeHtml(cat.category)}</h3>
+                <p class="skills-active-cat-subtitle">${escapeHtml(cat.subtitle || '')}</p>
+                <span class="skills-instruction-pill">Click a skill to view what I know &mdash; only one is open at a time.</span>
+            </div>
+
+            <div class="skills-interactive-list">
+                ${skillsListHtml}
+            </div>
+        `;
+
+        // Back button
+        const backBtn = detailCard.querySelector("#btnBackToSkillsHub");
+        if (backBtn) {
+            backBtn.addEventListener("click", () => {
+                skillsState.activeCategoryIndex = null;
+                skillsState.activeSkillIndex = null;
+                renderSkills();
+            });
+        }
+
+        // Category switcher tabs
+        detailCard.querySelectorAll(".skills-tab-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const targetIdx = parseInt(btn.getAttribute("data-cat-idx"), 10);
+                if (!isNaN(targetIdx) && targetIdx !== skillsState.activeCategoryIndex) {
+                    skillsState.activeCategoryIndex = targetIdx;
+                    skillsState.activeSkillIndex = null;
+                    renderSkills();
+                }
+            });
+        });
+
+        // Skill triggers
+        detailCard.querySelectorAll(".skill-interactive-trigger").forEach((trigger) => {
+            trigger.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const parentItem = trigger.closest(".skill-interactive-item");
+                const sIdx = parseInt(parentItem.getAttribute("data-skill-idx"), 10);
+                if (isNaN(sIdx)) return;
+
+                skillsState.activeSkillIndex = (skillsState.activeSkillIndex === sIdx) ? null : sIdx;
+                renderSkills();
+            });
+        });
+
+        // Close button inside description
+        detailCard.querySelectorAll(".skill-close-btn").forEach((closeBtn) => {
+            closeBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                skillsState.activeSkillIndex = null;
+                renderSkills();
+            });
+        });
+
+        container.appendChild(detailCard);
+    }
+
+    // Keyboard support: Escape closes skill description or returns to hub
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            if (skillsState.activeSkillIndex !== null) {
+                skillsState.activeSkillIndex = null;
+                renderSkills();
+            } else if (skillsState.activeCategoryIndex !== null) {
+                skillsState.activeCategoryIndex = null;
+                renderSkills();
+            }
+        }
+    });
 
     function renderBlog() {
         const container = document.getElementById("blogContainer");

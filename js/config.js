@@ -65,10 +65,43 @@ const PERSONAL_INFO = {
 // - Set `featured: true` to display the project on the Home section as well.
 const PROJECTS_DATA = [
     {
+        id: "jennina-18th-birthday",
+        title: "Jennina's 18th Birthday Invitation",
+        category: "Digital Invitation Website",
+        featured: true,
+        description: "I made a digital invitation website for an 18th birthday celebration. It has a royal green and gold design with an invitation that visitors can open to see the event details.",
+        tags: ["Digital Invitation", "Web Design", "HTML & CSS", "Responsive"],
+        image: "image/project-jennina-18th-birthday.png",
+        githubUrl: "",
+        liveUrl: ""
+    },
+    {
+        id: "hanz-and-jane-wedding",
+        title: "Hanz and Jane's Wedding Invitation",
+        category: "Wedding Invitation Website",
+        featured: true,
+        description: "This is the first website project I worked on. It's a wedding invitation website with a welcome screen, falling flowers, and pages where guests can see the wedding details. Special thanks to Adrian and Lawrence for helping me with my first website project. I learned a lot while working with them.",
+        tags: ["First Web Project", "Wedding Website", "Teamwork", "Interactive UI"],
+        image: "image/project-hanz-and-jane-wedding.png",
+        githubUrl: "",
+        liveUrl: ""
+    },
+    {
+        id: "halcyon-home",
+        title: "Halcyon Home — Furniture Website",
+        category: "Furniture Website",
+        featured: false,
+        description: "I worked on a furniture website where visitors can browse home furniture and explore different categories. This project helped me learn more about website design and how to organize a webpage.",
+        tags: ["Furniture Website", "Web Design", "Layout Structure", "UI/UX"],
+        image: "image/project-halcyon-home-furniture.png",
+        githubUrl: "",
+        liveUrl: ""
+    },
+    {
         id: "arduino-clock",
         title: "Arduino Clock",
         category: "Arduino • Hardware Prototyping",
-        featured: true,
+        featured: false,
         description: "A simple Arduino project that displays the real-time date and time on a 16x2 backlit LCD screen using an Arduino Uno, a breadboard, and a Real-Time Clock (RTC) module.",
         tags: ["Arduino Uno", "16x2 LCD", "RTC Module", "Hardware Prototyping"],
         image: "image/arduino-clock.jpg",
@@ -79,7 +112,7 @@ const PROJECTS_DATA = [
         id: "arduino-joystick-game",
         title: "Arduino Game with Joystick",
         category: "Arduino • Interactive Mini-Game",
-        featured: true,
+        featured: false,
         description: "A simple Arduino project featuring a playable side-scrolling obstacle-jumping game on a 16x2 LCD screen, controlled using an analog thumb joystick wired to an Arduino Uno on a breadboard.",
         tags: ["Arduino Uno", "Joystick Module", "16x2 LCD", "Embedded C++"],
         image: "image/arduino-joystick-game.jpg",
@@ -137,8 +170,11 @@ const PROJECTS_DATA = [
 // =====================================
 const SKILLS_DATA = [
     {
+        id: "hardware",
+        eyebrow: "CATEGORY 01 / HARDWARE",
         category: "Computer Hardware (Main Interest)",
         subtitle: "I enjoy learning about PC parts, building computers, and fixing hardware issues.",
+        previewTags: ["PC Assembly", "Diagnostics", "Architecture", "Cooling & Thermals"],
         items: [
             {
                 name: "PC Assembly & Component Selection",
@@ -163,8 +199,11 @@ const SKILLS_DATA = [
         ]
     },
     {
+        id: "software",
+        eyebrow: "CATEGORY 02 / SOFTWARE",
         category: "Software Development & Coding",
         subtitle: "Languages and tools I use to write code, make web pages, and practice what I learn in class.",
+        previewTags: ["HTML5 & CSS3", "JavaScript", "C Programming", "Vibe Coding", "AI & Tech"],
         items: [
             {
                 name: "HTML5 & Semantic Markup",
@@ -199,8 +238,11 @@ const SKILLS_DATA = [
         ]
     },
     {
+        id: "mindset",
+        eyebrow: "CATEGORY 03 / MINDSET",
         category: "Core Competencies & Mindset",
         subtitle: "Good habits and ways of thinking I use when doing school projects and studying IT.",
+        previewTags: ["Problem Solving", "Technical Communication", "Continuous Learning"],
         items: [
             {
                 name: "Problem Solving & Algorithmic Thinking",
