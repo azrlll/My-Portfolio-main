@@ -2320,6 +2320,108 @@ button {
     display: none;
 }
 
+/* Promotional Invitation Website Popup */
+.invitation-promo-card {
+    max-width: 580px;
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(110, 231, 183, 0.08);
+    animation: promoModalSlideIn 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes promoModalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.invitation-promo-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.invitation-promo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--status-dot);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.invitation-promo-title {
+    font-size: 1.25rem;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.invitation-promo-image-wrap {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    background-color: #0b0b0b;
+    margin-bottom: 16px;
+    aspect-ratio: 16 / 9;
+}
+
+.invitation-promo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.invitation-promo-img-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 12px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.88);
+    letter-spacing: 0.02em;
+}
+
+.invitation-promo-desc {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.invitation-promo-feature-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.invitation-promo-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.invitation-promo-actions .btn {
+    padding: 10px 20px;
+    font-size: 0.86rem;
+    font-weight: 600;
+}
+
 /* ----------------------------------------------------------------------------
    13. MOBILE HEADER & RESPONSIVE DESIGN
    ---------------------------------------------------------------------------- */
@@ -2636,6 +2738,17 @@ button {
     }
 
     .invitation-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Promotional Invitation Popup on mobile */
+    .invitation-promo-actions {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+
+    .invitation-promo-actions .btn {
         width: 100%;
         justify-content: center;
     }

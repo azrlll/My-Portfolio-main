@@ -36,6 +36,58 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
         </div>
     </div>
 
+    <!-- Promotional Invitation Website Popup (Appears once per session after 5s) -->
+    <div class="modal-overlay invitation-promo-overlay" id="invitationPromoModal" role="dialog" aria-modal="true" aria-labelledby="invitationPromoTitle" hidden>
+        <div class="modal-card invitation-promo-card">
+            <div class="modal-header invitation-promo-header">
+                <div class="invitation-promo-title-wrap">
+                    <span class="invitation-promo-badge">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                        <span>Special Offer</span>
+                    </span>
+                    <h3 class="modal-title invitation-promo-title" id="invitationPromoTitle">Want Your Own Invitation Website?</h3>
+                </div>
+                <button type="button" class="modal-close-btn invitation-promo-close" id="invitationPromoCloseBtn" aria-label="Close invitation popup">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body invitation-promo-body">
+                <div class="invitation-promo-image-wrap">
+                    <img src="image/project-jennina-18th-birthday.png" alt="Jennina's 18th Birthday Invitation Website Preview" class="invitation-promo-img">
+                    <div class="invitation-promo-img-caption">
+                        <span>Project Preview: Jennina's 18th Birthday Invitation</span>
+                    </div>
+                </div>
+                <p class="invitation-promo-desc">
+                    Planning a birthday, wedding, debut, or special occasion? I can create a personalized invitation website with background music, animations, RSVP forms, photo galleries, countdown timers, and event location maps!
+                </p>
+                <div class="invitation-promo-feature-tags">
+                    <span class="tag-pill">🎵 Music</span>
+                    <span class="tag-pill">✨ Animations</span>
+                    <span class="tag-pill">📸 Gallery</span>
+                    <span class="tag-pill">📝 RSVP</span>
+                    <span class="tag-pill">⏳ Countdown</span>
+                    <span class="tag-pill">📍 Maps</span>
+                </div>
+                <div class="invitation-promo-actions">
+                    <button type="button" class="btn btn-secondary invitation-promo-dismiss" id="invitationPromoDismissBtn">
+                        Not Now
+                    </button>
+                    <a href="#contact" class="btn btn-primary invitation-promo-contact" id="invitationPromoContactBtn">
+                        <span>Contact Me</span>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14"></path>
+                            <path d="m12 5 7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Subtle Notification Toast (for unconfigured social links or messages) -->
     <div class="toast-notification" id="toastNotification" role="status" aria-live="polite" hidden></div>
 

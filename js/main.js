@@ -1068,6 +1068,95 @@
     }
 
     // ------------------------------------------------------------------------
+    // 9.5 AUTOMATIC INVITATION PROMOTIONAL POPUP (5-SECOND COUNTDOWN)
+    // ------------------------------------------------------------------------
+    function initInvitationPopup() {
+        const popup = document.getElementById("invitationPromoModal");
+        if (!popup) return;
+
+        const STORAGE_KEY = "invitation_popup_shown";
+
+        // Check if popup was already shown or dismissed during this browsing session
+        try {
+            if (sessionStorage.getItem(STORAGE_KEY) === "true") {
+                return;
+            }
+        } catch (e) {
+            if (window._invitationPopupTriggered) return;
+        }
+
+        const closePopup = () => {
+            popup.hidden = true;
+            document.body.style.overflow = "";
+            try {
+                sessionStorage.setItem(STORAGE_KEY, "true");
+            } catch (e) {}
+            window._invitationPopupTriggered = true;
+        };
+
+        const openPopup = () => {
+            // Guard: ensure it hasn't been shown in the meantime
+            try {
+                if (sessionStorage.getItem(STORAGE_KEY) === "true") return;
+                sessionStorage.setItem(STORAGE_KEY, "true");
+            } catch (e) {}
+            window._invitationPopupTriggered = true;
+
+            // Do not overlap if the project lightbox modal is already active
+            const projectModal = document.getElementById("projectModal");
+            if (projectModal && !projectModal.hidden) return;
+
+            popup.hidden = false;
+            document.body.style.overflow = "hidden";
+        };
+
+        // Wire interactive buttons: X, Not Now, and Contact Me
+        const closeBtn = document.getElementById("invitationPromoCloseBtn");
+        const dismissBtn = document.getElementById("invitationPromoDismissBtn");
+        const contactBtn = document.getElementById("invitationPromoContactBtn");
+
+        if (closeBtn) closeBtn.addEventListener("click", closePopup);
+        if (dismissBtn) dismissBtn.addEventListener("click", closePopup);
+
+        if (contactBtn) {
+            contactBtn.addEventListener("click", (e) => {
+                closePopup();
+                const contactSec = document.getElementById("contact");
+                if (contactSec) {
+                    e.preventDefault();
+                    contactSec.scrollIntoView({ behavior: "smooth" });
+                    const nameInput = document.getElementById("visitorNameInput");
+                    if (nameInput) {
+                        setTimeout(() => nameInput.focus({ preventScroll: true }), 400);
+                    }
+                }
+            });
+        }
+
+        // Close on backdrop click
+        popup.addEventListener("click", (e) => {
+            if (e.target === popup) closePopup();
+        });
+
+        // Close on ESC key press
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && !popup.hidden) {
+                closePopup();
+            }
+        });
+
+        // Prevent duplicate timers
+        if (window._invitationTimerId) {
+            clearTimeout(window._invitationTimerId);
+        }
+
+        // Automatically start 5-second countdown on homepage load
+        window._invitationTimerId = setTimeout(() => {
+            openPopup();
+        }, 5000);
+    }
+
+    // ------------------------------------------------------------------------
     // 10. CONTACT FORM STEP 1 & NAME HANDLER (SEAMLESS IN-PLACE TRANSITIONS)
     // ------------------------------------------------------------------------
     function initContactForm() {
@@ -1615,6 +1704,7 @@
         renderBlog();
         initGitHubIntegration();
         initModal();
+        initInvitationPopup();
         initContactForm();
         initOtpVerification();
         initLiveViewers();
