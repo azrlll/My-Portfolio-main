@@ -1219,6 +1219,17 @@ button {
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.invitation-title-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--status-dot);
+    flex-shrink: 0;
 }
 
 .invitation-cta-lead {
@@ -1261,9 +1272,10 @@ button {
 .invitation-chip {
     display: inline-flex;
     align-items: center;
+    gap: 7px;
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    padding: 5px 11px;
+    padding: 6px 12px;
     border-radius: var(--radius-sm);
     background-color: var(--bg-badge);
     border: 1px solid var(--border-subtle);
@@ -1272,9 +1284,22 @@ button {
     transition: border-color var(--transition-fast), background-color var(--transition-fast);
 }
 
+.invitation-chip .chip-svg {
+    width: 13px;
+    height: 13px;
+    stroke: currentColor;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    transition: color var(--transition-fast);
+}
+
 .invitation-chip:hover {
     border-color: var(--border-strong);
     background-color: var(--bg-card-hover);
+}
+
+.invitation-chip:hover .chip-svg {
+    color: var(--status-dot);
 }
 
 .invitation-cta-bottom {
@@ -1307,6 +1332,16 @@ button {
     font-weight: 600;
     color: var(--text-primary);
     margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.invitation-inline-svg {
+    width: 15px;
+    height: 15px;
+    color: var(--status-dot);
+    flex-shrink: 0;
 }
 
 .invitation-cta-btn-wrap {

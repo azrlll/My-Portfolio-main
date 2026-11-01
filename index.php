@@ -149,7 +149,13 @@ require __DIR__ . '/includes/header.php';
                     <div class="invitation-cta-glow" aria-hidden="true"></div>
                     <div class="invitation-cta-inner">
                         <div class="invitation-cta-top">
-                            <h3 class="invitation-cta-title">Want Your Own Invitation Website? 💌</h3>
+                            <h3 class="invitation-cta-title">
+                                <span>Want Your Own Invitation Website?</span>
+                                <svg class="invitation-title-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                </svg>
+                            </h3>
                             <p class="invitation-cta-lead">
                                 Planning a birthday, wedding, debut, or any special occasion? I can help you create a personalized invitation website!
                             </p>
@@ -160,15 +166,76 @@ require __DIR__ . '/includes/header.php';
                                 We can include <strong>background music</strong>, <strong>animated backgrounds</strong>, <strong>interactive elements</strong>, <strong>photo galleries</strong>, <strong>RSVP forms</strong>, <strong>countdown timers</strong>, <strong>event locations with maps</strong>, <strong>dress-code guides</strong>, and <strong>other custom features</strong> to make your invitation more special, interactive, and memorable.
                             </p>
                             <div class="invitation-feature-chips" aria-label="Available invitation features">
-                                <span class="invitation-chip">🎵 Background Music</span>
-                                <span class="invitation-chip">✨ Animated Backgrounds</span>
-                                <span class="invitation-chip">🎮 Interactive Elements</span>
-                                <span class="invitation-chip">📸 Photo Galleries</span>
-                                <span class="invitation-chip">📝 RSVP Forms</span>
-                                <span class="invitation-chip">⏳ Countdown Timers</span>
-                                <span class="invitation-chip">📍 Event Locations &amp; Maps</span>
-                                <span class="invitation-chip">👗 Dress-Code Guides</span>
-                                <span class="invitation-chip">🎨 Custom Layouts</span>
+                                <span class="invitation-chip">
+                                    <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M9 18V5l12-2v13"></path>
+                                        <circle cx="6" cy="18" r="3"></circle>
+                                        <circle cx="18" cy="16" r="3"></circle>
+                                    </svg>
+                                    <span>Background Music</span>
+                                </span>
+                                <span class="invitation-chip">
+                                    <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path>
+                                    </svg>
+                                    <span>Animated Backgrounds</span>
+                                </span>
+                                <span class="invitation-chip">
+                                    <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <line x1="6" x2="10" y1="12" y2="12"></line>
+                                        <line x1="8" x2="8" y1="10" y2="14"></line>
+                                        <line x1="15" x2="15.01" y1="13" y2="13"></line>
+                                        <line x1="18" x2="18.01" y1="11" y2="11"></line>
+                                        <rect width="20" height="12" x="2" y="6" rx="2"></rect>
+                                    </svg>
+                                    <span>Interactive Elements</span>
+                                </span>
+                                <span class="invitation-chip">
+                                    <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                                        <circle cx="12" cy="13" r="3"></circle>
+                                    </svg>
+                                    <span>Photo Galleries</span>
+                                </span>
+                                <span class="invitation-chip">
+                                    <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                        <path d="m9 14 2 2 4-4"></path>
+                                        <rect x="8" y="2" width="8" height="4" rx="1"></rect>
+                                    </svg>
+                                    <span>RSVP Forms</span>
+                                </span>
+                                <span class="invitation-chip">
+                                    <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <line x1="10" x2="14" y1="2" y2="2"></line>
+                                        <line x1="12" x2="15" y1="14" y2="11"></line>
+                                        <circle cx="12" cy="14" r="8"></circle>
+                                    </svg>
+                                    <span>Countdown Timers</span>
+                                </span>
+                                <span class="invitation-chip">
+                                    <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    <span>Event Locations &amp; Maps</span>
+                                </span>
+                                <span class="invitation-chip">
+                                    <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"></path>
+                                    </svg>
+                                    <span>Dress-Code Guides</span>
+                                </span>
+                                <span class="invitation-chip">
+                                    <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+                                        <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                                        <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                                        <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+                                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path>
+                                    </svg>
+                                    <span>Custom Layouts</span>
+                                </span>
                             </div>
                         </div>
 
@@ -178,7 +245,10 @@ require __DIR__ . '/includes/header.php';
                                     <strong>Interested in having me as your invitation website designer?</strong> Feel free to contact me and share your preferred layout, design ideas, or concept for your invitation. You can also send reference images, color themes, or examples of what you have in mind so we can plan how your website will look.
                                 </p>
                                 <p class="invitation-cta-sparkle">
-                                    Let's turn your ideas into something special! ✨
+                                    <span>Let's turn your ideas into something special!</span>
+                                    <svg class="invitation-inline-svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path>
+                                    </svg>
                                 </p>
                             </div>
                             <div class="invitation-cta-btn-wrap">
