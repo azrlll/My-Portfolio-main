@@ -1375,50 +1375,230 @@
         }
     });
 
-    function renderBlog() {
-        const container = document.getElementById("blogContainer");
-        if (!container || typeof BLOG_DATA === "undefined" || !Array.isArray(BLOG_DATA)) return;
+    // ------------------------------------------------------------------------
+    // 8. DEVELOPER JOURNAL (PERSONAL REFLECTIONS, LESSONS & PROGRESS)
+    // ------------------------------------------------------------------------
+    let currentJournalFilter = "all";
+    let journalTriggerElement = null;
 
-        container.innerHTML = "";
-        if (BLOG_DATA.length === 0) {
+    function getJournalCategoryClass(category) {
+        if (!category) return "cat-general";
+        const lower = category.toLowerCase();
+        if (lower.includes("personal")) return "cat-personal";
+        if (lower.includes("project")) return "cat-project";
+        if (lower.includes("learning")) return "cat-learning";
+        return "cat-general";
+    }
+
+    function createJournalCardElement(item) {
+        const card = document.createElement("article");
+        card.className = "journal-card";
+        card.innerHTML = `
+            <div>
+                <div class="journal-meta-row">
+                    <span class="journal-category-pill ${getJournalCategoryClass(item.category)}">${escapeHtml(item.category)}</span>
+                    <span class="journal-read-time">${escapeHtml(item.readTime || "")}</span>
+                </div>
+                <h3 class="journal-title">${escapeHtml(item.title)}</h3>
+                <p class="journal-excerpt">${escapeHtml(item.excerpt)}</p>
+            </div>
+            <button type="button" class="journal-read-btn" data-journal-id="${escapeHtml(item.id)}" aria-label="Read entry: ${escapeHtml(item.title)}">
+                <span>Read Journal Entry</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </button>
+        `;
+        return card;
+    }
+
+    function renderJournal() {
+        const container = document.getElementById("journalContainer") || document.getElementById("blogContainer");
+        if (!container) return;
+
+        const data = (typeof JOURNAL_DATA !== "undefined" && Array.isArray(JOURNAL_DATA))
+            ? JOURNAL_DATA
+            : (typeof BLOG_DATA !== "undefined" && Array.isArray(BLOG_DATA) ? BLOG_DATA : []);
+
+        const countBadge = document.getElementById("journalCountAll");
+        if (countBadge) {
+            countBadge.textContent = data.length;
+        }
+
+        if (data.length === 0) {
+            container.innerHTML = `<div class="journal-empty-state">No journal entries published yet.</div>`;
             return;
         }
 
-        BLOG_DATA.forEach((post) => {
-            const article = document.createElement("article");
-            article.className = "blog-card";
+        const filtered = (currentJournalFilter === "all")
+            ? data
+            : data.filter(item => item.category === currentJournalFilter);
 
-            article.innerHTML = `
-                <div>
-                    <div class="blog-meta">
-                        <span>${escapeHtml(post.date)} &bull; ${escapeHtml(post.readTime)}</span>
-                        <span class="blog-status">${escapeHtml(post.status)}</span>
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="journal-empty-state">No entries found under &ldquo;${escapeHtml(currentJournalFilter)}&rdquo;.</div>`;
+            return;
+        }
+
+        container.innerHTML = "";
+
+        if (currentJournalFilter === "all") {
+            const featured = filtered.find(item => item.featured) || filtered[0];
+            const secondary = filtered.filter(item => item !== featured);
+
+            if (featured) {
+                const featuredCard = document.createElement("article");
+                featuredCard.className = "journal-featured-card";
+                featuredCard.innerHTML = `
+                    <div>
+                        <div class="journal-featured-header">
+                            <div class="journal-badges-group">
+                                <span class="journal-featured-badge">
+                                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
+                                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    </svg>
+                                    <span>Featured Entry</span>
+                                </span>
+                                <span class="journal-category-pill ${getJournalCategoryClass(featured.category)}">${escapeHtml(featured.category)}</span>
+                            </div>
+                            <span class="journal-read-time">${escapeHtml(featured.date || "")} &bull; ${escapeHtml(featured.readTime || "")}</span>
+                        </div>
+                        <h3 class="journal-featured-title">${escapeHtml(featured.title)}</h3>
+                        <p class="journal-featured-excerpt">${escapeHtml(featured.excerpt)}</p>
                     </div>
-                    <h3 class="blog-title">${escapeHtml(post.title)}</h3>
-                    <p class="blog-excerpt">${escapeHtml(post.excerpt)}</p>
-                </div>
-                <button type="button" class="blog-read-btn">
-                    <span>Read Note Summary</span>
-                    <span aria-hidden="true">&rarr;</span>
-                </button>
-            `;
-
-            const readBtn = article.querySelector(".blog-read-btn");
-            if (readBtn) {
-                readBtn.addEventListener("click", () => {
-                    openProjectModal({
-                        title: post.title,
-                        category: `${post.date} • ${post.status}`,
-                        description: post.excerpt,
-                        tags: ["BSIT Learning Log", "Hardware & Code", post.readTime],
-                        image: ""
-                    });
-                });
+                    <button type="button" class="journal-read-btn" data-journal-id="${escapeHtml(featured.id)}" aria-label="Read full entry: ${escapeHtml(featured.title)}">
+                        <span>Read Full Journal Entry</span>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                `;
+                container.appendChild(featuredCard);
             }
 
-            container.appendChild(article);
+            if (secondary.length > 0) {
+                const grid = document.createElement("div");
+                grid.className = "journal-grid";
+                secondary.forEach(item => {
+                    grid.appendChild(createJournalCardElement(item));
+                });
+                container.appendChild(grid);
+            }
+        } else {
+            const grid = document.createElement("div");
+            grid.className = "journal-grid";
+            filtered.forEach(item => {
+                grid.appendChild(createJournalCardElement(item));
+            });
+            container.appendChild(grid);
+        }
+
+        // Wire click handlers on all "Read" buttons
+        container.querySelectorAll(".journal-read-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-journal-id");
+                const entry = data.find(item => item.id === id);
+                if (entry) {
+                    journalTriggerElement = btn;
+                    openJournalModal(entry);
+                }
+            });
         });
     }
+
+    function openJournalModal(entry) {
+        const modal = document.getElementById("journalModal");
+        if (!modal) return;
+
+        const catEl = document.getElementById("journalModalCategory");
+        const readTimeEl = document.getElementById("journalModalReadTime");
+        const titleEl = document.getElementById("journalModalTitle");
+        const dateEl = document.getElementById("journalModalDate");
+        const contentEl = document.getElementById("journalModalContent");
+
+        if (catEl) {
+            catEl.textContent = entry.category || "Journal";
+            catEl.className = `journal-category-pill ${getJournalCategoryClass(entry.category)}`;
+        }
+        if (readTimeEl) readTimeEl.textContent = entry.readTime || "";
+        if (titleEl) titleEl.textContent = entry.title || "";
+        if (dateEl) dateEl.textContent = entry.date ? `${entry.date} \u2022 Personal Developer Journal` : "Personal Developer Journal";
+
+        if (contentEl) {
+            if (entry.paragraphs && Array.isArray(entry.paragraphs)) {
+                contentEl.innerHTML = entry.paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join("");
+            } else {
+                contentEl.innerHTML = `<p>${escapeHtml(entry.excerpt || "")}</p>`;
+            }
+        }
+
+        modal.hidden = false;
+        modal.classList.remove("is-closing");
+        requestAnimationFrame(() => {
+            modal.classList.add("is-open");
+        });
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeJournalModal() {
+        const modal = document.getElementById("journalModal");
+        if (!modal || modal.hidden) return;
+
+        modal.classList.remove("is-open");
+        modal.classList.add("is-closing");
+        setTimeout(() => {
+            modal.hidden = true;
+            modal.classList.remove("is-closing");
+            document.body.style.overflow = "";
+            if (journalTriggerElement && typeof journalTriggerElement.focus === "function") {
+                journalTriggerElement.focus();
+            }
+        }, 260);
+    }
+
+    function initJournal() {
+        const filterBar = document.getElementById("journalFilterBar");
+        if (filterBar) {
+            const buttons = filterBar.querySelectorAll(".journal-filter-btn");
+            buttons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    buttons.forEach(b => {
+                        b.classList.remove("is-active");
+                        b.setAttribute("aria-selected", "false");
+                    });
+                    btn.classList.add("is-active");
+                    btn.setAttribute("aria-selected", "true");
+                    currentJournalFilter = btn.getAttribute("data-filter") || "all";
+                    renderJournal();
+                });
+            });
+        }
+
+        const modal = document.getElementById("journalModal");
+        const closeBtn = document.getElementById("journalModalCloseBtn");
+        const backBtn = document.getElementById("journalModalBackBtn");
+
+        if (closeBtn) closeBtn.addEventListener("click", closeJournalModal);
+        if (backBtn) backBtn.addEventListener("click", closeJournalModal);
+
+        if (modal) {
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) closeJournalModal();
+            });
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && modal && !modal.hidden) {
+                closeJournalModal();
+            }
+        });
+
+        renderJournal();
+    }
+
+    // Backwards-compatibility alias
+    const renderBlog = initJournal;
 
     // ------------------------------------------------------------------------
     // 9. MODAL DIALOG CONTROLS
@@ -1575,9 +1755,11 @@
                 return;
             }
 
-            // Do not overlap if the project lightbox modal is active
+            // Do not overlap if the project lightbox modal or journal modal is active
             const projectModal = document.getElementById("projectModal");
             if (projectModal && !projectModal.hidden) return;
+            const journalModal = document.getElementById("journalModal");
+            if (journalModal && !journalModal.hidden) return;
 
             isAnimating = true;
             popup.classList.remove("is-closing");

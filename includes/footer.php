@@ -37,6 +37,42 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
         </div>
     </div>
 
+    <!-- Developer Journal Article Reading Lightbox Modal -->
+    <div class="modal-overlay journal-modal-overlay" id="journalModal" role="dialog" aria-modal="true" aria-labelledby="journalModalTitle" hidden>
+        <div class="modal-card journal-modal-card">
+            <div class="modal-header journal-modal-header">
+                <div class="journal-modal-title-group">
+                    <div class="journal-modal-meta-top">
+                        <span class="journal-category-pill" id="journalModalCategory">Personal Experiences</span>
+                        <span class="journal-modal-readtime" id="journalModalReadTime">3 min read</span>
+                    </div>
+                    <h3 class="modal-title journal-modal-title" id="journalModalTitle">Entry Title</h3>
+                    <div class="journal-modal-submeta" id="journalModalDate">Student Journey</div>
+                </div>
+                <button type="button" class="modal-close-btn" id="journalModalCloseBtn" aria-label="Close journal entry">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body journal-modal-body">
+                <div class="journal-article-prose" id="journalModalContent">
+                    <!-- Paragraphs populated dynamically by openJournalModal -->
+                </div>
+                <div class="journal-modal-actions">
+                    <button type="button" class="btn btn-secondary journal-modal-back-btn" id="journalModalBackBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width: 16px; height: 16px; margin-right: 6px;">
+                            <line x1="19" y1="12" x2="5" y2="12"></line>
+                            <polyline points="12 19 5 12 12 5"></polyline>
+                        </svg>
+                        <span>Back to Journal</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Promotional Invitation Website Popup (Appears once per session after 5s) -->
     <div class="modal-overlay invitation-promo-overlay" id="invitationPromoModal" role="dialog" aria-modal="true" aria-labelledby="invitationPromoTitle" hidden>
         <div class="modal-card invitation-promo-card">

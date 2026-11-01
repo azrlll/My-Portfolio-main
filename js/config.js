@@ -339,37 +339,86 @@ const SKILLS_DATA = [
 ];
 
 // =====================================
-// BLOG & LEARNING NOTES
-// Blank for now — add your notes/articles here when ready!
+// DEVELOPER JOURNAL DATA
+// Edit, add, or remove entries below to update your personal journal.
 // =====================================
-const BLOG_DATA = [];
-
-/*
-// Saved draft note templates for future reference:
-const BLOG_DATA_DRAFTS = [
+const JOURNAL_DATA = [
     {
-        id: "hardware-to-code",
-        date: "Upcoming Note",
-        readTime: "Learning Log",
-        status: "Drafting",
-        title: "Why Understanding Computer Hardware Makes Coding More Intuitive",
-        excerpt: "Exploring how tinkering with physical PC components, memory, and processors connects to writing cleaner logic and appreciating how software interacts with the machine."
+        id: "how-i-started-building-websites",
+        featured: true,
+        title: "How I Started Building Websites",
+        category: "Personal Experiences",
+        date: "Student Journey",
+        readTime: "3 min read",
+        excerpt: "A personal reflection on my earliest experiments with HTML and CSS, the excitement of making my first web page come alive, and how small coding steps sparked a lasting interest in front-end development.",
+        paragraphs: [
+            "When I first opened a code editor to write HTML, it felt like discovering a completely new creative medium. Seeing a few lines of nested tags transform into a real, visible page in a browser was an unforgettable moment. I started with simple layouts—testing headings, playing with colors, and figuring out how margins and paddings interacted.",
+            "In the beginning, CSS was both thrilling and humbling. Elements wouldn't always align where I expected them to, and getting a page to look consistent across different screen sizes was a real puzzle. But each small breakthrough—mastering Flexbox, understanding the box model, and organizing stylesheets—built my confidence step by step.",
+            "Over time, creating my first portfolio and small web experiments shifted my mindset from merely browsing the internet to thinking about how digital experiences are built, styled, and optimized. It taught me that web development isn't about knowing everything immediately; it's about staying curious, testing ideas patiently, and improving one piece at a time."
+        ],
+        image: ""
     },
     {
-        id: "vibe-coding-workflow",
-        date: "Upcoming Note",
-        readTime: "Reflections",
-        status: "Drafting",
-        title: "Building Projects Through Vibe Coding as a BSIT Student",
-        excerpt: "How combining foundational programming concepts from class with modern rapid-prototyping workflows helps turn ideas like Drivesphere into functional interfaces."
+        id: "experience-using-ai-to-build-websites",
+        featured: false,
+        title: "My Experience Using AI to Build Websites",
+        category: "Learning Experiences",
+        date: "Development Reflections",
+        readTime: "4 min read",
+        excerpt: "Reflections on using AI coding assistants for brainstorming and debugging—and why critically reviewing, testing, and understanding every line of code remains essential.",
+        paragraphs: [
+            "Incorporating AI tools into my workflow has been one of the most eye-opening experiences in my journey as an IT student. When starting a new component or exploring a layout idea, AI can rapidly generate prototypes, suggest alternative CSS approaches, and help break down syntax errors that would otherwise take hours to decipher.",
+            "However, the most important lesson I’ve learned is that AI is a collaborator, not an autopilot. Generated code often looks convincing on the surface but can carry hidden assumptions, redundant styles, or edge-case bugs that break in real browser environments. Blindly copying and pasting without understanding is a quick way to lose control of your own codebase.",
+            "Because of this, I treat AI as a pair programmer: I use it to brainstorm possibilities, generate initial snippets, and explain unfamiliar syntax. But the responsibility to step through the code, verify its responsiveness, test it across devices, and ensure it fits my project's architecture always rests with me."
+        ],
+        image: ""
     },
     {
-        id: "c-programming-foundations",
-        date: "Learning Experience",
-        readTime: "Academic Notes",
-        status: "Published Note",
-        title: "Starting with C: Control Flow, Loops, and Terminal Logic",
-        excerpt: "Key takeaways from building early command-line programs in C—from switch-case calculators to conditional grading tools and loop-based multiplication generators."
+        id: "exploring-computer-hardware",
+        featured: false,
+        title: "Exploring Computer Hardware",
+        category: "Personal Experiences",
+        date: "Hands-on Tech",
+        readTime: "3 min read",
+        excerpt: "Why tinkering with physical PC components, memory, and cooling systems gives me a deeper appreciation for software performance and system architecture.",
+        paragraphs: [
+            "Long before I wrote my first line of JavaScript, I was fascinated by the physical components that power computers. Understanding how CPUs process instructions, how RAM serves as high-speed working memory, and why thermal management dictates overall system stability made computing feel grounded and real.",
+            "Troubleshooting hardware issues—diagnosing why a system won't POST, checking power connections, or inspecting components—taught me methodical problem-solving. You can't just guess; you have to isolate variables step-by-step until you identify the bottleneck or failing link.",
+            "That physical perspective directly influences how I write code today. Knowing how the browser engine interacts with hardware resources makes me more conscious of memory leaks, excessive DOM re-renders, and animation frame rates. Software and hardware aren't separate worlds—they are two sides of the same machine."
+        ],
+        image: ""
+    },
+    {
+        id: "building-my-personal-portfolio",
+        featured: false,
+        title: "Building My Personal Portfolio",
+        category: "Project Journey",
+        date: "Project Case Note",
+        readTime: "4 min read",
+        excerpt: "The story behind creating this portfolio: crafting the Interstellar theme, designing an interactive 3D coverflow, and solving real-world responsive challenges.",
+        paragraphs: [
+            "Designing this portfolio has been my most ambitious personal project to date. I wanted it to feel like an authentic reflection of my interests: blending a futuristic, space-inspired aesthetic with practical information architecture that recruiters and visitors can navigate smoothly.",
+            "Building features like the cinematic 3D Coverflow gallery, interactive PC-building playground mini-tools, and a secure contact system with real email verification pushed me far outside my comfort zone. I spent hours tuning CSS perspective values, fine-tuning easing curves, and ensuring that mobile swipe gestures felt natural without interfering with page scroll.",
+            "Every iteration brought unexpected challenges—from background canvas jittering during mobile scroll to modal accessibility. Overcoming those hurdles made this portfolio more than just a showcase of past work; the website itself became my biggest learning laboratory."
+        ],
+        image: ""
+    },
+    {
+        id: "what-im-learning-as-a-bsit-student",
+        featured: false,
+        title: "What I'm Learning as a BSIT Student",
+        category: "Learning Experiences",
+        date: "Academic Growth",
+        readTime: "3 min read",
+        excerpt: "Balancing college coursework with independent projects, embracing bugs as teachers, and cultivating the discipline needed to grow into a capable IT professional.",
+        paragraphs: [
+            "Being a Bachelor of Science in Information Technology (BSIT) student is an exciting journey of constant adaptation. College coursework provides essential foundations—database concepts, networking, algorithms, and systems analysis—while independent projects give me the freedom to apply those theories to tangible user experiences.",
+            "One of the biggest lessons I've embraced is that encountering errors and getting stuck is not a sign of failure; it is the exact moment real learning happens. Whether it's debugging SQL queries, resolving PHP session anomalies, or refining responsive CSS breakpoints, each challenge demands patience and research.",
+            "As I continue my studies, my goal is to keep bridging theory with practice: building projects that solve real problems, asking questions when I don't know the answer, and maintaining the curiosity that made me fall in love with technology in the first place."
+        ],
+        image: ""
     }
 ];
-*/
+
+// Backwards-compatible alias for existing references
+const BLOG_DATA = JOURNAL_DATA;

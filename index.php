@@ -311,17 +311,35 @@ require __DIR__ . '/includes/header.php';
             </section>
 
             <!-- =========================================================
-                 5. BLOG SECTION — Future Articles & Learning Experiences
+                 5. DEVELOPER JOURNAL — Personal Reflections, Progress & Discoveries
             ========================================================== -->
             <section class="content-section" id="blog" aria-labelledby="blogHeading">
                 <div class="section-header">
-                    <span class="section-eyebrow">04 / BLOG</span>
-                    <h2 class="section-title" id="blogHeading">Notes &amp; Learning Experiences</h2>
-                    <p class="section-subtitle">Thoughts on computer hardware, BSIT coursework, and building projects through vibe coding.</p>
+                    <span class="section-eyebrow">04 / DEVELOPER JOURNAL</span>
+                    <h2 class="section-title" id="blogHeading">Developer Journal</h2>
+                    <p class="section-subtitle">My experiences, lessons, and discoveries while exploring computer hardware, web development, and technology.</p>
                 </div>
 
-                <div class="blog-grid" id="blogContainer">
-                    <!-- Rendered from BLOG_DATA in js/config.js -->
+                <!-- Category Filters -->
+                <div class="journal-filter-bar" id="journalFilterBar" role="tablist" aria-label="Journal Categories">
+                    <button type="button" class="journal-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">
+                        <span>All Entries</span>
+                        <span class="journal-filter-count" id="journalCountAll">5</span>
+                    </button>
+                    <button type="button" class="journal-filter-btn" data-filter="Personal Experiences" role="tab" aria-selected="false">
+                        <span>Personal Experiences</span>
+                    </button>
+                    <button type="button" class="journal-filter-btn" data-filter="Project Journey" role="tab" aria-selected="false">
+                        <span>Project Journey</span>
+                    </button>
+                    <button type="button" class="journal-filter-btn" data-filter="Learning Experiences" role="tab" aria-selected="false">
+                        <span>Learning Experiences</span>
+                    </button>
+                </div>
+
+                <!-- Journal Container (Featured Entry on top + Grid of smaller entries below) -->
+                <div class="journal-container" id="journalContainer">
+                    <!-- Rendered dynamically from JOURNAL_DATA in js/config.js -->
                 </div>
             </section>
 
