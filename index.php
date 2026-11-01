@@ -131,14 +131,46 @@ require __DIR__ . '/includes/header.php';
                     <p class="section-subtitle">Websites, hardware prototypes, and interactive projects.</p>
                 </div>
 
-                <!-- Curated / Manual Projects -->
-                <div class="projects-block">
-                    <div class="block-label-row">
-                        <h3 class="block-title">Curated Projects</h3>
-                        <span class="block-count" id="manualProjectsCount">6 Projects</span>
+                <!-- Cinematic 3D Coverflow Gallery -->
+                <div class="coverflow-gallery" id="projectsCoverflow" role="region" aria-roledescription="carousel" aria-label="Projects 3D Coverflow Gallery" tabindex="0">
+                    <div class="coverflow-controls-top">
+                        <div class="coverflow-meta">
+                            <span class="coverflow-label">PROJECT SPOTLIGHT</span>
+                            <span class="coverflow-counter" id="coverflowCounter" aria-live="polite">01 / 10</span>
+                        </div>
+                        <div class="coverflow-nav-buttons" role="group" aria-label="Gallery navigation controls">
+                            <button type="button" class="coverflow-btn coverflow-btn-prev" id="coverflowPrevBtn" aria-label="Previous project">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </button>
+                            <button type="button" class="coverflow-btn coverflow-btn-next" id="coverflowNextBtn" aria-label="Next project">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
-                    <div class="projects-grid" id="projectsGrid">
-                        <!-- Rendered from PROJECTS_DATA in js/config.js -->
+
+                    <!-- 3D Perspective Stage -->
+                    <div class="coverflow-stage" id="coverflowStage">
+                        <div class="coverflow-track" id="coverflowTrack">
+                            <!-- Populated dynamically from PROJECTS_DATA in js/config.js -->
+                        </div>
+                    </div>
+
+                    <!-- Spotlight Details Pane (Directly below centered card) -->
+                    <div class="coverflow-spotlight" id="coverflowSpotlight" aria-live="polite">
+                        <div class="spotlight-content" id="spotlightContent">
+                            <div class="spotlight-meta-row">
+                                <span class="spotlight-category" id="spotlightCategory">Category</span>
+                                <span class="spotlight-badge" id="spotlightBadge" hidden>Featured</span>
+                            </div>
+                            <h3 class="spotlight-title" id="spotlightTitle">Project Title</h3>
+                            <p class="spotlight-desc" id="spotlightDesc">Project description...</p>
+                            <div class="spotlight-tags" id="spotlightTags"></div>
+                            <div class="spotlight-actions" id="spotlightActions"></div>
+                        </div>
                     </div>
                 </div>
 

@@ -519,14 +519,8 @@
     function renderProjects() {
         if (typeof PROJECTS_DATA === "undefined" || !Array.isArray(PROJECTS_DATA)) return;
 
+        // Render Featured Projects on Home section
         const featuredGrid = document.getElementById("featuredProjectsGrid");
-        const projectsGrid = document.getElementById("projectsGrid");
-        const countBadge = document.getElementById("manualProjectsCount");
-
-        if (countBadge) {
-            countBadge.textContent = `${PROJECTS_DATA.length} Project${PROJECTS_DATA.length === 1 ? "" : "s"}`;
-        }
-
         if (featuredGrid) {
             featuredGrid.innerHTML = "";
             const featuredItems = PROJECTS_DATA.filter((p) => p.featured).slice(0, 2);
@@ -535,14 +529,286 @@
             });
         }
 
-        if (projectsGrid) {
-            projectsGrid.innerHTML = "";
-            PROJECTS_DATA.forEach((project, index) => {
-                // Highlight Drivesphere (first featured project) across 2 columns on desktop
-                const isHighlight = index === 0 && project.featured;
-                projectsGrid.appendChild(createProjectCard(project, isHighlight));
+        // Initialize Cinematic 3D Coverflow Gallery
+        initProjectsCoverflow();
+    }
+
+    // ------------------------------------------------------------------------
+    // 6.5 CINEMATIC 3D COVERFLOW GALLERY CONTROLLER
+    // ------------------------------------------------------------------------
+    function initProjectsCoverflow() {
+        const gallery = document.getElementById("projectsCoverflow");
+        const track = document.getElementById("coverflowTrack");
+        const stage = document.getElementById("coverflowStage");
+        const counterEl = document.getElementById("coverflowCounter");
+        const prevBtn = document.getElementById("coverflowPrevBtn");
+        const nextBtn = document.getElementById("coverflowNextBtn");
+
+        if (!gallery || !track || typeof PROJECTS_DATA === "undefined" || !Array.isArray(PROJECTS_DATA)) return;
+
+        const total = PROJECTS_DATA.length;
+        if (total === 0) return;
+
+        let activeIndex = 0;
+        let isTransitioning = false;
+
+        // Populate cards
+        track.innerHTML = "";
+        PROJECTS_DATA.forEach((project, idx) => {
+            const card = document.createElement("div");
+            card.className = "coverflow-card";
+            card.dataset.index = String(idx);
+            card.setAttribute("role", "button");
+            card.setAttribute("tabindex", "0");
+            card.setAttribute("aria-label", `${project.title} (${idx + 1} of ${total})`);
+
+            let mediaHtml = "";
+            if (project.image && project.image.trim() !== "") {
+                mediaHtml = `
+                    <div class="coverflow-card-media">
+                        <img src="${escapeHtml(project.image)}" alt="${escapeHtml(project.title)} preview" loading="lazy">
+                        <div class="coverflow-card-overlay"></div>
+                    </div>
+                `;
+            } else {
+                mediaHtml = `
+                    <div class="coverflow-card-media">
+                        ${createProjectSystemSvg(project, false)}
+                        <div class="coverflow-card-overlay"></div>
+                    </div>
+                `;
+            }
+
+            card.innerHTML = `
+                ${mediaHtml}
+                <div class="coverflow-card-badge">
+                    <span>${escapeHtml(project.category || "Project")}</span>
+                </div>
+                <div class="coverflow-card-footer">
+                    <h4 class="coverflow-card-title">${escapeHtml(project.title)}</h4>
+                    <span class="coverflow-inspect-pill">
+                        ${ICONS.eye}
+                        <span>Inspect</span>
+                    </span>
+                </div>
+            `;
+
+            // Card Click & Keydown
+            const handleCardClick = () => {
+                if (idx === activeIndex) {
+                    openProjectModal(PROJECTS_DATA[activeIndex]);
+                } else {
+                    updateCoverflow(idx);
+                }
+            };
+
+            card.addEventListener("click", handleCardClick);
+            card.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleCardClick();
+                }
+            });
+
+            track.appendChild(card);
+        });
+
+        // Update Spotlight Details Pane
+        function updateSpotlight(project, animate = true) {
+            const spotlightContent = document.getElementById("spotlightContent");
+            if (!spotlightContent) return;
+
+            const renderData = () => {
+                const catEl = document.getElementById("spotlightCategory");
+                const badgeEl = document.getElementById("spotlightBadge");
+                const titleEl = document.getElementById("spotlightTitle");
+                const descEl = document.getElementById("spotlightDesc");
+                const tagsEl = document.getElementById("spotlightTags");
+                const actionsEl = document.getElementById("spotlightActions");
+
+                if (catEl) catEl.textContent = project.category || "Project";
+                if (badgeEl) badgeEl.hidden = !project.featured;
+                if (titleEl) titleEl.textContent = project.title || "";
+                if (descEl) descEl.textContent = project.description || "";
+
+                if (tagsEl) {
+                    tagsEl.innerHTML = (project.tags || [])
+                        .map((tag) => `<span class="tag-pill">${escapeHtml(tag)}</span>`)
+                        .join("");
+                }
+
+                if (actionsEl) {
+                    let actionsHtml = "";
+                    if (project.githubUrl && project.githubUrl.trim() !== "") {
+                        actionsHtml += `
+                            <a href="${escapeHtml(project.githubUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary spotlight-btn">
+                                ${ICONS.github}
+                                <span>Repository</span>
+                            </a>
+                        `;
+                    }
+                    if (project.liveUrl && project.liveUrl.trim() !== "") {
+                        actionsHtml += `
+                            <a href="${escapeHtml(project.liveUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary spotlight-btn">
+                                ${ICONS.external}
+                                <span>Live Demo</span>
+                            </a>
+                        `;
+                    }
+                    actionsHtml += `
+                        <button type="button" class="btn btn-primary spotlight-btn js-spotlight-inspect">
+                            ${ICONS.eye}
+                            <span>${project.image ? "View Full Screenshot" : "Inspect System Details"}</span>
+                        </button>
+                    `;
+                    actionsEl.innerHTML = actionsHtml;
+
+                    const inspectBtn = actionsEl.querySelector(".js-spotlight-inspect");
+                    if (inspectBtn) {
+                        inspectBtn.addEventListener("click", () => openProjectModal(project));
+                    }
+                }
+            };
+
+            if (animate) {
+                spotlightContent.classList.add("is-fading");
+                setTimeout(() => {
+                    renderData();
+                    spotlightContent.classList.remove("is-fading");
+                }, 160);
+            } else {
+                renderData();
+            }
+        }
+
+        // Apply 3D Perspective Coordinates
+        function updateCoverflow(newIndex, animateSpotlight = true) {
+            activeIndex = ((newIndex % total) + total) % total;
+
+            // Update Counter (e.g. "01 / 10")
+            if (counterEl) {
+                const currentStr = String(activeIndex + 1).padStart(2, "0");
+                const totalStr = String(total).padStart(2, "0");
+                counterEl.textContent = `${currentStr} / ${totalStr}`;
+            }
+
+            const cards = track.querySelectorAll(".coverflow-card");
+            const isMobile = window.innerWidth <= 768;
+
+            cards.forEach((card, i) => {
+                let offset = i - activeIndex;
+
+                // Circular wrap-around calculation for shortest geometric path
+                if (offset > Math.floor(total / 2)) offset -= total;
+                else if (offset < -Math.floor((total - 1) / 2)) offset += total;
+
+                const absOffset = Math.abs(offset);
+                const isActive = offset === 0;
+
+                card.classList.toggle("is-active", isActive);
+                card.setAttribute("aria-current", isActive ? "true" : "false");
+
+                if (isActive) {
+                    // Center forward-facing card
+                    card.style.transform = `translate3d(-50%, -50%, 40px) rotateY(0deg) scale(1)`;
+                    card.style.opacity = "1";
+                    card.style.zIndex = "10";
+                    card.style.pointerEvents = "auto";
+                } else if (absOffset === 1) {
+                    // Immediate neighbor cards (angled 8-12 degrees)
+                    const dir = Math.sign(offset);
+                    const rotY = -dir * (isMobile ? 7 : 10);
+                    const tx = dir * (isMobile ? 140 : 250);
+                    const sc = isMobile ? 0.88 : 0.85;
+                    card.style.transform = `translate3d(calc(-50% + ${tx}px), -50%, -25px) rotateY(${rotY}deg) scale(${sc})`;
+                    card.style.opacity = isMobile ? "0.4" : "0.68";
+                    card.style.zIndex = "5";
+                    card.style.pointerEvents = "auto";
+                } else if (absOffset === 2) {
+                    // Outer neighbor cards
+                    const dir = Math.sign(offset);
+                    const rotY = -dir * (isMobile ? 9 : 13);
+                    const tx = dir * (isMobile ? 240 : 420);
+                    const sc = isMobile ? 0.72 : 0.72;
+                    card.style.transform = `translate3d(calc(-50% + ${tx}px), -50%, -80px) rotateY(${rotY}deg) scale(${sc})`;
+                    card.style.opacity = isMobile ? "0" : "0.3";
+                    card.style.zIndex = "2";
+                    card.style.pointerEvents = isMobile ? "none" : "auto";
+                } else {
+                    // Hidden background cards
+                    const dir = Math.sign(offset);
+                    const tx = dir * (isMobile ? 320 : 540);
+                    card.style.transform = `translate3d(calc(-50% + ${tx}px), -50%, -150px) scale(0.6)`;
+                    card.style.opacity = "0";
+                    card.style.zIndex = "0";
+                    card.style.pointerEvents = "none";
+                }
+            });
+
+            // Update Spotlight Details
+            updateSpotlight(PROJECTS_DATA[activeIndex], animateSpotlight);
+        }
+
+        // Navigation Controls
+        if (prevBtn) {
+            prevBtn.addEventListener("click", () => updateCoverflow(activeIndex - 1));
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener("click", () => updateCoverflow(activeIndex + 1));
+        }
+
+        // Keyboard Arrow Navigation when gallery has focus
+        gallery.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                updateCoverflow(activeIndex - 1);
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                updateCoverflow(activeIndex + 1);
+            }
+        });
+
+        // Touch Swipe Navigation for mobile devices
+        if (stage) {
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchEndX = 0;
+            let isSwiping = false;
+
+            stage.addEventListener("touchstart", (e) => {
+                if (e.touches.length !== 1) return;
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                touchEndX = touchStartX;
+                isSwiping = true;
+            }, { passive: true });
+
+            stage.addEventListener("touchmove", (e) => {
+                if (!isSwiping || e.touches.length !== 1) return;
+                touchEndX = e.touches[0].clientX;
+            }, { passive: true });
+
+            stage.addEventListener("touchend", () => {
+                if (!isSwiping) return;
+                isSwiping = false;
+                const diffX = touchEndX - touchStartX;
+                if (Math.abs(diffX) > 42) {
+                    if (diffX < 0) {
+                        updateCoverflow(activeIndex + 1); // Swiped left -> next
+                    } else {
+                        updateCoverflow(activeIndex - 1); // Swiped right -> prev
+                    }
+                }
             });
         }
+
+        // Responsive resize listener
+        window.addEventListener("resize", () => {
+            updateCoverflow(activeIndex, false);
+        }, { passive: true });
+
+        // Initial render
+        updateCoverflow(0, false);
     }
 
     // ------------------------------------------------------------------------
@@ -1197,6 +1463,10 @@
         }
 
         modal.hidden = false;
+        modal.classList.remove("is-closing");
+        requestAnimationFrame(() => {
+            modal.classList.add("is-open");
+        });
         document.body.style.overflow = "hidden";
     }
 
@@ -1206,8 +1476,14 @@
         if (!modal) return;
 
         const closeModal = () => {
-            modal.hidden = true;
-            document.body.style.overflow = "";
+            if (modal.hidden) return;
+            modal.classList.remove("is-open");
+            modal.classList.add("is-closing");
+            setTimeout(() => {
+                modal.hidden = true;
+                modal.classList.remove("is-closing");
+                document.body.style.overflow = "";
+            }, 260);
         };
 
         if (closeBtn) closeBtn.addEventListener("click", closeModal);

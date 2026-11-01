@@ -940,6 +940,425 @@ button {
     gap: 22px;
 }
 
+/* ============================================================================
+   CINEMATIC 3D COVERFLOW GALLERY & SPOTLIGHT
+   ============================================================================ */
+.coverflow-gallery {
+    width: 100%;
+    margin-bottom: 28px;
+    outline: none;
+    position: relative;
+}
+
+.coverflow-gallery:focus-visible {
+    outline: 2px solid rgba(110, 231, 183, 0.4);
+    outline-offset: 4px;
+    border-radius: var(--radius-lg);
+}
+
+.coverflow-controls-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 16px;
+}
+
+.coverflow-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.coverflow-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.coverflow-counter {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--status-dot);
+    background: rgba(110, 231, 183, 0.08);
+    border: 1px solid rgba(110, 231, 183, 0.22);
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.06em;
+}
+
+.coverflow-nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.coverflow-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.coverflow-btn:hover {
+    background-color: var(--bg-card-hover);
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.coverflow-btn:active {
+    transform: translateY(0);
+}
+
+.coverflow-btn:focus-visible {
+    outline: 2px solid var(--status-dot);
+    outline-offset: 2px;
+}
+
+/* 3D Perspective Stage */
+.coverflow-stage {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    overflow: hidden;
+    perspective: 1100px;
+    perspective-origin: 50% 50%;
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(ellipse at 50% 50%, rgba(56, 189, 248, 0.05) 0%, rgba(110, 231, 183, 0.02) 40%, transparent 75%),
+        linear-gradient(180deg, rgba(14, 14, 22, 0.5) 0%, rgba(9, 9, 14, 0.8) 100%);
+    border: 1px solid var(--border-subtle);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+}
+
+.coverflow-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+/* Individual 3D Coverflow Card */
+.coverflow-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(480px, 80vw);
+    aspect-ratio: 16 / 10;
+    max-height: 300px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+    transition: transform 550ms cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 550ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 550ms ease,
+                box-shadow 550ms ease;
+    will-change: transform, opacity;
+    transform-origin: center center;
+    cursor: pointer;
+}
+
+.coverflow-card-media {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-surface);
+    overflow: hidden;
+}
+
+.coverflow-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms ease;
+}
+
+.coverflow-card-media .project-system-preview {
+    min-height: 100%;
+    height: 100%;
+    padding: 16px 20px;
+}
+
+.coverflow-card-media .system-svg-wrapper {
+    margin: 6px 0 10px;
+}
+
+.coverflow-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(8, 8, 12, 0.9) 0%, rgba(8, 8, 12, 0.2) 45%, transparent 70%);
+    pointer-events: none;
+}
+
+.coverflow-card-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    background: rgba(10, 10, 15, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.coverflow-card-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.coverflow-card-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.coverflow-inspect-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    background: rgba(56, 189, 248, 0.15);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 250ms ease, transform 250ms ease;
+}
+
+.coverflow-inspect-pill svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* Active Center Card Highlight */
+.coverflow-card.is-active {
+    border-color: rgba(110, 231, 183, 0.45);
+    box-shadow: 0 24px 54px -10px rgba(0, 0, 0, 0.75), 0 0 28px rgba(56, 189, 248, 0.22);
+}
+
+.coverflow-card.is-active:hover .coverflow-inspect-pill {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.coverflow-card.is-active:hover .coverflow-card-media img {
+    transform: scale(1.03);
+}
+
+/* Neighbor Dimmed State */
+.coverflow-card:not(.is-active) {
+    filter: brightness(0.75);
+}
+
+.coverflow-card:not(.is-active):hover {
+    filter: brightness(0.9);
+    border-color: var(--border-strong);
+}
+
+/* Project Spotlight Details */
+.coverflow-spotlight {
+    margin-top: 18px;
+    padding: 22px 26px;
+    background-color: rgba(17, 17, 24, 0.8);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme="light"] .coverflow-spotlight {
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.spotlight-content {
+    transition: opacity 200ms ease, transform 200ms ease;
+    will-change: opacity, transform;
+}
+
+.spotlight-content.is-fading {
+    opacity: 0;
+    transform: translateY(6px);
+}
+
+.spotlight-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.spotlight-category {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.spotlight-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background-color: var(--bg-nav-active);
+    color: #ffffff;
+}
+
+.spotlight-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.015em;
+    margin-bottom: 8px;
+}
+
+.spotlight-desc {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 14px;
+    max-width: 840px;
+}
+
+.spotlight-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.spotlight-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.spotlight-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 0.84rem;
+    font-weight: 500;
+}
+
+.spotlight-btn svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .coverflow-card,
+    .spotlight-content,
+    .modal-overlay,
+    .modal-card {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
+/* Tablet & Mobile Coverflow */
+@media (max-width: 768px) {
+    .coverflow-stage {
+        height: 280px;
+        perspective: 800px;
+    }
+
+    .coverflow-card {
+        width: min(340px, 86vw);
+        max-height: 230px;
+    }
+
+    .coverflow-card-title {
+        font-size: 0.95rem;
+    }
+
+    .coverflow-spotlight {
+        padding: 16px 18px;
+    }
+
+    .spotlight-title {
+        font-size: 1.18rem;
+    }
+
+    .spotlight-desc {
+        font-size: 0.88rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .coverflow-stage {
+        height: 240px;
+        perspective: 650px;
+    }
+
+    .coverflow-card {
+        width: min(290px, 84vw);
+        max-height: 195px;
+    }
+
+    .spotlight-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .spotlight-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 .project-card {
     background-color: var(--bg-card);
     border: 1px solid var(--border-subtle);
@@ -2229,17 +2648,35 @@ button {
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.78);
-    backdrop-filter: blur(4px);
+    background-color: rgba(3, 3, 7, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     z-index: 200;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 24px;
+    opacity: 0;
+    transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.modal-overlay:not([hidden]) {
+    pointer-events: auto;
 }
 
 .modal-overlay[hidden] {
     display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-overlay.is-open {
+    opacity: 1;
+}
+
+.modal-overlay.is-closing {
+    opacity: 0;
 }
 
 .modal-card {
@@ -2250,7 +2687,20 @@ button {
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: var(--shadow-elevated);
+    box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.85);
+    transform: scale(0.92) translateY(18px);
+    opacity: 0;
+    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 320ms ease;
+}
+
+.modal-overlay.is-open .modal-card {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.modal-overlay.is-closing .modal-card {
+    transform: scale(0.94) translateY(12px);
+    opacity: 0;
 }
 
 .modal-header {
