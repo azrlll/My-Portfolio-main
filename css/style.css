@@ -2405,18 +2405,6 @@ body.invitation-popup-active {
 .invitation-promo-title-wrap {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-}
-
-.invitation-promo-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--status-dot);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
 }
 
 .invitation-promo-title {

@@ -1296,10 +1296,10 @@
             window._invitationTimerId = null;
         }
 
-        // Automatically start 5-second countdown on homepage load or refresh
+        // Automatically start 2-second timer on homepage load or refresh
         window._invitationTimerId = setTimeout(() => {
             openPopup();
-        }, 5000);
+        }, 2000);
     }
 
     // ------------------------------------------------------------------------

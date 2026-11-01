@@ -41,10 +41,6 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
         <div class="modal-card invitation-promo-card">
             <div class="modal-header invitation-promo-header">
                 <div class="invitation-promo-title-wrap">
-                    <span class="invitation-promo-badge">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                        <span>Special Offer</span>
-                    </span>
                     <h3 class="modal-title invitation-promo-title" id="invitationPromoTitle">Want Your Own Invitation Website?</h3>
                 </div>
                 <button type="button" class="modal-close-btn invitation-promo-close" id="invitationPromoCloseBtn" aria-label="Close invitation popup">
