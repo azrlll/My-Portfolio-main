@@ -104,6 +104,28 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
     <meta name="build-version" content="<?= htmlspecialchars($deployVersion, ENT_QUOTES, 'UTF-8') ?>">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
 
+    <!-- Clean URL Sanitizer: Instantly strip InfinityFree's tracking param (?i=1 or &i=1) and internal query parameters -->
+    <script>
+        (function () {
+            try {
+                if (window.location.search) {
+                    var search = window.location.search;
+                    if (search.indexOf("i=") !== -1 || search.indexOf("game=") !== -1) {
+                        var params = new URLSearchParams(search);
+                        params.delete("i");
+                        if (params.has("game")) {
+                            sessionStorage.setItem("active_playground_game", params.get("game"));
+                            params.delete("game");
+                        }
+                        var cleanQuery = params.toString() ? ("?" + params.toString()) : "";
+                        var cleanUrl = window.location.pathname + cleanQuery + window.location.hash;
+                        window.history.replaceState(window.history.state, document.title, cleanUrl);
+                    }
+                }
+            } catch (e) {}
+        })();
+    </script>
+
     <!-- Favicon & Touch Icons (Interstellar Black Hole) -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
@@ -242,7 +264,7 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
                                 </a>
                             </li>
                             <li class="nav-group-playground" id="navGroupPlayground">
-                                <a href="<?= $currentPage === 'index' ? '#playground' : 'index.php?game=build-pc#playground' ?>" class="nav-item nav-item-playground" data-section="playground" id="navPlaygroundHubLink" role="button" aria-expanded="false" aria-haspopup="true">
+                                <a href="<?= $basePrefix ?>#playground" class="nav-item nav-item-playground" data-section="playground" id="navPlaygroundHubLink" role="button" aria-expanded="false" aria-haspopup="true">
                                     <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                         <line x1="6" y1="12" x2="10" y2="12"></line>
                                         <line x1="8" y1="10" x2="8" y2="14"></line>
@@ -257,25 +279,25 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
                                 </a>
                                 <ul class="nav-submenu" id="navPlaygroundSubmenu" aria-label="Playground Games">
                                     <li>
-                                        <a href="<?= $currentPage === 'index' ? '#playground' : 'index.php?game=build-pc#playground' ?>" class="nav-subitem" data-open-game="build-pc">
+                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="build-pc">
                                             <span class="nav-subitem-index">01</span>
                                             <span>Build a PC</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="<?= $currentPage === 'index' ? '#playground' : 'index.php?game=fix-pc#playground' ?>" class="nav-subitem" data-open-game="fix-pc">
+                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="fix-pc">
                                             <span class="nav-subitem-index">02</span>
                                             <span>Fix the PC</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="<?= $currentPage === 'index' ? '#playground' : 'index.php?game=circuit-connect#playground' ?>" class="nav-subitem" data-open-game="circuit-connect">
+                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="circuit-connect">
                                             <span class="nav-subitem-index">03</span>
                                             <span>Circuit Connect</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="<?= $currentPage === 'index' ? '#playground' : 'index.php?game=snake#playground' ?>" class="nav-subitem" data-open-game="snake">
+                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="snake">
                                             <span class="nav-subitem-index">04</span>
                                             <span>Minimal Snake</span>
                                         </a>

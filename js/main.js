@@ -72,12 +72,27 @@
     // 2.5 HOMEPAGE REFRESH & SCROLL RESTORATION MANAGEMENT
     // ------------------------------------------------------------------------
     function initScrollAndRefreshBehavior() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const hasGameParam = urlParams.has("game");
-        const hasStatusParam = urlParams.has("status");
+        // Instantly clean up InfinityFree tracking (?i=1 or &i=1) and internal game params
+        try {
+            if (window.location.search && (window.location.search.includes("i=") || window.location.search.includes("game="))) {
+                const cleanParams = new URLSearchParams(window.location.search);
+                cleanParams.delete("i");
+                if (cleanParams.has("game")) {
+                    try { sessionStorage.setItem("active_playground_game", cleanParams.get("game")); } catch (e) {}
+                    cleanParams.delete("game");
+                }
+                const remaining = cleanParams.toString();
+                const cleanUrl = window.location.pathname + (remaining ? "?" + remaining : "") + (window.location.hash || "");
+                history.replaceState(history.state, document.title, cleanUrl);
+            }
+        } catch (e) {}
 
-        // Do not alter scroll restoration on individual playground game pages or contact form status views
-        if (hasGameParam || hasStatusParam) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasStatusParam = urlParams.has("status");
+        const isPlayground = window.location.hash === "#playground";
+
+        // Do not alter scroll restoration on playground or contact form status views
+        if (hasStatusParam || isPlayground) {
             return;
         }
 
@@ -88,7 +103,7 @@
 
         // Clean up any hash anchors on homepage load so page refresh always displays Home at the top
         if (window.location.hash && window.location.hash !== "#playground") {
-            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+            history.replaceState(null, document.title, window.location.pathname);
         }
 
         // Always reset main page scroll position to the top (Home section) on initial page load / refresh
@@ -97,9 +112,9 @@
         // Ensure page returns to Home on browser reload or history navigation
         window.addEventListener("pageshow", (e) => {
             const currentParams = new URLSearchParams(window.location.search);
-            if (!currentParams.has("game") && !currentParams.has("status")) {
+            if (!currentParams.has("status")) {
                 if (window.location.hash && window.location.hash !== "#playground") {
-                    history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                    history.replaceState(null, document.title, window.location.pathname);
                 }
                 if (e.persisted || (window.performance && performance.getEntriesByType("navigation")[0]?.type === "reload")) {
                     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -165,10 +180,8 @@
                         targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
                     }
 
-                    // Avoid leaving #contact or hash anchors in the URL so page refresh always returns to Home
-                    if (window.location.hash) {
-                        history.replaceState(null, document.title, window.location.pathname + window.location.search);
-                    }
+                    // Keep URL completely clean across sections without stale query params or hashes
+                    history.replaceState(null, document.title, window.location.pathname);
                 } else {
                     navItems.forEach((item) => item.classList.remove("active"));
                     link.classList.add("active");
@@ -195,9 +208,7 @@
                     if (navGroupPlayground) navGroupPlayground.classList.remove("is-expanded");
                     if (navPlaygroundHubLink) navPlaygroundHubLink.setAttribute("aria-expanded", "false");
                     contactSec.scrollIntoView({ behavior: "smooth", block: "start" });
-                    if (window.location.hash) {
-                        history.replaceState(null, document.title, window.location.pathname + window.location.search);
-                    }
+                    history.replaceState(null, document.title, window.location.pathname);
                 }
             });
         });
@@ -211,9 +222,7 @@
                 if (navGroupPlayground) navGroupPlayground.classList.remove("is-expanded");
                 if (navPlaygroundHubLink) navPlaygroundHubLink.setAttribute("aria-expanded", "false");
                 window.scrollTo({ top: 0, behavior: "smooth" });
-                if (window.location.hash) {
-                    history.replaceState(null, document.title, window.location.pathname + window.location.search);
-                }
+                history.replaceState(null, document.title, window.location.pathname);
             });
         });
 
@@ -228,12 +237,15 @@
                                 item.classList.toggle("active", item.dataset.section === id);
                             });
 
-                            // If user is not currently in the playground section, close the playground dropdown
+                            // If user is not currently in the playground section, close the playground dropdown and clean URL
                             if (id !== "playground") {
                                 const navGroupPlayground = document.getElementById("navGroupPlayground");
                                 const navPlaygroundHubLink = document.getElementById("navPlaygroundHubLink");
                                 if (navGroupPlayground) navGroupPlayground.classList.remove("is-expanded");
                                 if (navPlaygroundHubLink) navPlaygroundHubLink.setAttribute("aria-expanded", "false");
+                                if (window.location.hash === "#playground" || (window.location.search && !window.location.search.includes("status="))) {
+                                    history.replaceState(null, document.title, window.location.pathname);
+                                }
                             }
                         }
                     });

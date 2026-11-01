@@ -111,16 +111,12 @@
                     item.classList.toggle("active", item.getAttribute("data-section") === "playground");
                 });
 
-                // Update URL without full page reload for refresh persistence
+                // Keep URL clean without exposing ?game=... query parameters or &i=1
                 try {
-                    const currentSearch = new URLSearchParams(window.location.search);
-                    if (currentSearch.get("game") !== gameKey) {
-                        currentSearch.set("game", gameKey);
-                        const newUrl = `${window.location.pathname}?${currentSearch.toString()}#playground`;
-                        window.history.replaceState({ game: gameKey }, "", newUrl);
-                    }
+                    sessionStorage.setItem("active_playground_game", gameKey);
+                    window.history.replaceState({ game: gameKey }, "", window.location.pathname + "#playground");
                 } catch (err) {
-                    // Ignore URLSearchParams error in legacy environments
+                    // Ignore error in legacy environments
                 }
 
                 const playgroundSection = document.getElementById("playground");
@@ -185,13 +181,19 @@
         // Direct one-click game selection from the Sidebar Playground submenu
         sidebarSubItems.forEach((subLink) => {
             subLink.addEventListener("click", (e) => {
+                const targetGame = subLink.getAttribute("data-open-game");
+                if (targetGame) {
+                    try {
+                        sessionStorage.setItem("active_playground_game", targetGame);
+                    } catch (err) {}
+                }
+
                 const isContactPage = window.location.pathname.endsWith("contact.php");
                 if (isContactPage) {
-                    return; // Let standard link navigation open index.php?game=...#playground
+                    return; // Let standard link navigation open index.php#playground
                 }
 
                 e.preventDefault();
-                const targetGame = subLink.getAttribute("data-open-game");
                 if (targetGame) {
                     switchGame(targetGame, true);
                 }
@@ -206,23 +208,38 @@
             });
         }
 
-        // Auto-select game based on URL (?game=...) or hash on initial load
+        // Auto-select game based on saved game, query, or hash on initial load
         try {
             const params = new URLSearchParams(window.location.search);
             const queryGame = params.get("game");
             const hash = (window.location.hash || "").replace("#", "");
+            let savedGame = null;
+            try {
+                savedGame = sessionStorage.getItem("active_playground_game");
+            } catch (e) {}
 
             const validGames = ["build-pc", "fix-pc", "circuit-connect", "snake"];
+            let targetGame = "build-pc";
 
             if (validGames.includes(queryGame)) {
-                switchGame(queryGame, hash === "playground");
+                targetGame = queryGame;
+            } else if (validGames.includes(savedGame)) {
+                targetGame = savedGame;
             } else if (validGames.includes(hash)) {
-                switchGame(hash, true);
-            } else if (hash === "playground") {
-                switchGame("build-pc", true);
-            } else {
-                // Default: build-pc view is active in the DOM
-                setActiveSubmenuGame("build-pc");
+                targetGame = hash;
+            }
+
+            const isPlaygroundNav = (hash === "playground" || queryGame !== null || validGames.includes(hash));
+            switchGame(targetGame, isPlaygroundNav);
+
+            // Clean up any ?game= or ?i= from the address bar so the URL stays completely clean
+            if (window.location.search && (window.location.search.includes("game=") || window.location.search.includes("i="))) {
+                const cleanParams = new URLSearchParams(window.location.search);
+                cleanParams.delete("game");
+                cleanParams.delete("i");
+                const remaining = cleanParams.toString();
+                const cleanUrl = window.location.pathname + (remaining ? "?" + remaining : "") + (window.location.hash || "");
+                window.history.replaceState(window.history.state, document.title, cleanUrl);
             }
         } catch (err) {
             setActiveSubmenuGame("build-pc");
