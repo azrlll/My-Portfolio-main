@@ -361,7 +361,6 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
 
                     <div class="sidebar-meta-Sign">
                         <p class="copyright-text">&copy; <?= date('Y') ?> Kevin Christopher</p>
-                        <p class="copyright-subtext">BSIT &bull; Hardware &amp; Code</p>
                     </div>
                 </div>
             </div>
