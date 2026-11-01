@@ -104,6 +104,12 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
     <meta name="build-version" content="<?= htmlspecialchars($deployVersion, ENT_QUOTES, 'UTF-8') ?>">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
 
+    <!-- Favicon & Touch Icons (Interstellar Black Hole) -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
     <!-- Open Graph / Facebook / Messenger / Discord Social Link Preview -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kevin-portfolio.free.nf/">
