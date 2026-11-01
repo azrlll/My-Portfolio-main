@@ -1165,6 +1165,191 @@ button {
     height: 14px;
 }
 
+/* Custom Invitation Website Service Banner / CTA */
+.invitation-cta-banner {
+    position: relative;
+    margin-top: 36px;
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(15, 15, 15, 0.88));
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+[data-theme="light"] .invitation-cta-banner {
+    background: linear-gradient(135deg, #ffffff, #fafafa);
+    border-color: #e4e4e7;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.invitation-cta-banner:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .invitation-cta-banner:hover {
+    border-color: #d4d4d8;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.invitation-cta-glow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(110, 231, 183, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.invitation-cta-inner {
+    position: relative;
+    z-index: 1;
+    padding: 32px 34px;
+}
+
+.invitation-cta-top {
+    margin-bottom: 20px;
+}
+
+.invitation-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.invitation-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--status-dot);
+    box-shadow: 0 0 8px var(--status-dot);
+}
+
+.invitation-cta-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+}
+
+.invitation-cta-lead {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.invitation-features-box {
+    background-color: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    margin-bottom: 22px;
+}
+
+[data-theme="light"] .invitation-features-box {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.invitation-features-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin: 0 0 14px 0;
+}
+
+.invitation-features-desc strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.invitation-feature-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.invitation-chip {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 5px 11px;
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-badge);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    letter-spacing: 0.01em;
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.invitation-chip:hover {
+    border-color: var(--border-strong);
+    background-color: var(--bg-card-hover);
+}
+
+.invitation-cta-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.invitation-cta-text-wrap {
+    flex: 1;
+}
+
+.invitation-cta-interest {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin: 0 0 8px 0;
+}
+
+.invitation-cta-interest strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.invitation-cta-sparkle {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.invitation-cta-btn-wrap {
+    flex-shrink: 0;
+}
+
+.invitation-btn {
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.invitation-btn:hover {
+    transform: translateY(-2px);
+}
+
 /* ----------------------------------------------------------------------------
    9. SKILLS SECTION — INTERACTIVE SKILLS EXPLORER
    ---------------------------------------------------------------------------- */
@@ -2418,6 +2603,26 @@ button {
 
     .modal-body {
         padding: 16px;
+    }
+
+    /* Invitation CTA Banner on mobile */
+    .invitation-cta-inner {
+        padding: 22px 18px;
+    }
+
+    .invitation-cta-title {
+        font-size: 1.22rem;
+    }
+
+    .invitation-cta-bottom {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .invitation-btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 

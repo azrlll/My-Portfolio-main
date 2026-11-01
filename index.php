@@ -143,6 +143,60 @@ require __DIR__ . '/includes/header.php';
                         <!-- Rendered from PROJECTS_DATA in js/config.js -->
                     </div>
                 </div>
+
+                <!-- Custom Invitation Website Service Banner / CTA -->
+                <div class="invitation-cta-banner" id="invitationCta">
+                    <div class="invitation-cta-glow" aria-hidden="true"></div>
+                    <div class="invitation-cta-inner">
+                        <div class="invitation-cta-top">
+                            <span class="invitation-eyebrow">
+                                <span class="invitation-dot" aria-hidden="true"></span>
+                                Personalized Digital Invitations
+                            </span>
+                            <h3 class="invitation-cta-title">Want Your Own Invitation Website? 💌</h3>
+                            <p class="invitation-cta-lead">
+                                Planning a birthday, wedding, debut, or any special occasion? I can help you create a personalized invitation website!
+                            </p>
+                        </div>
+
+                        <div class="invitation-features-box">
+                            <p class="invitation-features-desc">
+                                We can include <strong>background music</strong>, <strong>animated backgrounds</strong>, <strong>interactive elements</strong>, <strong>photo galleries</strong>, <strong>RSVP forms</strong>, <strong>countdown timers</strong>, <strong>event locations with maps</strong>, <strong>dress-code guides</strong>, and <strong>other custom features</strong> to make your invitation more special, interactive, and memorable.
+                            </p>
+                            <div class="invitation-feature-chips" aria-label="Available invitation features">
+                                <span class="invitation-chip">🎵 Background Music</span>
+                                <span class="invitation-chip">✨ Animated Backgrounds</span>
+                                <span class="invitation-chip">🎮 Interactive Elements</span>
+                                <span class="invitation-chip">📸 Photo Galleries</span>
+                                <span class="invitation-chip">📝 RSVP Forms</span>
+                                <span class="invitation-chip">⏳ Countdown Timers</span>
+                                <span class="invitation-chip">📍 Event Locations &amp; Maps</span>
+                                <span class="invitation-chip">👗 Dress-Code Guides</span>
+                                <span class="invitation-chip">🎨 Custom Layouts</span>
+                            </div>
+                        </div>
+
+                        <div class="invitation-cta-bottom">
+                            <div class="invitation-cta-text-wrap">
+                                <p class="invitation-cta-interest">
+                                    <strong>Interested in having me as your invitation website designer?</strong> Feel free to contact me and share your preferred layout, design ideas, or concept for your invitation. You can also send reference images, color themes, or examples of what you have in mind so we can plan how your website will look.
+                                </p>
+                                <p class="invitation-cta-sparkle">
+                                    Let's turn your ideas into something special! ✨
+                                </p>
+                            </div>
+                            <div class="invitation-cta-btn-wrap">
+                                <a href="#contact" class="btn btn-primary invitation-btn">
+                                    <span>Contact Me</span>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M5 12h14"></path>
+                                        <path d="m12 5 7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- =========================================================
