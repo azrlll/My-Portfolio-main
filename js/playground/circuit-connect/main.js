@@ -98,31 +98,31 @@
 
             setActiveSubmenuGame(gameKey);
 
-            // Expand dropdown & highlight active state
-            if (navGroupPlayground) {
-                navGroupPlayground.classList.add("is-expanded");
-            }
-            if (navPlaygroundHubLink) {
-                navPlaygroundHubLink.setAttribute("aria-expanded", "true");
-            }
-
-            document.querySelectorAll(".nav-item").forEach((item) => {
-                item.classList.toggle("active", item.getAttribute("data-section") === "playground");
-            });
-
-            // Update URL without full page reload for refresh persistence
-            try {
-                const currentSearch = new URLSearchParams(window.location.search);
-                if (currentSearch.get("game") !== gameKey) {
-                    currentSearch.set("game", gameKey);
-                    const newUrl = `${window.location.pathname}?${currentSearch.toString()}#playground`;
-                    window.history.replaceState({ game: gameKey }, "", newUrl);
-                }
-            } catch (err) {
-                // Ignore URLSearchParams error in legacy environments
-            }
-
+            // Expand dropdown & highlight active state ONLY when explicitly navigating to Playground
             if (shouldScroll) {
+                if (navGroupPlayground) {
+                    navGroupPlayground.classList.add("is-expanded");
+                }
+                if (navPlaygroundHubLink) {
+                    navPlaygroundHubLink.setAttribute("aria-expanded", "true");
+                }
+
+                document.querySelectorAll(".nav-item").forEach((item) => {
+                    item.classList.toggle("active", item.getAttribute("data-section") === "playground");
+                });
+
+                // Update URL without full page reload for refresh persistence
+                try {
+                    const currentSearch = new URLSearchParams(window.location.search);
+                    if (currentSearch.get("game") !== gameKey) {
+                        currentSearch.set("game", gameKey);
+                        const newUrl = `${window.location.pathname}?${currentSearch.toString()}#playground`;
+                        window.history.replaceState({ game: gameKey }, "", newUrl);
+                    }
+                } catch (err) {
+                    // Ignore URLSearchParams error in legacy environments
+                }
+
                 const playgroundSection = document.getElementById("playground");
                 if (playgroundSection) {
                     playgroundSection.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -146,15 +146,41 @@
                 navGroupPlayground.classList.toggle("is-expanded", willBeExpanded);
                 navPlaygroundHubLink.setAttribute("aria-expanded", String(willBeExpanded));
 
-                // If expanded, highlight Playground nav item and ensure current game is visible
+                // If expanded, highlight Playground nav item and scroll to playground
                 if (willBeExpanded) {
                     document.querySelectorAll(".nav-item").forEach((item) => {
                         item.classList.toggle("active", item.getAttribute("data-section") === "playground");
                     });
-                    switchGame(currentGameKey || "build-pc", false);
+                    switchGame(currentGameKey || "build-pc", true);
                 }
             });
         }
+
+        // Close Playground dropdown when not hovering and not on the playground section
+        if (navGroupPlayground) {
+            navGroupPlayground.addEventListener("mouseleave", () => {
+                const isPlaygroundActive = navPlaygroundHubLink && navPlaygroundHubLink.classList.contains("active");
+                if (!isPlaygroundActive) {
+                    navGroupPlayground.classList.remove("is-expanded");
+                    if (navPlaygroundHubLink) {
+                        navPlaygroundHubLink.setAttribute("aria-expanded", "false");
+                    }
+                }
+            });
+        }
+
+        // Close Playground dropdown when clicking outside if not on the playground section
+        document.addEventListener("click", (e) => {
+            if (navGroupPlayground && !navGroupPlayground.contains(e.target)) {
+                const isPlaygroundActive = navPlaygroundHubLink && navPlaygroundHubLink.classList.contains("active");
+                if (!isPlaygroundActive) {
+                    navGroupPlayground.classList.remove("is-expanded");
+                    if (navPlaygroundHubLink) {
+                        navPlaygroundHubLink.setAttribute("aria-expanded", "false");
+                    }
+                }
+            }
+        });
 
         // Direct one-click game selection from the Sidebar Playground submenu
         sidebarSubItems.forEach((subLink) => {

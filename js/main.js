@@ -151,6 +151,14 @@
                     link.classList.add("active");
                     closeMobileMenu();
 
+                    // Collapse Playground submenu when navigating away to another section
+                    if (sectionId !== "playground") {
+                        const navGroupPlayground = document.getElementById("navGroupPlayground");
+                        const navPlaygroundHubLink = document.getElementById("navPlaygroundHubLink");
+                        if (navGroupPlayground) navGroupPlayground.classList.remove("is-expanded");
+                        if (navPlaygroundHubLink) navPlaygroundHubLink.setAttribute("aria-expanded", "false");
+                    }
+
                     if (sectionId === "home") {
                         window.scrollTo({ top: 0, behavior: "smooth" });
                     } else {
@@ -165,6 +173,11 @@
                     navItems.forEach((item) => item.classList.remove("active"));
                     link.classList.add("active");
                     closeMobileMenu();
+
+                    const navGroupPlayground = document.getElementById("navGroupPlayground");
+                    const navPlaygroundHubLink = document.getElementById("navPlaygroundHubLink");
+                    if (navGroupPlayground) navGroupPlayground.classList.remove("is-expanded");
+                    if (navPlaygroundHubLink) navPlaygroundHubLink.setAttribute("aria-expanded", "false");
                 }
             });
         });
@@ -177,6 +190,10 @@
                 if (contactSec) {
                     e.preventDefault();
                     closeMobileMenu();
+                    const navGroupPlayground = document.getElementById("navGroupPlayground");
+                    const navPlaygroundHubLink = document.getElementById("navPlaygroundHubLink");
+                    if (navGroupPlayground) navGroupPlayground.classList.remove("is-expanded");
+                    if (navPlaygroundHubLink) navPlaygroundHubLink.setAttribute("aria-expanded", "false");
                     contactSec.scrollIntoView({ behavior: "smooth", block: "start" });
                     if (window.location.hash) {
                         history.replaceState(null, document.title, window.location.pathname + window.location.search);
@@ -189,6 +206,10 @@
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
                 closeMobileMenu();
+                const navGroupPlayground = document.getElementById("navGroupPlayground");
+                const navPlaygroundHubLink = document.getElementById("navPlaygroundHubLink");
+                if (navGroupPlayground) navGroupPlayground.classList.remove("is-expanded");
+                if (navPlaygroundHubLink) navPlaygroundHubLink.setAttribute("aria-expanded", "false");
                 window.scrollTo({ top: 0, behavior: "smooth" });
                 if (window.location.hash) {
                     history.replaceState(null, document.title, window.location.pathname + window.location.search);
@@ -206,6 +227,14 @@
                             navItems.forEach((item) => {
                                 item.classList.toggle("active", item.dataset.section === id);
                             });
+
+                            // If user is not currently in the playground section, close the playground dropdown
+                            if (id !== "playground") {
+                                const navGroupPlayground = document.getElementById("navGroupPlayground");
+                                const navPlaygroundHubLink = document.getElementById("navPlaygroundHubLink");
+                                if (navGroupPlayground) navGroupPlayground.classList.remove("is-expanded");
+                                if (navPlaygroundHubLink) navPlaygroundHubLink.setAttribute("aria-expanded", "false");
+                            }
                         }
                     });
                 },
