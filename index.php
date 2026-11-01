@@ -149,10 +149,6 @@ require __DIR__ . '/includes/header.php';
                     <div class="invitation-cta-glow" aria-hidden="true"></div>
                     <div class="invitation-cta-inner">
                         <div class="invitation-cta-top">
-                            <span class="invitation-eyebrow">
-                                <span class="invitation-dot" aria-hidden="true"></span>
-                                Personalized Digital Invitations
-                            </span>
                             <h3 class="invitation-cta-title">Want Your Own Invitation Website? 💌</h3>
                             <p class="invitation-cta-lead">
                                 Planning a birthday, wedding, debut, or any special occasion? I can help you create a personalized invitation website!

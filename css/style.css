@@ -1213,32 +1213,12 @@ button {
     margin-bottom: 20px;
 }
 
-.invitation-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-}
-
-.invitation-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background-color: var(--status-dot);
-    box-shadow: 0 0 8px var(--status-dot);
-}
-
 .invitation-cta-title {
+    margin: 0 0 8px 0;
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--text-primary);
     letter-spacing: -0.02em;
-    margin-bottom: 8px;
 }
 
 .invitation-cta-lead {
