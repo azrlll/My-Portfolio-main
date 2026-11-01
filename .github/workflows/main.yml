@@ -13,8 +13,61 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Deploy website via FTP
+      - name: Generate deployment version metadata
+        run: |
+          COMMIT_SHA="${{ github.sha }}"
+          SHORT_SHA="$(echo $COMMIT_SHA | cut -c1-7)"
+          DEPLOY_TIME="$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          cat <<EOF > config/version.php
+          <?php
+          declare(strict_types=1);
+          return [
+              'commit_sha' => '$COMMIT_SHA',
+              'short_sha' => '$SHORT_SHA',
+              'deployed_at' => '$DEPLOY_TIME',
+          ];
+          EOF
+          cat <<EOF > version.json
+          {
+            "commit_sha": "$COMMIT_SHA",
+            "short_sha": "$SHORT_SHA",
+            "deployed_at": "$DEPLOY_TIME"
+          }
+          EOF
+          echo "Generated version metadata for commit $SHORT_SHA ($DEPLOY_TIME)"
+
+      - name: Deploy website via FTP to /htdocs/ (Primary Document Root)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftpupload.net
+          username: if0_43311565
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftp
+          local-dir: ./
+          server-dir: /htdocs/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/.vscode/**
+            **/node_modules/**
+            **/database/**
+            **/README.md
+            **/env.local.php
+            **/portfolio_env.php
+            **/.env
+            **/.env.*
+            **/config/.live_viewers.json
+            **/*.sql
+            **/*.zip
+
+      - name: Mirror website via FTP to /kevin-portfolio.free.nf/htdocs/ (Domain Mirror)
+        continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftpupload.net

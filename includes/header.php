@@ -72,7 +72,28 @@ if (isset($_GET['viewer_ping'])) {
 $currentPage = $currentPage ?? 'index';
 $pageTitle = $pageTitle ?? 'Kevin Christopher | Portfolio';
 $basePrefix = ($currentPage === 'index') ? '' : 'index.php';
-$assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030');
+
+// Deployment Version & Cache-Busting Management
+$versionConfig = [];
+$versionFile = dirname(__DIR__) . '/config/version.php';
+if (is_file($versionFile) && is_readable($versionFile)) {
+    $versionConfig = include $versionFile;
+}
+$deployVersion = (string)($versionConfig['short_sha'] ?? 'live');
+$deployTime = (string)($versionConfig['deployed_at'] ?? '2026-11-02');
+
+if (!function_exists('getPortfolioAssetVersion')) {
+    function getPortfolioAssetVersion(string $relativePath): string {
+        global $deployVersion;
+        $fullPath = dirname(__DIR__) . '/' . ltrim($relativePath, '/');
+        $mtime = @filemtime($fullPath);
+        if ($mtime) {
+            return $deployVersion . '.' . $mtime;
+        }
+        return $deployVersion;
+    }
+}
+$assetVersion = getPortfolioAssetVersion('css/style.css');
 ?>
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -80,19 +101,21 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Portfolio of Kevin Christopher — IT Student, Hardware Enthusiast, and Vibe Coder exploring computer hardware and building with code.">
+    <meta name="build-version" content="<?= htmlspecialchars($deployVersion, ENT_QUOTES, 'UTF-8') ?>">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
     <!-- Google Fonts: Inter for crisp minimalist typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=<?= $assetVersion ?>">
-    <link rel="stylesheet" href="css/playground/pc-simulator.css?v=<?= $assetVersion ?>">
-    <link rel="stylesheet" href="css/playground/fix-the-pc.css?v=<?= $assetVersion ?>">
-    <link rel="stylesheet" href="css/playground/circuit-connect.css?v=<?= $assetVersion ?>">
-    <link rel="stylesheet" href="css/playground/minimal-snake.css?v=<?= $assetVersion ?>">
-    <link rel="stylesheet" href="css/blackhole-bg.css?v=<?= $assetVersion ?>">
+    <link rel="stylesheet" href="css/style.css?v=<?= getPortfolioAssetVersion('css/style.css') ?>">
+    <link rel="stylesheet" href="css/playground/pc-simulator.css?v=<?= getPortfolioAssetVersion('css/playground/pc-simulator.css') ?>">
+    <link rel="stylesheet" href="css/playground/fix-the-pc.css?v=<?= getPortfolioAssetVersion('css/playground/fix-the-pc.css') ?>">
+    <link rel="stylesheet" href="css/playground/circuit-connect.css?v=<?= getPortfolioAssetVersion('css/playground/circuit-connect.css') ?>">
+    <link rel="stylesheet" href="css/playground/minimal-snake.css?v=<?= getPortfolioAssetVersion('css/playground/minimal-snake.css') ?>">
+    <link rel="stylesheet" href="css/blackhole-bg.css?v=<?= getPortfolioAssetVersion('css/blackhole-bg.css') ?>">
 </head>
 <body>
+    <!-- Deployment Version: <?= htmlspecialchars($deployVersion, ENT_QUOTES, 'UTF-8') ?> | Built: <?= htmlspecialchars($deployTime, ENT_QUOTES, 'UTF-8') ?> -->
 
     <!-- Cinematic Interstellar Background (Actual Reference Image + Subtle Cosmic Ambiance) -->
     <div id="interstellarBg" class="interstellar-background" aria-hidden="true">

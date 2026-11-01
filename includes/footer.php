@@ -164,38 +164,41 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
     <div class="toast-notification" id="toastNotification" role="status" aria-live="polite" hidden></div>
 
 <?php
-$jsVersion = (string)(@filemtime(__DIR__ . '/../js/main.js') ?: '20261030');
+$jsConfigVer = function_exists('getPortfolioAssetVersion') ? getPortfolioAssetVersion('js/config.js') : (string)(@filemtime(__DIR__ . '/../js/config.js') ?: '20261102');
+$jsMainVer = function_exists('getPortfolioAssetVersion') ? getPortfolioAssetVersion('js/main.js') : (string)(@filemtime(__DIR__ . '/../js/main.js') ?: '20261102');
+$jsBgVer = function_exists('getPortfolioAssetVersion') ? getPortfolioAssetVersion('js/blackhole-bg.js') : (string)(@filemtime(__DIR__ . '/../js/blackhole-bg.js') ?: '20261102');
+$pgVer = $deployVersion ?? 'live';
 ?>
-    <script src="js/config.js?v=<?= $jsVersion ?>"></script>
-    <script src="js/main.js?v=<?= $jsVersion ?>"></script>
-    <script src="js/blackhole-bg.js?v=<?= $jsVersion ?>"></script>
+    <script src="js/config.js?v=<?= $jsConfigVer ?>"></script>
+    <script src="js/main.js?v=<?= $jsMainVer ?>"></script>
+    <script src="js/blackhole-bg.js?v=<?= $jsBgVer ?>"></script>
 <?php if ($includePlaygroundScripts): ?>
-    <script src="js/playground/build-a-pc/components.js"></script>
-    <script src="js/playground/build-a-pc/storage.js"></script>
-    <script src="js/playground/build-a-pc/game-state.js"></script>
-    <script src="js/playground/build-a-pc/drag-drop.js"></script>
-    <script src="js/playground/build-a-pc/pc-simulator.js"></script>
-    <script src="js/playground/fix-the-pc/scenarios.js"></script>
-    <script src="js/playground/fix-the-pc/diagnostics.js"></script>
-    <script src="js/playground/fix-the-pc/scoring.js"></script>
-    <script src="js/playground/fix-the-pc/achievements.js"></script>
-    <script src="js/playground/fix-the-pc/storage.js"></script>
-    <script src="js/playground/fix-the-pc/career-mode.js"></script>
-    <script src="js/playground/fix-the-pc/hints.js"></script>
-    <script src="js/playground/fix-the-pc/game-engine.js"></script>
-    <script src="js/playground/fix-the-pc/ui.js"></script>
-    <script src="js/playground/fix-the-pc/main.js"></script>
-    <script src="js/playground/circuit-connect/components.js"></script>
-    <script src="js/playground/circuit-connect/levels.js"></script>
-    <script src="js/playground/circuit-connect/circuit-validator.js"></script>
-    <script src="js/playground/circuit-connect/wire-system.js"></script>
-    <script src="js/playground/circuit-connect/scoring.js"></script>
-    <script src="js/playground/circuit-connect/achievements.js"></script>
-    <script src="js/playground/circuit-connect/storage.js"></script>
-    <script src="js/playground/circuit-connect/game-engine.js"></script>
-    <script src="js/playground/circuit-connect/ui.js"></script>
-    <script src="js/playground/circuit-connect/main.js"></script>
-    <script src="js/playground/minimal-snake/snake.js"></script>
+    <script src="js/playground/build-a-pc/components.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/build-a-pc/storage.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/build-a-pc/game-state.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/build-a-pc/drag-drop.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/build-a-pc/pc-simulator.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/scenarios.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/diagnostics.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/scoring.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/achievements.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/storage.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/career-mode.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/hints.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/game-engine.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/ui.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/fix-the-pc/main.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/components.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/levels.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/circuit-validator.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/wire-system.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/scoring.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/achievements.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/storage.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/game-engine.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/ui.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/circuit-connect/main.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/minimal-snake/snake.js?v=<?= $pgVer ?>"></script>
 <?php endif; ?>
 </body>
 </html>
