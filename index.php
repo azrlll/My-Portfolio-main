@@ -361,7 +361,6 @@ require __DIR__ . '/includes/header.php';
                                         value="<?= htmlspecialchars($visitorName, ENT_QUOTES, 'UTF-8') ?>"
                                         placeholder="Enter your name"
                                         required
-                                        autofocus
                                     >
                                 </div>
 

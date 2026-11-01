@@ -86,8 +86,8 @@
             history.scrollRestoration = "manual";
         }
 
-        // If the URL contains #contact or hash on initial load, clean the hash to prevent auto-scrolling to Contact
-        if (window.location.hash === "#contact" || window.location.hash === "#home") {
+        // Clean up any hash anchors on homepage load so page refresh always displays Home at the top
+        if (window.location.hash && window.location.hash !== "#playground") {
             history.replaceState(null, document.title, window.location.pathname + window.location.search);
         }
 
@@ -98,7 +98,7 @@
         window.addEventListener("pageshow", (e) => {
             const currentParams = new URLSearchParams(window.location.search);
             if (!currentParams.has("game") && !currentParams.has("status")) {
-                if (window.location.hash === "#contact") {
+                if (window.location.hash && window.location.hash !== "#playground") {
                     history.replaceState(null, document.title, window.location.pathname + window.location.search);
                 }
                 if (e.persisted || (window.performance && performance.getEntriesByType("navigation")[0]?.type === "reload")) {
@@ -1157,24 +1157,39 @@
     }
 
     // ------------------------------------------------------------------------
-    // 9.5 AUTOMATIC INVITATION PROMOTIONAL POPUP (5-SECOND COUNTDOWN & SMOOTH ANIMATION)
+    // 9.5 AUTOMATIC INVITATION PROMOTIONAL POPUP (APPEARS 5S AFTER HOMEPAGE LOAD/REFRESH)
     // ------------------------------------------------------------------------
     function initInvitationPopup() {
         const popup = document.getElementById("invitationPromoModal");
         if (!popup) return;
 
-        const STORAGE_KEY = "invitation_popup_shown";
-
-        // Check if popup was already shown or dismissed during this browsing session
-        try {
-            if (sessionStorage.getItem(STORAGE_KEY) === "true") {
-                return;
-            }
-        } catch (e) {
-            if (window._invitationPopupTriggered) return;
+        // Never show popup on admin pages
+        if (window.location.pathname.toLowerCase().includes("admin")) {
+            return;
         }
 
+        // Never show popup on individual Playground game pages (?game=... or hash #playground)
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeGameParam = urlParams.get("game");
+        const currentHash = (window.location.hash || "").replace("#", "");
+        const validGames = ["build-pc", "fix-pc", "circuit-connect", "snake"];
+        if (validGames.includes(activeGameParam) || validGames.includes(currentHash) || currentHash === "playground") {
+            return;
+        }
+
+        // Clean up any stale storage flags from earlier versions so refresh always works
+        try {
+            sessionStorage.removeItem("invitation_popup_shown");
+            localStorage.removeItem("invitation_popup_shown");
+        } catch (e) {}
+
+        let isClosedForCurrentPage = false;
         let isAnimating = false;
+
+        // Ensure popup starts completely hidden
+        popup.hidden = true;
+        popup.classList.remove("is-open", "is-closing");
+        document.body.classList.remove("invitation-popup-active");
 
         const closePopup = (onClosed) => {
             if (isAnimating || popup.hidden) {
@@ -1183,16 +1198,16 @@
             }
 
             isAnimating = true;
+            isClosedForCurrentPage = true;
 
             // Trigger smooth exit animation (scale/slide down and backdrop fade-out)
             popup.classList.remove("is-open");
             popup.classList.add("is-closing");
-            document.body.style.overflow = "";
 
-            try {
-                sessionStorage.setItem(STORAGE_KEY, "true");
-            } catch (e) {}
-            window._invitationPopupTriggered = true;
+            // Restore scrollability cleanly
+            document.body.classList.remove("invitation-popup-active");
+            document.body.style.overflow = "";
+            document.documentElement.style.overflow = "";
 
             const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             const exitDuration = prefersReducedMotion ? 0 : 420;
@@ -1208,12 +1223,10 @@
         };
 
         const openPopup = () => {
-            // Guard: ensure it hasn't been shown in the meantime
-            try {
-                if (sessionStorage.getItem(STORAGE_KEY) === "true") return;
-                sessionStorage.setItem(STORAGE_KEY, "true");
-            } catch (e) {}
-            window._invitationPopupTriggered = true;
+            // Guard: if user dismissed it during this page view, or if already open
+            if (isClosedForCurrentPage || !popup.hidden || isAnimating) {
+                return;
+            }
 
             // Do not overlap if the project lightbox modal is active
             const projectModal = document.getElementById("projectModal");
@@ -1227,11 +1240,12 @@
             void popup.offsetWidth;
 
             popup.classList.add("is-open");
-            document.body.style.overflow = "hidden";
+            document.body.classList.add("invitation-popup-active");
 
+            const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             setTimeout(() => {
                 isAnimating = false;
-            }, 500);
+            }, prefersReducedMotion ? 0 : 500);
 
             // Safe focus without page jump
             if (closeBtn) {
@@ -1264,7 +1278,7 @@
             });
         }
 
-        // Close on backdrop click
+        // Close on backdrop click (click outside modal card)
         popup.addEventListener("click", (e) => {
             if (e.target === popup) closePopup();
         });
@@ -1279,9 +1293,10 @@
         // Prevent duplicate timers
         if (window._invitationTimerId) {
             clearTimeout(window._invitationTimerId);
+            window._invitationTimerId = null;
         }
 
-        // Automatically start 5-second countdown on homepage load
+        // Automatically start 5-second countdown on homepage load or refresh
         window._invitationTimerId = setTimeout(() => {
             openPopup();
         }, 5000);
