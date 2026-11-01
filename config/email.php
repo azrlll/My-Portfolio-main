@@ -117,7 +117,7 @@ $htmlContent = <<<HTML
 </tr>
 <tr>
     <td style="padding: 18px 24px; background-color: #0d0d0d; border-top: 1px solid #262626; text-align: center;">
-    <p style="margin: 0; font-family: monospace; font-size: 11px; color: #525252;">&copy; {$year} Kevin Christopher &bull; BSIT Student &bull; Hardware &amp; Code</p>
+    <p style="margin: 0; font-family: monospace; font-size: 11px; color: #525252;">&copy; {$year} Kevin Christopher &bull; IT Student &bull; Hardware &amp; Code</p>
     </td>
 </tr>
 </table>

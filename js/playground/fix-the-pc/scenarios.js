@@ -502,7 +502,7 @@ window.FIX_PC_SCENARIOS = [
         level: 2,
         levelTitle: "Level 2 — Junior Technician",
         title: "RAM Not Detected",
-        customerName: "Jules C. (BSIT Classmate)",
+        customerName: "Jules C. (IT Classmate)",
         complaint: "I bought a 32GB (2x16GB) RAM kit, but Windows Task Manager and the BIOS only show 16GB installed, and it's running in single-channel mode!",
         symptomMonitor: "INSTALLED MEMORY: 16.0 GB (SINGLE-CHANNEL)",
         symptomTower: "POWER ON • BOOTS WITH HALF CAPACITY",

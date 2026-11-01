@@ -79,7 +79,7 @@ $assetVersion = (string)(@filemtime(__DIR__ . '/../css/style.css') ?: '20261030'
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio of Kevin Christopher — BSIT Student, Hardware Enthusiast, and Vibe Coder exploring computer hardware and building with code.">
+    <meta name="description" content="Portfolio of Kevin Christopher — IT Student, Hardware Enthusiast, and Vibe Coder exploring computer hardware and building with code.">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
     <!-- Google Fonts: Inter for crisp minimalist typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

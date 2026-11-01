@@ -47,13 +47,13 @@ const GITHUB_CONFIG = {
 const PERSONAL_INFO = {
     name: "Kevin Christopher",
     fullName: "Kevin Christopher",
-    course: "Bachelor of Science in Information Technology (BSIT)",
+    course: "Bachelor of Science in Information Technology",
     identity: "IT Student, Hardware Enthusiast, and Vibe Coder",
-    sidebarSubtitle: "BSIT STUDENT / VIBE CODER",
+    sidebarSubtitle: "IT STUDENT / VIBE CODER",
     primaryInterest: "Computer Hardware",
     additionalInterest: "Software Development",
     heroHeadingLine1: "Kevin Christopher",
-    introduction: "A BSIT student with a strong interest in computer hardware and a passion for software development. I enjoy exploring how technology works, experimenting with ideas, and building functional digital projects through vibe coding.",
+    introduction: "An IT student with a strong interest in computer hardware and a passion for software development. I enjoy exploring how technology works, experimenting with ideas, and building functional digital projects through vibe coding.",
     profilePhoto: "image/profile.png"
 };
 
@@ -404,15 +404,15 @@ const JOURNAL_DATA = [
         image: ""
     },
     {
-        id: "what-im-learning-as-a-bsit-student",
+        id: "what-im-learning-as-an-it-student",
         featured: false,
-        title: "What I'm Learning as a BSIT Student",
+        title: "What I'm Learning as an IT Student",
         category: "Learning Experiences",
         date: "Academic Growth",
         readTime: "3 min read",
         excerpt: "Balancing college coursework with independent projects, embracing bugs as teachers, and cultivating the discipline needed to grow into a capable IT professional.",
         paragraphs: [
-            "Being a Bachelor of Science in Information Technology (BSIT) student is an exciting journey of constant adaptation. College coursework provides essential foundations—database concepts, networking, algorithms, and systems analysis—while independent projects give me the freedom to apply those theories to tangible user experiences.",
+            "Being an IT student is an exciting journey of constant adaptation. College coursework provides essential foundations—database concepts, networking, algorithms, and systems analysis—while independent projects give me the freedom to apply those theories to tangible user experiences.",
             "One of the biggest lessons I've embraced is that encountering errors and getting stuck is not a sign of failure; it is the exact moment real learning happens. Whether it's debugging SQL queries, resolving PHP session anomalies, or refining responsive CSS breakpoints, each challenge demands patience and research.",
             "As I continue my studies, my goal is to keep bridging theory with practice: building projects that solve real problems, asking questions when I don't know the answer, and maintaining the curiosity that made me fall in love with technology in the first place."
         ],

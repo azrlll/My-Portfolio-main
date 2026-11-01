@@ -27,7 +27,7 @@ require __DIR__ . '/includes/header.php';
                             </h1>
 
                             <p class="hero-description" id="heroIntro">
-                                A BSIT student with a strong interest in computer hardware and a passion for software development. I enjoy exploring how technology works, experimenting with ideas, and building functional digital projects through vibe coding.
+                                An IT student with a strong interest in computer hardware and a passion for software development. I enjoy exploring how technology works, experimenting with ideas, and building functional digital projects through vibe coding.
                             </p>
 
                             <div class="hero-actions">
@@ -101,11 +101,11 @@ require __DIR__ . '/includes/header.php';
                         </div>
                         <div class="info-stat-card">
                             <span class="info-label">COURSE</span>
-                            <strong class="info-value" id="profileCourse">Bachelor of Science in Information Technology (BSIT)</strong>
+                            <strong class="info-value" id="profileCourse">Bachelor of Science in Information Technology</strong>
                         </div>
                         <div class="info-stat-card">
                             <span class="info-label">IDENTITY</span>
-                            <strong class="info-value" id="profileIdentity">BSIT Student, Hardware Enthusiast &amp; Vibe Coder</strong>
+                            <strong class="info-value" id="profileIdentity">IT Student, Hardware Enthusiast &amp; Vibe Coder</strong>
                         </div>
                         <div class="info-stat-card">
                             <span class="info-label">PRIMARY INTEREST</span>
