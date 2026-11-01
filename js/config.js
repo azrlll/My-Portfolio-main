@@ -340,8 +340,13 @@ const SKILLS_DATA = [
 
 // =====================================
 // BLOG & LEARNING NOTES
+// Blank for now — add your notes/articles here when ready!
 // =====================================
-const BLOG_DATA = [
+const BLOG_DATA = [];
+
+/*
+// Saved draft note templates for future reference:
+const BLOG_DATA_DRAFTS = [
     {
         id: "hardware-to-code",
         date: "Upcoming Note",
@@ -367,3 +372,4 @@ const BLOG_DATA = [
         excerpt: "Key takeaways from building early command-line programs in C—from switch-case calculators to conditional grading tools and loop-based multiplication generators."
     }
 ];
+*/

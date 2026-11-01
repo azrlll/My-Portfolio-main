@@ -1380,6 +1380,10 @@
         if (!container || typeof BLOG_DATA === "undefined" || !Array.isArray(BLOG_DATA)) return;
 
         container.innerHTML = "";
+        if (BLOG_DATA.length === 0) {
+            return;
+        }
+
         BLOG_DATA.forEach((post) => {
             const article = document.createElement("article");
             article.className = "blog-card";
