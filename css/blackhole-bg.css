@@ -12,14 +12,19 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
     z-index: -1;
     overflow: hidden;
     pointer-events: none;
     background-color: #030307;
     contain: strict;
     transform: translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
 
 /* The actual reference image displayed directly without artificial recreation */
@@ -37,6 +42,8 @@
     pointer-events: none;
     will-change: transform;
     transform: scale(1.02) translate3d(0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
     transition: opacity 0.5s ease-out;
 }
 
@@ -149,8 +156,6 @@ body {
 [data-theme="dark"] .skill-interactive-item.is-open {
     border-color: rgba(255, 255, 255, 0.28) !important;
     background-color: rgba(26, 26, 36, 0.94) !important;
-}
-    border-color: rgba(255, 255, 255, 0.16) !important;
 }
 
 [data-theme="dark"] .contact-input,

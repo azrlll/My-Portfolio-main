@@ -65,10 +65,23 @@
         }
     }
 
+    let lastWidth = 0;
+    let lastHeight = 0;
+
     function resize() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        isMobile = width <= 768;
+        const newWidth = window.innerWidth;
+        const newHeight = window.innerHeight;
+
+        // Prevent canvas wipe and layout stutter on mobile address bar show/hide
+        if (lastWidth === newWidth && Math.abs(newHeight - lastHeight) < 140 && canvas && canvas.width > 0) {
+            return;
+        }
+
+        width = newWidth;
+        height = newHeight;
+        lastWidth = width;
+        lastHeight = height;
+        isMobile = width <= 860 || ("ontouchstart" in window && width <= 1024);
 
         if (canvas && ctx) {
             dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -91,8 +104,10 @@
     }
 
     function onScroll() {
-        if (isReducedMotion) return;
-        scroll.targetY = (window.pageYOffset || document.documentElement.scrollTop || 0) * 0.05;
+        if (isMobile || isReducedMotion) return;
+        // Desktop smooth continuous scroll offset (clamped, no modulo jumps)
+        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        scroll.targetY = Math.max(-18, Math.min(18, currentScrollY * 0.015));
     }
 
     function renderFrame() {
@@ -104,14 +119,14 @@
         scroll.y += (scroll.targetY - scroll.y) * CONFIG.lerpFactor;
 
         // Subtle autonomous camera drift & slow zoom breathing (24-second cycle)
-        const autoDriftX = Math.sin(driftTime * 0.25) * 6;
-        const autoDriftY = Math.cos(driftTime * 0.18) * 4;
-        const zoom = 1.025 + Math.sin(driftTime * 0.12) * 0.01;
+        const autoDriftX = Math.sin(driftTime * 0.25) * 5;
+        const autoDriftY = Math.cos(driftTime * 0.18) * 3.5;
+        const zoom = 1.025 + Math.sin(driftTime * 0.12) * 0.008;
 
-        const totalTranslateX = -(mouse.x + autoDriftX);
-        const totalTranslateY = -(mouse.y + autoDriftY) - (scroll.y % 20);
+        const totalTranslateX = isMobile ? -autoDriftX : -(mouse.x + autoDriftX);
+        const totalTranslateY = isMobile ? -autoDriftY : -(mouse.y + autoDriftY + scroll.y);
 
-        // Apply smooth transform to the actual image layer
+        // Apply butter-smooth transform to the actual image layer
         if (imageLayer && !isReducedMotion) {
             imageLayer.style.transform = `translate3d(${totalTranslateX.toFixed(2)}px, ${totalTranslateY.toFixed(2)}px, 0) scale(${zoom.toFixed(4)})`;
         }

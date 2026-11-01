@@ -29,6 +29,7 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
             <div class="modal-body">
                 <div class="modal-image-wrapper" id="modalImageWrapper">
                     <img src="" alt="" id="modalImage">
+                    <div class="modal-svg-container" id="modalSvgContainer" hidden></div>
                 </div>
                 <p class="modal-description" id="modalDescription"></p>
                 <div class="modal-tags" id="modalTags"></div>
@@ -41,6 +42,10 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
         <div class="modal-card invitation-promo-card">
             <div class="modal-header invitation-promo-header">
                 <div class="invitation-promo-title-wrap">
+                    <span class="invitation-promo-badge">
+                        <span class="invitation-badge-dot" aria-hidden="true"></span>
+                        <span>PERSONALIZED DIGITAL INVITATIONS</span>
+                    </span>
                     <h3 class="modal-title invitation-promo-title" id="invitationPromoTitle">Want Your Own Invitation Website?</h3>
                 </div>
                 <button type="button" class="modal-close-btn invitation-promo-close" id="invitationPromoCloseBtn" aria-label="Close invitation popup">

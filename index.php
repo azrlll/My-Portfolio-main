@@ -47,8 +47,6 @@ require __DIR__ . '/includes/header.php';
                         </div>
                     </div>
 
-                    <div class="hero-divider" role="separator"></div>
-
                     <div class="scroll-explore">
                         <a href="#featured-work" class="scroll-explore-link">
                             <span>SCROLL TO EXPLORE</span>
@@ -149,6 +147,10 @@ require __DIR__ . '/includes/header.php';
                     <div class="invitation-cta-glow" aria-hidden="true"></div>
                     <div class="invitation-cta-inner">
                         <div class="invitation-cta-top">
+                            <span class="invitation-promo-badge">
+                                <span class="invitation-badge-dot" aria-hidden="true"></span>
+                                <span>PERSONALIZED DIGITAL INVITATIONS</span>
+                            </span>
                             <h3 class="invitation-cta-title">
                                 <span>Want Your Own Invitation Website?</span>
                                 <svg class="invitation-title-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

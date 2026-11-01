@@ -362,6 +362,85 @@
     // ------------------------------------------------------------------------
     // 6. PROJECTS RENDERING & PREVIEW MODAL
     // ------------------------------------------------------------------------
+    function createProjectSystemSvg(project, isModal = false) {
+        const title = project.title || "System Architecture";
+        const category = project.category || "Architecture";
+        const svgHeight = isModal ? 210 : 150;
+        const patternId = isModal ? "archGridPatternModal" : "archGridPatternCard";
+        const gradientId = isModal ? "neonGradModal" : "neonGradCard";
+
+        return `
+            <div class="project-system-preview${isModal ? ' is-modal' : ''}">
+                <div class="system-preview-top">
+                    <div class="system-window-dots" aria-hidden="true">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <span class="system-badge">SYSTEM ARCHITECTURE</span>
+                </div>
+                <div class="system-svg-wrapper">
+                    <svg class="system-architecture-svg" viewBox="0 0 560 ${svgHeight}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="System architecture diagram for ${escapeHtml(title)}">
+                        <defs>
+                            <pattern id="${patternId}" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+                            </pattern>
+                            <linearGradient id="${gradientId}" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#38bdf8" />
+                                <stop offset="100%" stop-color="#34d399" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="100%" height="100%" fill="url(#${patternId})" rx="6" />
+
+                        <!-- Data Flow Vector Lines -->
+                        <path d="M 120 ${svgHeight / 2} L 230 ${svgHeight / 2}" stroke="rgba(110, 231, 183, 0.4)" stroke-width="2" stroke-dasharray="4 3" />
+                        <path d="M 330 ${svgHeight / 2} L 440 ${svgHeight / 2}" stroke="rgba(110, 231, 183, 0.4)" stroke-width="2" stroke-dasharray="4 3" />
+                        <line x1="280" y1="${svgHeight / 2 - 36}" x2="280" y2="${svgHeight / 2 - 20}" stroke="rgba(56, 189, 248, 0.5)" stroke-width="1.5" />
+                        <line x1="280" y1="${svgHeight / 2 + 20}" x2="280" y2="${svgHeight / 2 + 36}" stroke="rgba(56, 189, 248, 0.5)" stroke-width="1.5" />
+
+                        <!-- Input Node -->
+                        <rect x="35" y="${svgHeight / 2 - 22}" width="85" height="44" rx="6" fill="#111119" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" />
+                        <text x="77" y="${svgHeight / 2 - 4}" fill="#94a3b8" font-family="monospace" font-size="9.5" text-anchor="middle" font-weight="600">INPUT / UI</text>
+                        <text x="77" y="${svgHeight / 2 + 10}" fill="#64748b" font-family="monospace" font-size="8" text-anchor="middle">CLIENT LAYER</text>
+                        <circle cx="120" cy="${svgHeight / 2}" r="3" fill="#6ee7b7" />
+
+                        <!-- Central Core Node -->
+                        <rect x="230" y="${svgHeight / 2 - 22}" width="100" height="44" rx="8" fill="#14141f" stroke="url(#${gradientId})" stroke-width="1.5" />
+                        <text x="280" y="${svgHeight / 2 - 4}" fill="#f1f5f9" font-family="monospace" font-size="10" text-anchor="middle" font-weight="700">CORE LOGIC</text>
+                        <text x="280" y="${svgHeight / 2 + 11}" fill="#6ee7b7" font-family="monospace" font-size="8.5" text-anchor="middle">ACTIVE &bull; 60 FPS</text>
+
+                        <!-- Output Node -->
+                        <rect x="440" y="${svgHeight / 2 - 22}" width="85" height="44" rx="6" fill="#111119" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1" />
+                        <text x="482" y="${svgHeight / 2 - 4}" fill="#94a3b8" font-family="monospace" font-size="9.5" text-anchor="middle" font-weight="600">DISPATCH</text>
+                        <text x="482" y="${svgHeight / 2 + 10}" fill="#64748b" font-family="monospace" font-size="8" text-anchor="middle">SYNC &bull; DB</text>
+                        <circle cx="440" cy="${svgHeight / 2}" r="3" fill="#6ee7b7" />
+
+                        <!-- Top & Bottom Telemetry Badges -->
+                        <rect x="240" y="${svgHeight / 2 - 58}" width="80" height="18" rx="4" fill="#0d0d14" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1" />
+                        <text x="280" y="${svgHeight / 2 - 45}" fill="#38bdf8" font-family="monospace" font-size="8" text-anchor="middle">STATE PIPELINE</text>
+
+                        <rect x="240" y="${svgHeight / 2 + 40}" width="80" height="18" rx="4" fill="#0d0d14" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1" />
+                        <text x="280" y="${svgHeight / 2 + 53}" fill="#38bdf8" font-family="monospace" font-size="8" text-anchor="middle">STORAGE &bull; I/O</text>
+                    </svg>
+                </div>
+                <div class="system-preview-graphic">
+                    <div class="system-wireframe-grid">
+                        <div class="wireframe-stat">
+                            <span class="wireframe-stat-label">MODULE</span>
+                            <span class="wireframe-stat-val">Fleet Ops</span>
+                        </div>
+                        <div class="wireframe-stat">
+                            <span class="wireframe-stat-label">WORKFLOW</span>
+                            <span class="wireframe-stat-val">${escapeHtml(category)}</span>
+                        </div>
+                        <div class="wireframe-stat">
+                            <span class="wireframe-stat-label">STATUS</span>
+                            <span class="wireframe-stat-val">Verified</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
     function createProjectMediaMarkup(project) {
         if (project.image && project.image.trim() !== "") {
             return `
@@ -371,33 +450,10 @@
             `;
         }
 
-        // Minimalist architectural wireframe preview for systems like Drivesphere
+        // Shared architectural SVG wireframe preview for systems like Drivesphere
         return `
             <div class="project-media">
-                <div class="project-system-preview">
-                    <div class="system-preview-top">
-                        <div class="system-window-dots" aria-hidden="true">
-                            <span></span><span></span><span></span>
-                        </div>
-                        <span class="system-badge">SYSTEM ARCHITECTURE</span>
-                    </div>
-                    <div class="system-preview-graphic">
-                        <div class="system-wireframe-grid">
-                            <div class="wireframe-stat">
-                                <span class="wireframe-stat-label">MODULE</span>
-                                <span class="wireframe-stat-val">Fleet Ops</span>
-                            </div>
-                            <div class="wireframe-stat">
-                                <span class="wireframe-stat-label">WORKFLOW</span>
-                                <span class="wireframe-stat-val">Reservations</span>
-                            </div>
-                            <div class="wireframe-stat">
-                                <span class="wireframe-stat-label">STATUS</span>
-                                <span class="wireframe-stat-val">Featured</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                ${createProjectSystemSvg(project, false)}
             </div>
         `;
     }
@@ -1104,6 +1160,7 @@
         const descEl = document.getElementById("modalDescription");
         const imgWrapper = document.getElementById("modalImageWrapper");
         const imgEl = document.getElementById("modalImage");
+        const svgContainer = document.getElementById("modalSvgContainer");
         const tagsEl = document.getElementById("modalTags");
 
         if (!modal) return;
@@ -1116,10 +1173,20 @@
             if (item.image && item.image.trim() !== "") {
                 imgEl.src = item.image;
                 imgEl.alt = `${item.title} preview`;
+                imgEl.hidden = false;
+                if (svgContainer) {
+                    svgContainer.hidden = true;
+                    svgContainer.innerHTML = "";
+                }
                 imgWrapper.hidden = false;
             } else {
                 imgEl.src = "";
-                imgWrapper.hidden = true;
+                imgEl.hidden = true;
+                if (svgContainer) {
+                    svgContainer.innerHTML = createProjectSystemSvg(item, true);
+                    svgContainer.hidden = false;
+                }
+                imgWrapper.hidden = false;
             }
         }
 
