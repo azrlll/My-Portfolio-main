@@ -103,6 +103,27 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
     <meta name="description" content="Portfolio of Kevin Christopher — IT Student, Hardware Enthusiast, and Vibe Coder exploring computer hardware and building with code.">
     <meta name="build-version" content="<?= htmlspecialchars($deployVersion, ENT_QUOTES, 'UTF-8') ?>">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
+
+    <!-- Open Graph / Facebook / Messenger / Discord Social Link Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kevin-portfolio.free.nf/">
+    <meta property="og:title" content="Kevin Christopher | Personal Portfolio">
+    <meta property="og:description" content="Explore my projects, skills, and experiences in computer hardware, web development, and technology.">
+    <meta property="og:image" content="https://kevin-portfolio.free.nf/image/og-preview.jpg">
+    <meta property="og:image:secure_url" content="https://kevin-portfolio.free.nf/image/og-preview.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Interstellar-inspired black hole background for Kevin Christopher's portfolio">
+    <meta property="og:site_name" content="Kevin Christopher | Personal Portfolio">
+
+    <!-- Twitter / X Card Social Link Preview -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://kevin-portfolio.free.nf/">
+    <meta name="twitter:title" content="Kevin Christopher | Personal Portfolio">
+    <meta name="twitter:description" content="Explore my projects, skills, and experiences in computer hardware, web development, and technology.">
+    <meta name="twitter:image" content="https://kevin-portfolio.free.nf/image/og-preview.jpg">
+    <meta name="twitter:image:alt" content="Interstellar-inspired black hole background for Kevin Christopher's portfolio">
     <!-- Google Fonts: Inter for crisp minimalist typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
