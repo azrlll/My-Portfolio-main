@@ -69,6 +69,46 @@
     }
 
     // ------------------------------------------------------------------------
+    // 2.5 HOMEPAGE REFRESH & SCROLL RESTORATION MANAGEMENT
+    // ------------------------------------------------------------------------
+    function initScrollAndRefreshBehavior() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasGameParam = urlParams.has("game");
+        const hasStatusParam = urlParams.has("status");
+
+        // Do not alter scroll restoration on individual playground game pages or contact form status views
+        if (hasGameParam || hasStatusParam) {
+            return;
+        }
+
+        // Set scroll restoration to manual so the browser does not jump to the bottom/Contact on refresh
+        if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+        }
+
+        // If the URL contains #contact or hash on initial load, clean the hash to prevent auto-scrolling to Contact
+        if (window.location.hash === "#contact" || window.location.hash === "#home") {
+            history.replaceState(null, document.title, window.location.pathname + window.location.search);
+        }
+
+        // Always reset main page scroll position to the top (Home section) on initial page load / refresh
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+        // Ensure page returns to Home on browser reload or history navigation
+        window.addEventListener("pageshow", (e) => {
+            const currentParams = new URLSearchParams(window.location.search);
+            if (!currentParams.has("game") && !currentParams.has("status")) {
+                if (window.location.hash === "#contact") {
+                    history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                }
+                if (e.persisted || (window.performance && performance.getEntriesByType("navigation")[0]?.type === "reload")) {
+                    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                }
+            }
+        });
+    }
+
+    // ------------------------------------------------------------------------
     // 3. SIDEBAR & MOBILE NAVIGATION
     // ------------------------------------------------------------------------
     function initNavigation() {
@@ -96,14 +136,63 @@
         }
 
         navItems.forEach((link) => {
-            link.addEventListener("click", () => {
+            link.addEventListener("click", (e) => {
                 // Playground dropdown toggle is handled specifically to prevent premature mobile menu closure
                 if (link.classList.contains("nav-item-playground") || link.id === "navPlaygroundHubLink") {
                     return;
                 }
-                navItems.forEach((item) => item.classList.remove("active"));
-                link.classList.add("active");
+
+                const sectionId = link.getAttribute("data-section");
+                const targetSection = sectionId ? document.getElementById(sectionId) : null;
+
+                if (targetSection) {
+                    e.preventDefault();
+                    navItems.forEach((item) => item.classList.remove("active"));
+                    link.classList.add("active");
+                    closeMobileMenu();
+
+                    if (sectionId === "home") {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                    } else {
+                        targetSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+
+                    // Avoid leaving #contact or hash anchors in the URL so page refresh always returns to Home
+                    if (window.location.hash) {
+                        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                    }
+                } else {
+                    navItems.forEach((item) => item.classList.remove("active"));
+                    link.classList.add("active");
+                    closeMobileMenu();
+                }
+            });
+        });
+
+        // Ensure in-page anchor links pointing to #contact or #home also scroll smoothly without leaving hashes
+        document.querySelectorAll('a[href="#contact"]').forEach((btn) => {
+            if (btn.id === "invitationPromoContactBtn") return; // Handled by popup controller
+            btn.addEventListener("click", (e) => {
+                const contactSec = document.getElementById("contact");
+                if (contactSec) {
+                    e.preventDefault();
+                    closeMobileMenu();
+                    contactSec.scrollIntoView({ behavior: "smooth", block: "start" });
+                    if (window.location.hash) {
+                        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                    }
+                }
+            });
+        });
+
+        document.querySelectorAll('a[href="#home"]').forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
                 closeMobileMenu();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                if (window.location.hash) {
+                    history.replaceState(null, document.title, window.location.pathname + window.location.search);
+                }
             });
         });
 
@@ -1068,7 +1157,7 @@
     }
 
     // ------------------------------------------------------------------------
-    // 9.5 AUTOMATIC INVITATION PROMOTIONAL POPUP (5-SECOND COUNTDOWN)
+    // 9.5 AUTOMATIC INVITATION PROMOTIONAL POPUP (5-SECOND COUNTDOWN & SMOOTH ANIMATION)
     // ------------------------------------------------------------------------
     function initInvitationPopup() {
         const popup = document.getElementById("invitationPromoModal");
@@ -1085,13 +1174,37 @@
             if (window._invitationPopupTriggered) return;
         }
 
-        const closePopup = () => {
-            popup.hidden = true;
+        let isAnimating = false;
+
+        const closePopup = (onClosed) => {
+            if (isAnimating || popup.hidden) {
+                if (typeof onClosed === "function") onClosed();
+                return;
+            }
+
+            isAnimating = true;
+
+            // Trigger smooth exit animation (scale/slide down and backdrop fade-out)
+            popup.classList.remove("is-open");
+            popup.classList.add("is-closing");
             document.body.style.overflow = "";
+
             try {
                 sessionStorage.setItem(STORAGE_KEY, "true");
             } catch (e) {}
             window._invitationPopupTriggered = true;
+
+            const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            const exitDuration = prefersReducedMotion ? 0 : 420;
+
+            setTimeout(() => {
+                popup.hidden = true;
+                popup.classList.remove("is-closing");
+                isAnimating = false;
+                if (typeof onClosed === "function") {
+                    onClosed();
+                }
+            }, exitDuration);
         };
 
         const openPopup = () => {
@@ -1102,12 +1215,28 @@
             } catch (e) {}
             window._invitationPopupTriggered = true;
 
-            // Do not overlap if the project lightbox modal is already active
+            // Do not overlap if the project lightbox modal is active
             const projectModal = document.getElementById("projectModal");
             if (projectModal && !projectModal.hidden) return;
 
+            isAnimating = true;
+            popup.classList.remove("is-closing");
             popup.hidden = false;
+
+            // Force reflow to guarantee CSS transition initiates from initial state
+            void popup.offsetWidth;
+
+            popup.classList.add("is-open");
             document.body.style.overflow = "hidden";
+
+            setTimeout(() => {
+                isAnimating = false;
+            }, 500);
+
+            // Safe focus without page jump
+            if (closeBtn) {
+                closeBtn.focus({ preventScroll: true });
+            }
         };
 
         // Wire interactive buttons: X, Not Now, and Contact Me
@@ -1115,21 +1244,23 @@
         const dismissBtn = document.getElementById("invitationPromoDismissBtn");
         const contactBtn = document.getElementById("invitationPromoContactBtn");
 
-        if (closeBtn) closeBtn.addEventListener("click", closePopup);
-        if (dismissBtn) dismissBtn.addEventListener("click", closePopup);
+        if (closeBtn) closeBtn.addEventListener("click", () => closePopup());
+        if (dismissBtn) dismissBtn.addEventListener("click", () => closePopup());
 
         if (contactBtn) {
             contactBtn.addEventListener("click", (e) => {
-                closePopup();
-                const contactSec = document.getElementById("contact");
-                if (contactSec) {
-                    e.preventDefault();
-                    contactSec.scrollIntoView({ behavior: "smooth" });
-                    const nameInput = document.getElementById("visitorNameInput");
-                    if (nameInput) {
-                        setTimeout(() => nameInput.focus({ preventScroll: true }), 400);
+                e.preventDefault();
+                // Smoothly close popup first, wait for closing animation, then scroll to Contact
+                closePopup(() => {
+                    const contactSec = document.getElementById("contact");
+                    if (contactSec) {
+                        contactSec.scrollIntoView({ behavior: "smooth", block: "start" });
+                        const nameInput = document.getElementById("visitorNameInput");
+                        if (nameInput) {
+                            setTimeout(() => nameInput.focus({ preventScroll: true }), 450);
+                        }
                     }
-                }
+                });
             });
         }
 
@@ -1140,7 +1271,7 @@
 
         // Close on ESC key press
         document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && !popup.hidden) {
+            if (e.key === "Escape" && !popup.hidden && popup.classList.contains("is-open")) {
                 closePopup();
             }
         });
@@ -1695,6 +1826,7 @@
     // INITIALIZE ON DOM READY
     // ------------------------------------------------------------------------
     document.addEventListener("DOMContentLoaded", () => {
+        initScrollAndRefreshBehavior();
         initTheme();
         initNavigation();
         renderPersonalInfo();
