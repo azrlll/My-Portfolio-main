@@ -2498,33 +2498,6 @@ body.invitation-popup-active {
 .invitation-promo-title-wrap {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-}
-
-.invitation-promo-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 500;
-    color: #9ca3af;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 2px;
-}
-
-.invitation-badge-dot {
-    width: 6.5px;
-    height: 6.5px;
-    border-radius: 50%;
-    background-color: var(--status-dot);
-    box-shadow: 0 0 8px var(--status-dot);
-    flex-shrink: 0;
-}
-
-.invitation-cta-top .invitation-promo-badge {
-    margin-bottom: 8px;
 }
 
 .invitation-promo-title {
@@ -2574,8 +2547,37 @@ body.invitation-popup-active {
 .invitation-promo-feature-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
     margin-bottom: 20px;
+}
+
+.invitation-promo-feature-tags .tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    padding: 5px 10px;
+    background-color: var(--bg-badge);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.invitation-promo-feature-tags .tag-pill .chip-svg {
+    color: var(--status-dot);
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
+}
+
+.invitation-promo-feature-tags .tag-pill:hover {
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.invitation-promo-feature-tags .tag-pill:hover .chip-svg {
+    transform: scale(1.1);
 }
 
 .invitation-promo-actions {

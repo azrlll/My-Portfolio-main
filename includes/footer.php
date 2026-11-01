@@ -42,10 +42,6 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
         <div class="modal-card invitation-promo-card">
             <div class="modal-header invitation-promo-header">
                 <div class="invitation-promo-title-wrap">
-                    <span class="invitation-promo-badge">
-                        <span class="invitation-badge-dot" aria-hidden="true"></span>
-                        <span>PERSONALIZED DIGITAL INVITATIONS</span>
-                    </span>
                     <h3 class="modal-title invitation-promo-title" id="invitationPromoTitle">Want Your Own Invitation Website?</h3>
                 </div>
                 <button type="button" class="modal-close-btn invitation-promo-close" id="invitationPromoCloseBtn" aria-label="Close invitation popup">
@@ -65,13 +61,52 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
                 <p class="invitation-promo-desc">
                     Planning a birthday, wedding, debut, or special occasion? I can create a personalized invitation website with background music, animations, RSVP forms, photo galleries, countdown timers, and event location maps!
                 </p>
-                <div class="invitation-promo-feature-tags">
-                    <span class="tag-pill">🎵 Music</span>
-                    <span class="tag-pill">✨ Animations</span>
-                    <span class="tag-pill">📸 Gallery</span>
-                    <span class="tag-pill">📝 RSVP</span>
-                    <span class="tag-pill">⏳ Countdown</span>
-                    <span class="tag-pill">📍 Maps</span>
+                <div class="invitation-promo-feature-tags" aria-label="Available invitation features">
+                    <span class="tag-pill">
+                        <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9 18V5l12-2v13"></path>
+                            <circle cx="6" cy="18" r="3"></circle>
+                            <circle cx="18" cy="16" r="3"></circle>
+                        </svg>
+                        <span>Music</span>
+                    </span>
+                    <span class="tag-pill">
+                        <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path>
+                        </svg>
+                        <span>Animations</span>
+                    </span>
+                    <span class="tag-pill">
+                        <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                            <circle cx="12" cy="13" r="3"></circle>
+                        </svg>
+                        <span>Gallery</span>
+                    </span>
+                    <span class="tag-pill">
+                        <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <path d="m9 14 2 2 4-4"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1"></rect>
+                        </svg>
+                        <span>RSVP</span>
+                    </span>
+                    <span class="tag-pill">
+                        <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 22h14"></path>
+                            <path d="M5 2h14"></path>
+                            <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path>
+                            <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path>
+                        </svg>
+                        <span>Countdown</span>
+                    </span>
+                    <span class="tag-pill">
+                        <svg class="chip-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span>Maps</span>
+                    </span>
                 </div>
                 <div class="invitation-promo-actions">
                     <button type="button" class="btn btn-secondary invitation-promo-dismiss" id="invitationPromoDismissBtn">
