@@ -2325,7 +2325,7 @@ body.invitation-popup-active {
     overflow: hidden !important;
 }
 
-/* Promotional Invitation Website Popup — Smooth Fade, Slide & Scale Transitions */
+/* Promotional Invitation Website Popup — Invitation Drop Reveal */
 .invitation-promo-overlay {
     position: fixed;
     inset: 0;
@@ -2360,10 +2360,11 @@ body.invitation-popup-active {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1),
-                visibility 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 300ms cubic-bezier(0.32, 0, 0.67, 0),
+                visibility 300ms cubic-bezier(0.32, 0, 0.67, 0);
 }
 
+/* Invitation Drop Card */
 .invitation-promo-card {
     max-width: 580px;
     width: 100%;
@@ -2372,33 +2373,100 @@ body.invitation-popup-active {
     overflow-y: auto;
     border-color: rgba(255, 255, 255, 0.16);
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(110, 231, 183, 0.08);
-    transform: translateY(20px) scale(0.96);
     opacity: 0;
-    transition: transform 480ms cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 450ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(-100px) scale(0.96);
     will-change: transform, opacity;
 }
 
+/* Invitation Drop Reveal Keyframes with subtle bounce */
+@keyframes invitationDropReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(-100px) scale(0.96);
+    }
+    60% {
+        opacity: 1;
+    }
+    78% {
+        transform: translateY(6px) scale(1.006);
+    }
+    90% {
+        transform: translateY(-2px) scale(0.998);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Invitation Closing Keyframes (gentle upward slide & fade out) */
+@keyframes invitationDropClose {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-40px) scale(0.97);
+    }
+}
+
 .invitation-promo-overlay.is-open .invitation-promo-card {
-    transform: translateY(0) scale(1);
-    opacity: 1;
+    animation: invitationDropReveal 780ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .invitation-promo-overlay.is-closing .invitation-promo-card {
-    transform: translateY(16px) scale(0.96);
-    opacity: 0;
-    transition: transform 380ms cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 340ms cubic-bezier(0.4, 0, 0.2, 1);
+    animation: invitationDropClose 300ms cubic-bezier(0.32, 0, 0.67, 0) forwards;
+}
+
+/* Staggered Content Reveal Keyframe */
+@keyframes invitationContentReveal {
+    0% {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Staggered Content Elements inside the card:
+   1. Image
+   2. Heading
+   3. Description & features
+   4. Buttons */
+.invitation-promo-overlay.is-open .invitation-promo-image-wrap {
+    animation: invitationContentReveal 400ms cubic-bezier(0.16, 1, 0.3, 1) 220ms both;
+}
+
+.invitation-promo-overlay.is-open .invitation-promo-title-wrap {
+    animation: invitationContentReveal 400ms cubic-bezier(0.16, 1, 0.3, 1) 320ms both;
+}
+
+.invitation-promo-overlay.is-open .invitation-promo-desc,
+.invitation-promo-overlay.is-open .invitation-promo-feature-tags {
+    animation: invitationContentReveal 400ms cubic-bezier(0.16, 1, 0.3, 1) 420ms both;
+}
+
+.invitation-promo-overlay.is-open .invitation-promo-actions {
+    animation: invitationContentReveal 400ms cubic-bezier(0.16, 1, 0.3, 1) 520ms both;
 }
 
 @media (prefers-reduced-motion: reduce) {
     .invitation-promo-overlay,
     .invitation-promo-card,
-    .invitation-promo-overlay.is-closing,
-    .invitation-promo-overlay.is-closing .invitation-promo-card {
-        transition-duration: 0.01ms !important;
+    .invitation-promo-overlay.is-open .invitation-promo-card,
+    .invitation-promo-overlay.is-closing .invitation-promo-card,
+    .invitation-promo-overlay.is-open .invitation-promo-image-wrap,
+    .invitation-promo-overlay.is-open .invitation-promo-title-wrap,
+    .invitation-promo-overlay.is-open .invitation-promo-desc,
+    .invitation-promo-overlay.is-open .invitation-promo-feature-tags,
+    .invitation-promo-overlay.is-open .invitation-promo-actions {
         animation: none !important;
+        transition: none !important;
         transform: none !important;
+        opacity: 1 !important;
     }
 }
 

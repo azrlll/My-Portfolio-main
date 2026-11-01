@@ -1210,7 +1210,7 @@
             document.documentElement.style.overflow = "";
 
             const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-            const exitDuration = prefersReducedMotion ? 0 : 420;
+            const exitDuration = prefersReducedMotion ? 0 : 300;
 
             setTimeout(() => {
                 popup.hidden = true;
@@ -1245,7 +1245,7 @@
             const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             setTimeout(() => {
                 isAnimating = false;
-            }, prefersReducedMotion ? 0 : 500);
+            }, prefersReducedMotion ? 0 : 780);
 
             // Safe focus without page jump
             if (closeBtn) {
@@ -1271,7 +1271,7 @@
                         contactSec.scrollIntoView({ behavior: "smooth", block: "start" });
                         const nameInput = document.getElementById("visitorNameInput");
                         if (nameInput) {
-                            setTimeout(() => nameInput.focus({ preventScroll: true }), 450);
+                            setTimeout(() => nameInput.focus({ preventScroll: true }), 400);
                         }
                     }
                 });
@@ -1296,10 +1296,10 @@
             window._invitationTimerId = null;
         }
 
-        // Automatically start 2-second timer on homepage load or refresh
+        // Automatically start 3-second timer on homepage load or refresh
         window._invitationTimerId = setTimeout(() => {
             openPopup();
-        }, 2000);
+        }, 3000);
     }
 
     // ------------------------------------------------------------------------
