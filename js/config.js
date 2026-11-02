@@ -53,7 +53,7 @@ const PERSONAL_INFO = {
     primaryInterest: "Computer Hardware",
     additionalInterest: "Software Development",
     heroHeadingLine1: "Kevin Christopher",
-    introduction: "An IT student with a strong interest in computer hardware and a passion for software development. I enjoy exploring how technology works, experimenting with ideas, and building functional digital projects through vibe coding.",
+    introduction: "An IT student who enjoys working with computers, especially hardware. I also like making websites and trying out new ideas with the help of AI through vibe coding. I'm still learning, but I enjoy figuring things out, fixing problems, and improving my skills with every project I make.",
     profilePhoto: "image/profile.png"
 };
 
