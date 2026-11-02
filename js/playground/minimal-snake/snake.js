@@ -492,7 +492,7 @@
         } else if (code === "ArrowRight" || key === "d") {
             e.preventDefault();
             queueDirection({ x: 1, y: 0 });
-        } else if (code === "Space" || key === "p" || code === "Escape") {
+        } else if (code === "Space" || key === "p") {
             e.preventDefault();
             if (gameState === "running" || gameState === "paused") {
                 togglePause();
@@ -558,6 +558,9 @@
 
     function showHub() {
         cleanup();
+        if (window.PlaygroundManager && typeof window.PlaygroundManager.closeModal === "function") {
+            window.PlaygroundManager.closeModal();
+        }
     }
 
     function openSnakeGame() {

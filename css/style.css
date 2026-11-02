@@ -3130,6 +3130,182 @@ button {
     gap: 8px;
 }
 
+/* ----------------------------------------------------------------------------
+   12.1 PLAYGROUND GAME MODAL (CINEMATIC POPUP OVERLAY)
+   ---------------------------------------------------------------------------- */
+.playground-modal-overlay {
+    z-index: 300;
+    padding: 24px;
+    background-color: rgba(3, 4, 10, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.playground-modal-card {
+    max-width: 1160px;
+    width: 100%;
+    max-height: 92vh;
+    max-height: 92dvh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sim-bg-main, #0b0b0b);
+    border: 1px solid var(--border-strong, #2f3442);
+    border-radius: var(--radius-lg, 16px);
+    box-shadow: 0 24px 70px -10px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 180, 216, 0.08);
+    overflow: hidden;
+    position: relative;
+    transform: scale(0.92) translateY(20px);
+    opacity: 0;
+    transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1), opacity 380ms ease;
+}
+
+.playground-modal-overlay.is-open .playground-modal-card {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.playground-modal-overlay.is-closing .playground-modal-card {
+    transform: scale(0.94) translateY(14px);
+    opacity: 0;
+    transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), opacity 260ms ease;
+}
+
+.playground-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--border-subtle, #1e2230);
+    background-color: var(--sim-bg-card, #141722);
+    flex-shrink: 0;
+    gap: 16px;
+}
+
+.playground-modal-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.playground-modal-badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--text-accent, #38bdf8);
+    text-transform: uppercase;
+}
+
+.playground-modal-title {
+    font-size: 1.18rem;
+    font-weight: 700;
+    color: var(--text-primary, #f8fafc);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.playground-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.playground-modal-exit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm, 6px);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle, #2a2e3d);
+    color: var(--text-secondary, #94a3b8);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.playground-modal-exit-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-primary, #ffffff);
+    border-color: var(--border-strong, #475569);
+    transform: translateY(-1px);
+}
+
+.playground-modal-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle, #2a2e3d);
+    color: var(--text-secondary, #94a3b8);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.playground-modal-close-btn:hover {
+    background: rgba(239, 68, 68, 0.18);
+    border-color: rgba(239, 68, 68, 0.45);
+    color: #ef4444;
+    transform: rotate(90deg);
+}
+
+.playground-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 24px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.playground-modal-body .playground-game-view {
+    width: 100%;
+}
+
+.playground-modal-body .section-header {
+    margin-bottom: 20px;
+}
+
+@media (max-width: 860px) {
+    .playground-modal-overlay {
+        padding: 10px;
+    }
+
+    .playground-modal-card {
+        max-height: 96vh;
+        max-height: 96dvh;
+        border-radius: var(--radius-md, 12px);
+    }
+
+    .playground-modal-header {
+        padding: 12px 16px;
+    }
+
+    .playground-modal-body {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 520px) {
+    .playground-modal-exit-btn span {
+        display: none;
+    }
+    .playground-modal-exit-btn {
+        padding: 7px 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .playground-modal-card {
+        transition: none !important;
+        transform: none !important;
+    }
+}
+
 .toast-notification {
     position: fixed;
     bottom: 24px;

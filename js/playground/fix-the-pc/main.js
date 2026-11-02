@@ -10,7 +10,13 @@
     document.addEventListener("DOMContentLoaded", () => {
         const fixPcMount = document.getElementById("fixPcAppRoot");
         if (fixPcMount && window.FixPCUI) {
-            window.FixPCUI.init(fixPcMount);
+            window.FixPCUI.init(fixPcMount, {
+                onReturnToPlayground: () => {
+                    if (window.PlaygroundManager && typeof window.PlaygroundManager.closeModal === "function") {
+                        window.PlaygroundManager.closeModal();
+                    }
+                }
+            });
         }
     });
 })();

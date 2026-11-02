@@ -1,30 +1,116 @@
 // ============================================================================
-// PLAYGROUND COORDINATOR & SIDEBAR NAVIGATION MANAGER
-// Manages switching directly between the four interactive hardware games:
+// PLAYGROUND MODAL MANAGER & SIDEBAR NAVIGATION COORDINATOR
+// Manages opening, closing, and switching the four interactive games inside a
+// smooth, cinematic modal overlay above the portfolio content:
 //   01 - Build a PC
 //   02 - Fix the PC
 //   03 - Circuit Connect
 //   04 - Minimal Snake
-// Provides smooth expanding/collapsing sidebar dropdown, URL synchronization,
-// responsive mobile menu handling, and persistent game state upon refresh.
+//
+// Ensures zero reserved homepage space when closed, complete cleanup of
+// timers/loops/listeners on exit, mobile & desktop responsiveness, and clean URLs.
 // ============================================================================
 
 (function () {
     "use strict";
 
     document.addEventListener("DOMContentLoaded", () => {
+        // Modal Container & Controls
+        const playgroundModal = document.getElementById("playgroundModal");
+        const playgroundModalCloseBtn = document.getElementById("playgroundModalCloseBtn");
+        const playgroundModalExitBtn = document.getElementById("playgroundModalExitBtn");
+        const playgroundModalBadge = document.getElementById("playgroundModalBadge");
+        const playgroundModalTitle = document.getElementById("playgroundModalTitle");
+
+        // Game Views
         const buildPcView = document.getElementById("buildPcGameView");
         const fixPcView = document.getElementById("fixPcGameView");
         const circuitConnectView = document.getElementById("circuitConnectGameView");
         const snakeView = document.getElementById("snakeGameView");
         const circuitConnectMount = document.getElementById("circuitConnectAppRoot");
 
+        // Sidebar Navigation
         const navGroupPlayground = document.getElementById("navGroupPlayground") || document.querySelector(".nav-group-playground");
         const navPlaygroundHubLink = document.getElementById("navPlaygroundHubLink");
         const sidebarSubItems = document.querySelectorAll(".nav-subitem[data-open-game]");
 
-        let currentGameKey = "build-pc";
+        let currentGameKey = null;
+        let lastTriggerElement = null;
 
+        // --------------------------------------------------------------------
+        // 1. GAME METADATA & INITIALIZERS
+        // --------------------------------------------------------------------
+        const GAME_META = {
+            "build-pc": {
+                badge: "PLAYGROUND / GAME 01",
+                title: "Build a PC",
+                init: () => {
+                    if (window.PCSimulator && typeof window.PCSimulator.restartGame === "function") {
+                        window.PCSimulator.restartGame();
+                    } else if (window.PCSimState && typeof window.PCSimState.resetState === "function") {
+                        window.PCSimState.resetState();
+                    }
+                }
+            },
+            "fix-pc": {
+                badge: "PLAYGROUND / GAME 02",
+                title: "Fix the PC",
+                init: () => {
+                    if (window.FixPCUI && typeof window.FixPCUI.renderMainMenu === "function") {
+                        window.FixPCUI.renderMainMenu();
+                    }
+                }
+            },
+            "circuit-connect": {
+                badge: "PLAYGROUND / GAME 03",
+                title: "Circuit Connect",
+                init: () => {
+                    if (window.CircuitConnectUI && typeof window.CircuitConnectUI.renderMainMenu === "function") {
+                        window.CircuitConnectUI.renderMainMenu();
+                    }
+                }
+            },
+            "snake": {
+                badge: "PLAYGROUND / GAME 04",
+                title: "Minimal Snake",
+                init: () => {
+                    if (window.MinimalSnakeGame && typeof window.MinimalSnakeGame.openGame === "function") {
+                        window.MinimalSnakeGame.openGame();
+                    }
+                }
+            }
+        };
+
+        // --------------------------------------------------------------------
+        // 2. CLEANUP ACTIVE SESSIONS & STOP LOOPS / TIMERS
+        // --------------------------------------------------------------------
+        function cleanupAllGames() {
+            // Build a PC cleanup
+            if (window.PCSimulator && typeof window.PCSimulator.cleanup === "function") {
+                try { window.PCSimulator.cleanup(); } catch (e) { /* ignore */ }
+            } else if (window.PCSimState && typeof window.PCSimState.resetState === "function") {
+                try { window.PCSimState.resetState(); } catch (e) { /* ignore */ }
+            }
+
+            // Fix the PC cleanup
+            if (window.FixPCGameEngine && typeof window.FixPCGameEngine.cleanup === "function") {
+                try { window.FixPCGameEngine.cleanup(); } catch (e) { /* ignore */ }
+            }
+
+            // Circuit Connect cleanup
+            if (window.CircuitConnectEngine && typeof window.CircuitConnectEngine.cleanup === "function") {
+                try { window.CircuitConnectEngine.cleanup(); } catch (e) { /* ignore */ }
+            }
+
+            // Minimal Snake cleanup
+            if (window.MinimalSnakeGame && typeof window.MinimalSnakeGame.cleanup === "function") {
+                try { window.MinimalSnakeGame.cleanup(); } catch (e) { /* ignore */ }
+            }
+        }
+
+        // --------------------------------------------------------------------
+        // 3. SIDEBAR SUBMENU HIGHLIGHTING & MOBILE DRAWER
+        // --------------------------------------------------------------------
         function setActiveSubmenuGame(gameKey) {
             currentGameKey = gameKey;
             sidebarSubItems.forEach((item) => {
@@ -42,121 +128,154 @@
             if (mobileMenuBtn) mobileMenuBtn.setAttribute("aria-expanded", "false");
         }
 
-        function cleanupAllGames() {
-            if (window.CircuitConnectEngine && typeof window.CircuitConnectEngine.cleanup === "function") {
-                try { window.CircuitConnectEngine.cleanup(); } catch (e) { /* ignore */ }
-            }
-            if (window.FixPCGameEngine && typeof window.FixPCGameEngine.cleanup === "function") {
-                try { window.FixPCGameEngine.cleanup(); } catch (e) { /* ignore */ }
-            }
-            if (window.MinimalSnakeGame && typeof window.MinimalSnakeGame.cleanup === "function") {
-                try { window.MinimalSnakeGame.cleanup(); } catch (e) { /* ignore */ }
-            }
-        }
+        // --------------------------------------------------------------------
+        // 4. OPEN PLAYGROUND MODAL
+        // --------------------------------------------------------------------
+        function openPlaygroundModal(gameKey, triggerBtn) {
+            if (!playgroundModal) return;
+            if (triggerBtn) lastTriggerElement = triggerBtn;
 
-        function switchGame(gameKey, shouldScroll) {
+            if (!GAME_META[gameKey]) {
+                gameKey = "build-pc";
+            }
+
+            // End any currently running game session first
             cleanupAllGames();
 
-            const playgroundSection = document.getElementById("playground");
-            if (playgroundSection) {
-                playgroundSection.hidden = false;
-            }
-
+            // Hide all game views
             if (buildPcView) buildPcView.hidden = true;
             if (fixPcView) fixPcView.hidden = true;
             if (circuitConnectView) circuitConnectView.hidden = true;
             if (snakeView) snakeView.hidden = true;
 
+            // Update modal header information
+            const meta = GAME_META[gameKey];
+            if (playgroundModalBadge) playgroundModalBadge.textContent = meta.badge;
+            if (playgroundModalTitle) playgroundModalTitle.textContent = meta.title;
+
+            // Show selected game view
             switch (gameKey) {
                 case "fix-pc":
                     if (fixPcView) fixPcView.hidden = false;
-                    if (window.FixPCUI && typeof window.FixPCUI.renderMainMenu === "function") {
-                        window.FixPCUI.renderMainMenu();
-                    }
                     break;
-
                 case "circuit-connect":
                     if (circuitConnectView) circuitConnectView.hidden = false;
-                    if (window.CircuitConnectUI && typeof window.CircuitConnectUI.renderMainMenu === "function") {
-                        window.CircuitConnectUI.renderMainMenu();
-                    }
                     break;
-
                 case "snake":
                     if (snakeView) snakeView.hidden = false;
-                    if (window.MinimalSnakeGame && typeof window.MinimalSnakeGame.openGame === "function") {
-                        window.MinimalSnakeGame.openGame();
-                    }
                     break;
-
                 case "build-pc":
                 default:
-                    gameKey = "build-pc";
                     if (buildPcView) buildPcView.hidden = false;
                     break;
             }
 
+            // Start a fresh game session
+            meta.init();
             setActiveSubmenuGame(gameKey);
 
-            // Expand dropdown & highlight active state ONLY when explicitly navigating to Playground
-            if (shouldScroll) {
-                if (navGroupPlayground) {
-                    navGroupPlayground.classList.add("is-expanded");
-                }
-                if (navPlaygroundHubLink) {
-                    navPlaygroundHubLink.setAttribute("aria-expanded", "true");
-                }
+            // Display modal smoothly with scale and fade animation
+            playgroundModal.hidden = false;
+            playgroundModal.classList.remove("is-closing");
+            requestAnimationFrame(() => {
+                playgroundModal.classList.add("is-open");
+            });
 
-                document.querySelectorAll(".nav-item").forEach((item) => {
-                    item.classList.toggle("active", item.getAttribute("data-section") === "playground");
-                });
+            // Prevent background page scrolling while playing
+            document.body.style.overflow = "hidden";
 
-                // Keep URL clean without exposing ?game=... query parameters or &i=1
-                try {
-                    sessionStorage.setItem("active_playground_game", gameKey);
-                    window.history.replaceState({ game: gameKey }, "", window.location.pathname + "#playground");
-                } catch (err) {
-                    // Ignore error in legacy environments
-                }
-
-                const playgroundSection = document.getElementById("playground");
-                if (playgroundSection) {
-                    playgroundSection.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
+            // Focus close button for accessibility
+            if (playgroundModalCloseBtn && typeof playgroundModalCloseBtn.focus === "function") {
+                playgroundModalCloseBtn.focus();
             }
         }
 
-        // Toggle Playground Dropdown smoothly when heading itself is clicked
+        // --------------------------------------------------------------------
+        // 5. CLOSE PLAYGROUND MODAL
+        // --------------------------------------------------------------------
+        function closePlaygroundModal() {
+            if (!playgroundModal || playgroundModal.hidden) return;
+
+            playgroundModal.classList.remove("is-open");
+            playgroundModal.classList.add("is-closing");
+
+            // Stop all timers, animations, and game loops immediately
+            cleanupAllGames();
+
+            setTimeout(() => {
+                playgroundModal.hidden = true;
+                playgroundModal.classList.remove("is-closing");
+
+                // Hide all views inside the modal
+                if (buildPcView) buildPcView.hidden = true;
+                if (fixPcView) fixPcView.hidden = true;
+                if (circuitConnectView) circuitConnectView.hidden = true;
+                if (snakeView) snakeView.hidden = true;
+
+                // Restore page scroll
+                document.body.style.overflow = "";
+
+                // Clear active indicator on submenu
+                currentGameKey = null;
+                sidebarSubItems.forEach((item) => item.classList.remove("active"));
+
+                // Clean up any residual URL hashes or query params so address bar remains clean
+                try {
+                    if (window.location.hash === "#playground" || window.location.search) {
+                        history.replaceState(null, document.title, window.location.pathname);
+                    }
+                } catch (e) {}
+
+                // Return focus to trigger element without scrolling the page
+                if (lastTriggerElement && typeof lastTriggerElement.focus === "function") {
+                    try { lastTriggerElement.focus({ preventScroll: true }); } catch (e) {}
+                }
+            }, 300);
+        }
+
+        // --------------------------------------------------------------------
+        // 6. EVENT LISTENERS: CLOSE, EXIT, BACKDROP & ESCAPE KEY
+        // --------------------------------------------------------------------
+        if (playgroundModalCloseBtn) {
+            playgroundModalCloseBtn.addEventListener("click", closePlaygroundModal);
+        }
+
+        if (playgroundModalExitBtn) {
+            playgroundModalExitBtn.addEventListener("click", closePlaygroundModal);
+        }
+
+        if (playgroundModal) {
+            playgroundModal.addEventListener("click", (e) => {
+                if (e.target === playgroundModal) {
+                    closePlaygroundModal();
+                }
+            });
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && playgroundModal && !playgroundModal.hidden) {
+                closePlaygroundModal();
+            }
+        });
+
+        // --------------------------------------------------------------------
+        // 7. SIDEBAR PLAYGROUND DROPDOWN TOGGLE
+        // --------------------------------------------------------------------
         if (navPlaygroundHubLink) {
             navPlaygroundHubLink.addEventListener("click", (e) => {
-                const isContactPage = window.location.pathname.endsWith("contact.php");
-                if (isContactPage) {
-                    // Navigate to index playground
-                    return;
-                }
-
                 e.preventDefault();
                 if (!navGroupPlayground) return;
 
                 const willBeExpanded = !navGroupPlayground.classList.contains("is-expanded");
                 navGroupPlayground.classList.toggle("is-expanded", willBeExpanded);
                 navPlaygroundHubLink.setAttribute("aria-expanded", String(willBeExpanded));
-
-                // If expanded, highlight Playground nav item and scroll to playground
-                if (willBeExpanded) {
-                    document.querySelectorAll(".nav-item").forEach((item) => {
-                        item.classList.toggle("active", item.getAttribute("data-section") === "playground");
-                    });
-                    switchGame(currentGameKey || "build-pc", true);
-                }
             });
         }
 
-        // Close Playground dropdown when not hovering and not on the playground section
+        // Close dropdown when mouse leaves the group (if modal is not open)
         if (navGroupPlayground) {
             navGroupPlayground.addEventListener("mouseleave", () => {
-                const isPlaygroundActive = navPlaygroundHubLink && navPlaygroundHubLink.classList.contains("active");
-                if (!isPlaygroundActive) {
+                if (!playgroundModal || playgroundModal.hidden) {
                     navGroupPlayground.classList.remove("is-expanded");
                     if (navPlaygroundHubLink) {
                         navPlaygroundHubLink.setAttribute("aria-expanded", "false");
@@ -165,11 +284,10 @@
             });
         }
 
-        // Close Playground dropdown when clicking outside if not on the playground section
+        // Close dropdown when clicking outside
         document.addEventListener("click", (e) => {
             if (navGroupPlayground && !navGroupPlayground.contains(e.target)) {
-                const isPlaygroundActive = navPlaygroundHubLink && navPlaygroundHubLink.classList.contains("active");
-                if (!isPlaygroundActive) {
+                if (!playgroundModal || playgroundModal.hidden) {
                     navGroupPlayground.classList.remove("is-expanded");
                     if (navPlaygroundHubLink) {
                         navPlaygroundHubLink.setAttribute("aria-expanded", "false");
@@ -178,76 +296,64 @@
             }
         });
 
-        // Direct one-click game selection from the Sidebar Playground submenu
+        // --------------------------------------------------------------------
+        // 8. SIDEBAR GAME SELECTION: OPEN POPUP MODAL
+        // --------------------------------------------------------------------
         sidebarSubItems.forEach((subLink) => {
             subLink.addEventListener("click", (e) => {
+                e.preventDefault();
                 const targetGame = subLink.getAttribute("data-open-game");
                 if (targetGame) {
-                    try {
-                        sessionStorage.setItem("active_playground_game", targetGame);
-                    } catch (err) {}
-                }
-
-                const isContactPage = window.location.pathname.endsWith("contact.php");
-                if (isContactPage) {
-                    return; // Let standard link navigation open index.php#playground
-                }
-
-                e.preventDefault();
-                if (targetGame) {
-                    switchGame(targetGame, true);
+                    openPlaygroundModal(targetGame, subLink);
                 }
                 closeMobileDrawerIfOpen();
             });
         });
 
-        // Mount Circuit Connect UI inside index.php
+        // --------------------------------------------------------------------
+        // 9. MOUNT CIRCUIT CONNECT UI
+        // --------------------------------------------------------------------
         if (circuitConnectMount && window.CircuitConnectUI) {
             window.CircuitConnectUI.init(circuitConnectMount, {
-                onReturnToPlayground: () => switchGame(currentGameKey, false)
+                onReturnToPlayground: closePlaygroundModal
             });
         }
 
-        // Auto-select game based on saved game, query, or hash on initial load
+        // --------------------------------------------------------------------
+        // 10. HANDLE INCOMING URL PARAMETERS (?game=...) SAFELY
+        // --------------------------------------------------------------------
         try {
             const params = new URLSearchParams(window.location.search);
             const queryGame = params.get("game");
             const hash = (window.location.hash || "").replace("#", "");
-            let savedGame = null;
-            try {
-                savedGame = sessionStorage.getItem("active_playground_game");
-            } catch (e) {}
-
             const validGames = ["build-pc", "fix-pc", "circuit-connect", "snake"];
-            let targetGame = "build-pc";
 
-            if (validGames.includes(queryGame)) {
-                targetGame = queryGame;
-            } else if (validGames.includes(savedGame)) {
-                targetGame = savedGame;
+            if (queryGame && validGames.includes(queryGame)) {
+                openPlaygroundModal(queryGame);
             } else if (validGames.includes(hash)) {
-                targetGame = hash;
+                openPlaygroundModal(hash);
             }
 
-            const isPlaygroundNav = (hash === "playground" || queryGame !== null || validGames.includes(hash));
-            switchGame(targetGame, isPlaygroundNav);
-
-            // Clean up any ?game= or ?i= from the address bar so the URL stays completely clean
+            // Instantly clean query parameters so normal page refresh always loads Home cleanly
             if (window.location.search && (window.location.search.includes("game=") || window.location.search.includes("i="))) {
                 const cleanParams = new URLSearchParams(window.location.search);
                 cleanParams.delete("game");
                 cleanParams.delete("i");
                 const remaining = cleanParams.toString();
-                const cleanUrl = window.location.pathname + (remaining ? "?" + remaining : "") + (window.location.hash || "");
-                window.history.replaceState(window.history.state, document.title, cleanUrl);
+                const cleanUrl = window.location.pathname + (remaining ? "?" + remaining : "") + (window.location.hash === "#playground" ? "" : window.location.hash);
+                window.history.replaceState(null, document.title, cleanUrl);
             }
         } catch (err) {
-            setActiveSubmenuGame("build-pc");
+            // Ignore legacy browser errors
         }
 
-        // Expose PlaygroundManager API globally for any component
+        // --------------------------------------------------------------------
+        // 11. EXPOSE PLAYGROUND MANAGER GLOBALLY
+        // --------------------------------------------------------------------
         window.PlaygroundManager = {
-            switchGame: switchGame,
+            openModal: openPlaygroundModal,
+            closeModal: closePlaygroundModal,
+            isModalOpen: () => playgroundModal && !playgroundModal.hidden,
             getCurrentGame: () => currentGameKey,
             expandDropdown: () => {
                 if (navGroupPlayground) navGroupPlayground.classList.add("is-expanded");

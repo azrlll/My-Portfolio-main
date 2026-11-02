@@ -89,10 +89,9 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const hasStatusParam = urlParams.has("status");
-        const isPlayground = window.location.hash === "#playground";
 
-        // Do not alter scroll restoration on playground or contact form status views
-        if (hasStatusParam || isPlayground) {
+        // Do not alter scroll restoration on contact form status views
+        if (hasStatusParam) {
             return;
         }
 
@@ -102,7 +101,7 @@
         }
 
         // Clean up any hash anchors on homepage load so page refresh always displays Home at the top
-        if (window.location.hash && window.location.hash !== "#playground") {
+        if (window.location.hash) {
             history.replaceState(null, document.title, window.location.pathname);
         }
 
@@ -113,7 +112,7 @@
         window.addEventListener("pageshow", (e) => {
             const currentParams = new URLSearchParams(window.location.search);
             if (!currentParams.has("status")) {
-                if (window.location.hash && window.location.hash !== "#playground") {
+                if (window.location.hash) {
                     history.replaceState(null, document.title, window.location.pathname);
                 }
                 if (e.persisted || (window.performance && performance.getEntriesByType("navigation")[0]?.type === "reload")) {
@@ -1796,11 +1795,13 @@
                 return;
             }
 
-            // Do not overlap if the project lightbox modal or journal modal is active
+            // Do not overlap if the project lightbox modal, journal modal, or playground game modal is active
             const projectModal = document.getElementById("projectModal");
             if (projectModal && !projectModal.hidden) return;
             const journalModal = document.getElementById("journalModal");
             if (journalModal && !journalModal.hidden) return;
+            const playgroundModal = document.getElementById("playgroundModal");
+            if (playgroundModal && !playgroundModal.hidden) return;
 
             isAnimating = true;
             popup.classList.remove("is-closing");

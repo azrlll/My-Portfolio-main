@@ -163,6 +163,11 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
     <!-- Subtle Notification Toast (for unconfigured social links or messages) -->
     <div class="toast-notification" id="toastNotification" role="status" aria-live="polite" hidden></div>
 
+<?php if ($includePlaygroundScripts): ?>
+    <!-- Playground Game Modal (Appears only when visitor clicks a game in the sidebar) -->
+    <?php require __DIR__ . '/playground-modal.php'; ?>
+<?php endif; ?>
+
 <?php
 $jsConfigVer = function_exists('getPortfolioAssetVersion') ? getPortfolioAssetVersion('js/config.js') : (string)(@filemtime(__DIR__ . '/../js/config.js') ?: '20261102');
 $jsMainVer = function_exists('getPortfolioAssetVersion') ? getPortfolioAssetVersion('js/main.js') : (string)(@filemtime(__DIR__ . '/../js/main.js') ?: '20261102');

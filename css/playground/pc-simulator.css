@@ -3,7 +3,8 @@
    Minimalist Monochrome Interface (Desktop Two-Column & Mobile Responsive)
    ============================================================================ */
 
-.playground-section {
+.playground-section,
+.playground-modal-card {
     --sim-bg-main: #0B0B0B;
     --sim-bg-card: #191919;
     --sim-bg-elevated: #252525;
@@ -13,7 +14,8 @@
     --sim-border-active: #F5F5F5;
 }
 
-[data-theme="light"] .playground-section {
+[data-theme="light"] .playground-section,
+[data-theme="light"] .playground-modal-card {
     --sim-bg-main: #F4F4F5;
     --sim-bg-card: #FFFFFF;
     --sim-bg-elevated: #F0F0F2;

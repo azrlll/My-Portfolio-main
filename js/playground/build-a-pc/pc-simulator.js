@@ -461,6 +461,13 @@
                 if (dom.completionOverlay) {
                     dom.completionOverlay.hidden = true;
                 }
+                if (window.PlaygroundManager && typeof window.PlaygroundManager.closeModal === "function") {
+                    window.PlaygroundManager.closeModal();
+                }
+                const projectsSection = document.getElementById("projects");
+                if (projectsSection) {
+                    projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
             });
         }
 
@@ -525,4 +532,18 @@
         bindControls();
         restartGame();
     });
+
+    // Expose API for Playground Modal Manager
+    window.PCSimulator = {
+        restartGame: restartGame,
+        cleanup: function () {
+            if (window.PCSimState && typeof window.PCSimState.resetState === "function") {
+                window.PCSimState.resetState();
+            }
+            if (window.PCSimDragDrop && typeof window.PCSimDragDrop.cleanup === "function") {
+                window.PCSimDragDrop.cleanup();
+            }
+            restartGame();
+        }
+    };
 })();
