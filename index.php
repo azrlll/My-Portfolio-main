@@ -27,7 +27,7 @@ require __DIR__ . '/includes/header.php';
                             </h1>
 
                             <p class="hero-description" id="heroIntro">
-                                An IT student who enjoys working with computers, especially hardware. I also like making websites and trying out new ideas with the help of AI through vibe coding. I'm still learning, but I enjoy figuring things out, fixing problems, and improving my skills with every project I make.
+                                I'm an IT student who enjoys working with computers, especially hardware. I also love building websites, exploring new ideas, and learning more about technology. I enjoy turning my ideas into real projects by working alongside AI, and with every project, I get to learn something new and improve my skills.
                             </p>
 
                             <div class="hero-actions">
