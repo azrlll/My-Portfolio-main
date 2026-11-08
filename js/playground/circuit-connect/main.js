@@ -215,13 +215,23 @@
                 // Restore page scroll
                 document.body.style.overflow = "";
 
-                // Clear active indicator on submenu
+                // Collapse sidebar playground dropdown and reset indicators
                 currentGameKey = null;
-                sidebarSubItems.forEach((item) => item.classList.remove("active"));
+                sidebarSubItems.forEach((item) => {
+                    item.classList.remove("active");
+                    if (typeof item.blur === "function") item.blur();
+                });
+                if (navGroupPlayground) {
+                    navGroupPlayground.classList.remove("is-expanded");
+                }
+                if (navPlaygroundHubLink) {
+                    navPlaygroundHubLink.setAttribute("aria-expanded", "false");
+                    if (typeof navPlaygroundHubLink.blur === "function") navPlaygroundHubLink.blur();
+                }
 
-                // Clean up any residual URL hashes or query params so address bar remains clean
+                // Clean up any residual URL hashes or query params so address bar remains completely clean
                 try {
-                    if (window.location.hash === "#playground" || window.location.search) {
+                    if (window.location.hash || window.location.search) {
                         history.replaceState(null, document.title, window.location.pathname);
                     }
                 } catch (e) {}
@@ -259,7 +269,7 @@
         });
 
         // --------------------------------------------------------------------
-        // 7. SIDEBAR PLAYGROUND DROPDOWN TOGGLE
+        // 7. SIDEBAR PLAYGROUND DROPDOWN TOGGLE & AUTO-CLOSE
         // --------------------------------------------------------------------
         if (navPlaygroundHubLink) {
             navPlaygroundHubLink.addEventListener("click", (e) => {
@@ -272,14 +282,12 @@
             });
         }
 
-        // Close dropdown when mouse leaves the group (if modal is not open)
+        // Close dropdown when mouse leaves the playground menu group
         if (navGroupPlayground) {
             navGroupPlayground.addEventListener("mouseleave", () => {
-                if (!playgroundModal || playgroundModal.hidden) {
-                    navGroupPlayground.classList.remove("is-expanded");
-                    if (navPlaygroundHubLink) {
-                        navPlaygroundHubLink.setAttribute("aria-expanded", "false");
-                    }
+                navGroupPlayground.classList.remove("is-expanded");
+                if (navPlaygroundHubLink) {
+                    navPlaygroundHubLink.setAttribute("aria-expanded", "false");
                 }
             });
         }
@@ -287,11 +295,9 @@
         // Close dropdown when clicking outside
         document.addEventListener("click", (e) => {
             if (navGroupPlayground && !navGroupPlayground.contains(e.target)) {
-                if (!playgroundModal || playgroundModal.hidden) {
-                    navGroupPlayground.classList.remove("is-expanded");
-                    if (navPlaygroundHubLink) {
-                        navPlaygroundHubLink.setAttribute("aria-expanded", "false");
-                    }
+                navGroupPlayground.classList.remove("is-expanded");
+                if (navPlaygroundHubLink) {
+                    navPlaygroundHubLink.setAttribute("aria-expanded", "false");
                 }
             }
         });
@@ -305,6 +311,15 @@
                 const targetGame = subLink.getAttribute("data-open-game");
                 if (targetGame) {
                     openPlaygroundModal(targetGame, subLink);
+                }
+                // Automatically collapse playground dropdown and blur link
+                if (typeof subLink.blur === "function") subLink.blur();
+                if (navGroupPlayground) {
+                    navGroupPlayground.classList.remove("is-expanded");
+                }
+                if (navPlaygroundHubLink) {
+                    navPlaygroundHubLink.setAttribute("aria-expanded", "false");
+                    if (typeof navPlaygroundHubLink.blur === "function") navPlaygroundHubLink.blur();
                 }
                 closeMobileDrawerIfOpen();
             });
@@ -324,9 +339,20 @@
         // --------------------------------------------------------------------
         try {
             const params = new URLSearchParams(window.location.search);
-            const queryGame = params.get("game");
+            let queryGame = params.get("game");
             const hash = (window.location.hash || "").replace("#", "");
             const validGames = ["build-pc", "fix-pc", "circuit-connect", "snake"];
+
+            // Check if game was stored in sessionStorage by earlier Clean URL sanitizer
+            if (!queryGame) {
+                try {
+                    const savedGame = sessionStorage.getItem("active_playground_game");
+                    if (savedGame) {
+                        sessionStorage.removeItem("active_playground_game");
+                        queryGame = savedGame;
+                    }
+                } catch (e) {}
+            }
 
             if (queryGame && validGames.includes(queryGame)) {
                 openPlaygroundModal(queryGame);
@@ -334,8 +360,8 @@
                 openPlaygroundModal(hash);
             }
 
-            // Instantly clean query parameters so normal page refresh always loads Home cleanly
-            if (window.location.search && (window.location.search.includes("game=") || window.location.search.includes("i="))) {
+            // Instantly clean query parameters and hash so address bar stays pristine
+            if (window.location.search || window.location.hash === "#playground") {
                 const cleanParams = new URLSearchParams(window.location.search);
                 cleanParams.delete("game");
                 cleanParams.delete("i");

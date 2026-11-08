@@ -108,19 +108,22 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
     <script>
         (function () {
             try {
-                if (window.location.search) {
+                if (window.location.search || window.location.hash === "#playground") {
                     var search = window.location.search;
-                    if (search.indexOf("i=") !== -1 || search.indexOf("game=") !== -1) {
-                        var params = new URLSearchParams(search);
+                    var params = new URLSearchParams(search);
+                    if (params.has("i")) {
                         params.delete("i");
-                        if (params.has("game")) {
-                            sessionStorage.setItem("active_playground_game", params.get("game"));
-                            params.delete("game");
-                        }
-                        var cleanQuery = params.toString() ? ("?" + params.toString()) : "";
-                        var cleanUrl = window.location.pathname + cleanQuery + window.location.hash;
-                        window.history.replaceState(window.history.state, document.title, cleanUrl);
                     }
+                    if (params.has("game")) {
+                        try {
+                            sessionStorage.setItem("active_playground_game", params.get("game"));
+                        } catch (e) {}
+                        params.delete("game");
+                    }
+                    var cleanQuery = params.toString() ? ("?" + params.toString()) : "";
+                    var cleanHash = window.location.hash === "#playground" ? "" : window.location.hash;
+                    var cleanUrl = window.location.pathname + cleanQuery + cleanHash;
+                    window.history.replaceState(window.history.state, document.title, cleanUrl);
                 }
             } catch (e) {}
         })();

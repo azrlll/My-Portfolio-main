@@ -82,7 +82,8 @@
                     cleanParams.delete("game");
                 }
                 const remaining = cleanParams.toString();
-                const cleanUrl = window.location.pathname + (remaining ? "?" + remaining : "") + (window.location.hash || "");
+                const cleanHash = window.location.hash === "#playground" ? "" : (window.location.hash || "");
+                const cleanUrl = window.location.pathname + (remaining ? "?" + remaining : "") + cleanHash;
                 history.replaceState(history.state, document.title, cleanUrl);
             }
         } catch (e) {}
