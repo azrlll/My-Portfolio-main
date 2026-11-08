@@ -87,7 +87,7 @@ require __DIR__ . '/includes/header.php';
                     <div class="bio-card">
                         <h3 class="card-heading">Who I Am</h3>
                         <p class="bio-paragraph">
-                            Hi, I'm Kevin! I'm an IT student who enjoys working with computer hardware and making websites. I like learning how technology works, trying out new ideas, and creating projects with the help of AI through vibe coding.
+                            Hi, I'm Kevin! I'm an IT student who enjoys working with computer hardware and building websites. I like exploring new ideas, learning about technology, and turning my ideas into real projects by working alongside AI.
                         </p>
                         <p class="bio-paragraph">
                             I prefer learning by actually doing things, whether it's working on school projects, building websites, or fixing computers. In my free time, I usually play FPS games on my laptop or phone, or spend time exploring new programming languages, AI tools, and other things related to technology.
