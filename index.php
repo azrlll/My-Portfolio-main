@@ -22,13 +22,6 @@ require __DIR__ . '/includes/header.php';
                 <div class="hero-container">
                     <div class="hero-top-grid">
                         <div class="hero-text-col">
-                            <div class="hero-tech-meta" aria-label="System Identity">
-                                <span class="tech-status-dot" aria-hidden="true"></span>
-                                <span class="tech-meta-label">SYS // KEVIN'S HARDWARE STUDIO</span>
-                                <span class="tech-meta-sep" aria-hidden="true">/</span>
-                                <span class="tech-meta-sub">IT STUDENT &amp; WEB BUILDER</span>
-                            </div>
-
                             <h1 class="hero-title" id="heroHeading">
                                 <span class="hero-line-primary" id="heroLine1">Kevin Christopher</span>
                             </h1>
@@ -103,39 +96,24 @@ require __DIR__ . '/includes/header.php';
 
                     <div class="info-cards-grid">
                         <div class="info-stat-card">
-                            <div class="info-card-header">
-                                <span class="info-label">NAME</span>
-                                <span class="info-spec-code" aria-hidden="true">MOD / 01</span>
-                            </div>
+                            <span class="info-label">NAME</span>
                             <strong class="info-value" id="profileFullName">Kevin Christopher</strong>
                         </div>
                         <div class="info-stat-card">
-                            <div class="info-card-header">
-                                <span class="info-label">COURSE</span>
-                                <span class="info-spec-code" aria-hidden="true">MOD / 02</span>
-                            </div>
+                            <span class="info-label">COURSE</span>
                             <strong class="info-value" id="profileCourse">Bachelor of Science in Information Technology</strong>
                         </div>
                         <div class="info-stat-card">
-                            <div class="info-card-header">
-                                <span class="info-label">IDENTITY</span>
-                                <span class="info-spec-code" aria-hidden="true">MOD / 03</span>
-                            </div>
+                            <span class="info-label">IDENTITY</span>
                             <strong class="info-value" id="profileIdentity">IT Student, Hardware Enthusiast &amp; Web Developer</strong>
                         </div>
                         <div class="info-stat-card">
-                            <div class="info-card-header">
-                                <span class="info-label">PRIMARY INTEREST</span>
-                                <span class="info-spec-code" aria-hidden="true">MOD / 04</span>
-                            </div>
+                            <span class="info-label">PRIMARY INTEREST</span>
                             <strong class="info-value" id="profilePrimaryInterest">Computer Hardware</strong>
                             <p class="info-note">Building PCs, choosing matching parts, and troubleshooting hardware issues.</p>
                         </div>
                         <div class="info-stat-card">
-                            <div class="info-card-header">
-                                <span class="info-label">ADDITIONAL INTEREST</span>
-                                <span class="info-spec-code" aria-hidden="true">MOD / 05</span>
-                            </div>
+                            <span class="info-label">ADDITIONAL INTEREST</span>
                             <strong class="info-value" id="profileAdditionalInterest">Web Development</strong>
                             <p class="info-note">Building responsive websites, writing code, and trying out new tech tools.</p>
                         </div>
