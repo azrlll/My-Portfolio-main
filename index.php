@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Main Portfolio Entry Page (index.php)
  * Preserves all existing sections, projects, skills, blog notes, and
- * all 3 interactive Playground games (Build a PC, Fix the PC, Circuit Connect).
+ * all 4 interactive Playground games (Build a PC, Fix the PC, Circuit Connect, Minimal Snake).
  */
 
 $currentPage = 'index';
@@ -27,7 +27,7 @@ require __DIR__ . '/includes/header.php';
                             </h1>
 
                             <p class="hero-description" id="heroIntro">
-                                I'm an IT student who enjoys working with computers, especially hardware. I also love building websites, exploring new ideas, and learning more about technology. I enjoy turning my ideas into real projects by working alongside AI, and with every project, I get to learn something new and improve my skills.
+                                I'm an IT student who enjoys working with computers, especially hardware. I also love building websites, exploring new ideas, and learning how technology works. I enjoy solving problems, trying different approaches, and turning my ideas into real projects. I'm always looking for ways to improve my skills, whether it's through hands-on experience or exploring new tools like AI.
                             </p>
 
                             <div class="hero-actions">

@@ -6,21 +6,13 @@
 
 // =====================================
 // KEVIN'S SOCIAL MEDIA LINKS
-// MANUALLY UPDATE THESE VALUES
 // =====================================
-
-// TODO: Add GitHub profile URL (e.g., "https://github.com/your-username")
-// TODO: Add LinkedIn profile URL (e.g., "https://www.linkedin.com/in/your-profile")
-// TODO: Add Facebook profile URL (e.g., "https://www.facebook.com/your-profile")
-// TODO: Add Instagram profile URL (e.g., "https://www.instagram.com/your-handle")
-// TODO: Add email address (e.g., "your.email@example.com")
-
 const SOCIAL_LINKS = {
-    github: "https://github.com/azrlll?tab=repositories",    // TODO: Add GitHub profile URL
-    linkedin: "https://www.linkedin.com/in/kevin-christopher-993200447",  // TODO: Add LinkedIn profile URL
-    facebook: "https://www.facebook.com/itsyaboyazrl",  // TODO: Add Facebook profile URL
-    instagram: "https://www.instagram.com/aazrll_ll/", // TODO: Add Instagram profile URL
-    email: "kevinreal2006@gmail.com"      // TODO: Add email address (will automatically format as mailto:)
+    github: "https://github.com/azrlll?tab=repositories",
+    linkedin: "https://www.linkedin.com/in/kevin-christopher-993200447",
+    facebook: "https://www.facebook.com/itsyaboyazrl",
+    instagram: "https://www.instagram.com/aazrll_ll/",
+    email: "kevinreal2006@gmail.com"
 };
 
 // =====================================
@@ -53,7 +45,7 @@ const PERSONAL_INFO = {
     primaryInterest: "Computer Hardware",
     additionalInterest: "Software Development",
     heroHeadingLine1: "Kevin Christopher",
-    introduction: "I'm an IT student who enjoys working with computers, especially hardware. I also love building websites, exploring new ideas, and learning more about technology. I enjoy turning my ideas into real projects by working alongside AI, and with every project, I get to learn something new and improve my skills.",
+    introduction: "I'm an IT student who enjoys working with computers, especially hardware. I also love building websites, exploring new ideas, and learning how technology works. I enjoy solving problems, trying different approaches, and turning my ideas into real projects. I'm always looking for ways to improve my skills, whether it's through hands-on experience or exploring new tools like AI.",
     profilePhoto: "image/profile.png"
 };
 
