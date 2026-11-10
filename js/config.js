@@ -40,10 +40,10 @@ const PERSONAL_INFO = {
     name: "Kevin Christopher",
     fullName: "Kevin Christopher",
     course: "Bachelor of Science in Information Technology",
-    identity: "IT Student, Hardware Enthusiast, and Vibe Coder",
-    sidebarSubtitle: "IT STUDENT / VIBE CODER",
+    identity: "IT Student, Hardware Enthusiast & Web Developer",
+    sidebarSubtitle: "IT STUDENT / HARDWARE ENTHUSIAST",
     primaryInterest: "Computer Hardware",
-    additionalInterest: "Software Development",
+    additionalInterest: "Web Development",
     heroHeadingLine1: "Kevin Christopher",
     introduction: "I'm an IT student who enjoys working with computers, especially hardware. I also love building websites, exploring new ideas, and learning how technology works. I enjoy solving problems, trying different approaches, and turning my ideas into real projects. I'm always looking for ways to improve my skills, whether it's through hands-on experience or exploring new tools like AI.",
     profilePhoto: "image/profile.png"
@@ -61,7 +61,7 @@ const PROJECTS_DATA = [
         title: "18th Birthday Invitation",
         category: "Digital Invitation Website",
         featured: true,
-        description: "I made a digital invitation website for an 18th birthday celebration. It has a royal green and gold design with an invitation that visitors can open to see the event details.",
+        description: "A digital invitation website I created for an 18th birthday celebration. It features a royal green and gold theme, an envelope that visitors can open on screen, and sections showing the event details, photo gallery, and schedule.",
         tags: ["Digital Invitation", "Web Design", "HTML & CSS", "Responsive"],
         image: "image/project-jennina-18th-birthday.png",
         githubUrl: "",
@@ -72,7 +72,7 @@ const PROJECTS_DATA = [
         title: "Wedding Invitation",
         category: "Wedding Invitation Website",
         featured: true,
-        description: "This is the first website project I worked on. It's a wedding invitation website with a welcome screen, falling flowers, and pages where guests can see the wedding details. Special thanks to Adrian and Lawrence for helping me with my first website project. I learned a lot while working with them.",
+        description: "The first website project I ever worked on. It's a wedding invitation with a welcome screen, falling flower animations, and pages where guests can view the schedule and event info. Special thanks to Adrian and Lawrence for helping and guiding me while building it.",
         tags: ["First Web Project", "Wedding Website", "Teamwork", "Interactive UI"],
         image: "image/project-hanz-and-jane-wedding.png",
         githubUrl: "",
@@ -83,7 +83,7 @@ const PROJECTS_DATA = [
         title: "Halcyon Home — Furniture Website",
         category: "Furniture Website",
         featured: false,
-        description: "I worked on a furniture website where visitors can browse home furniture and explore different categories. This project helped me learn more about website design and how to organize a webpage.",
+        description: "A clean furniture website layout where visitors can browse different types of home furniture by category. Building this helped me practice organizing page structures and making product cards look neat and readable on both phones and computers.",
         tags: ["Furniture Website", "Web Design", "Layout Structure", "UI/UX"],
         image: "image/project-halcyon-home-furniture.png",
         githubUrl: "",
@@ -94,7 +94,7 @@ const PROJECTS_DATA = [
         title: "My Old Portfolio Website",
         category: "Web Development / Personal Project",
         featured: false,
-        description: "This is my old personal portfolio website that I created when I was still learning web development. It has a simple design with sections for my profile, skills, projects, and contact information. This project helped me practice HTML and CSS and improve my website design skills.",
+        description: "An earlier personal portfolio that I built when I was first learning HTML and CSS. It has simple sections for my profile, skills, projects, and contact info, and served as my starting point before designing my current portfolio.",
         tags: ["HTML", "CSS", "JavaScript"],
         technologies: ["HTML", "CSS", "JavaScript"],
         image: "image/project-old-portfolio.png",
@@ -106,7 +106,7 @@ const PROJECTS_DATA = [
         title: "Arduino Clock",
         category: "Arduino • Hardware Prototyping",
         featured: false,
-        description: "A simple Arduino project that displays the real-time date and time on a 16x2 backlit LCD screen using an Arduino Uno, a breadboard, and a Real-Time Clock (RTC) module.",
+        description: "A digital clock I built on a breadboard using an Arduino Uno and an RTC module. It keeps accurate time and displays the live date and time on a backlit 16x2 LCD screen.",
         tags: ["Arduino Uno", "16x2 LCD", "RTC Module", "Hardware Prototyping"],
         image: "image/arduino-clock.jpg",
         githubUrl: "",
@@ -117,7 +117,7 @@ const PROJECTS_DATA = [
         title: "Arduino Game with Joystick",
         category: "Arduino • Interactive Mini-Game",
         featured: false,
-        description: "A simple Arduino project featuring a playable side-scrolling obstacle-jumping game on a 16x2 LCD screen, controlled using an analog thumb joystick wired to an Arduino Uno on a breadboard.",
+        description: "A side-scrolling obstacle jumping game running on an Arduino Uno. I wired an analog joystick and a 16x2 LCD to a breadboard, so players can jump over moving obstacles by pushing the stick.",
         tags: ["Arduino Uno", "Joystick Module", "16x2 LCD", "Embedded C++"],
         image: "image/arduino-joystick-game.jpg",
         githubUrl: "",
@@ -128,7 +128,7 @@ const PROJECTS_DATA = [
         title: "Arduino LED & Push Button",
         category: "Arduino • Circuit Basics",
         featured: false,
-        description: "A simple circuit using an Arduino Uno, breadboard, LEDs, and a push button. Pressing the button turns the LED lights on and off.",
+        description: "A simple circuit project using an Arduino Uno, breadboard, LEDs, and a push button. Pressing the button toggles the lights, which helped me practice digital inputs and breadboard wiring.",
         tags: ["Arduino Uno", "Breadboard", "LED Lights", "Push Button"],
         image: "image/arduino-led-button.jpg",
         githubUrl: "",
@@ -139,7 +139,7 @@ const PROJECTS_DATA = [
         title: "Arduino LCD \"Hello World\"",
         category: "Arduino • Display Output",
         featured: false,
-        description: "My first test connecting an Arduino Uno to a 16x2 LCD screen. It shows basic text and displays \"Hello World\" on the blue screen.",
+        description: "My first time connecting an Arduino Uno to a 16x2 LCD screen. I wired the display pins on a breadboard and wrote a short C++ sketch to output 'Hello World' on the screen.",
         tags: ["Arduino Uno", "16x2 LCD", "Jumper Wires", "Text Output"],
         image: "image/arduino-lcd-hello-world.png",
         githubUrl: "",
@@ -150,7 +150,7 @@ const PROJECTS_DATA = [
         title: "Arduino Mode Switcher",
         category: "Arduino • Interactive Control",
         featured: false,
-        description: "An interactive Arduino project with a push button and an LCD screen. Each time you press the button, it switches to a different mode on the display.",
+        description: "An interactive Arduino project with a push button that cycles through different information screens on an LCD each time you press it, practicing state switching in code.",
         tags: ["Arduino Uno", "16x2 LCD", "Push Button", "State Switching"],
         image: "image/arduino-mode-selector.jpg",
         githubUrl: "",
@@ -161,7 +161,7 @@ const PROJECTS_DATA = [
         title: "Arduino LCD Custom Characters",
         category: "Arduino • Pixel Graphics",
         featured: false,
-        description: "A creative Arduino project that makes custom pixel icons on a 16x2 LCD screen, such as a heart, a bell, a robot, a music note, and a lock.",
+        description: "A creative Arduino experiment where I designed custom 5x8 pixel icons—like a heart, a bell, a robot, and a music note—by defining custom binary pixel maps in code and displaying them on an LCD screen.",
         tags: ["Arduino Uno", "16x2 LCD", "Custom Icons", "Pixel Art"],
         image: "image/arduino-custom-characters.png",
         githubUrl: "",
@@ -177,49 +177,49 @@ const SKILLS_DATA = [
         id: "hardware",
         eyebrow: "CATEGORY 01 / HARDWARE",
         category: "Computer Hardware (Main Interest)",
-        subtitle: "I enjoy learning about PC parts, building computers, and fixing hardware issues.",
+        subtitle: "I enjoy learning about computer parts, putting PCs together, and figuring out hardware problems.",
         previewTags: [
             {
                 tag: "PC Assembly",
                 fullName: "PC Assembly & Component Selection",
-                description: "I know how to choose computer parts and put them together."
+                description: "I know how to pick compatible parts and assemble a desktop computer."
             },
             {
                 tag: "Diagnostics",
                 fullName: "Hardware Diagnostics & Troubleshooting",
-                description: "I can check simple hardware problems like loose RAM, display errors, and high heat."
+                description: "I test and troubleshoot common issues like loose RAM, display errors, and overheating."
             },
             {
                 tag: "Architecture",
                 fullName: "System Architecture & Peripherals",
-                description: "I study how the CPU, motherboard, storage, and devices connect and work together."
+                description: "I study how the CPU, motherboard, RAM, and storage connect and work together."
             },
             {
                 tag: "Cooling & Thermals",
                 fullName: "Thermal & Performance Optimization",
-                description: "I like checking system temperatures and setting up case fans so the PC stays cool."
+                description: "I check temperatures and set up case fans to keep components running cool."
             }
         ],
         items: [
             {
                 name: "PC Assembly & Component Selection",
                 level: "Core Interest",
-                description: "I know how to choose matching parts and put together a desktop PC. I am still practicing cable management and finding good deals on components."
+                description: "I know how to choose matching parts and assemble a desktop PC, and I'm always practicing clean cable management."
             },
             {
                 name: "Hardware Diagnostics & Troubleshooting",
                 level: "Hands-On",
-                description: "I can check simple hardware problems like loose RAM, display errors, and high heat. I like testing each part to find what is causing the issue."
+                description: "I test hardware issues like memory faults, display output problems, and high temperatures to find what is causing the error."
             },
             {
                 name: "System Architecture & Peripherals",
                 level: "Learning",
-                description: "I study how the CPU, motherboard, storage, and devices talk to each other. It helps me understand how computers actually work."
+                description: "I study how components like the processor, motherboard, memory, and storage communicate with each other."
             },
             {
                 name: "Thermal & Performance Optimization",
                 level: "Tinkering",
-                description: "I like checking system temperatures, setting up case fans for good airflow, and tuning basic BIOS settings so the PC stays cool."
+                description: "I monitor system temperatures, organize case fan airflow, and check basic BIOS settings to keep the computer running smoothly."
             }
         ]
     },
@@ -227,64 +227,64 @@ const SKILLS_DATA = [
         id: "software",
         eyebrow: "CATEGORY 02 / SOFTWARE",
         category: "Software Development & Coding",
-        subtitle: "Languages and tools I use to write code, make web pages, and practice what I learn in class.",
+        subtitle: "The tools and languages I use to build web pages and write code for school and personal projects.",
         previewTags: [
             {
                 tag: "HTML5 & CSS3",
                 fullName: "HTML5 & CSS3 Responsive Design",
-                description: "I use HTML and CSS to structure web pages and style them so they look good on phones and computers."
+                description: "I use HTML to structure my pages and CSS to style them so they look good on phones and computers."
             },
             {
                 tag: "JavaScript",
                 fullName: "JavaScript (ES6+)",
-                description: "I use JavaScript to add buttons, animations, and other features to websites."
+                description: "I use JavaScript to add interactive features, buttons, and popups to my websites."
             },
             {
                 tag: "C Programming",
                 fullName: "C Programming Fundamentals",
-                description: "I learned basic programming logic in college using C, like variables, loops, and terminal programs."
+                description: "I learned programming logic in college using C, working with loops, variables, and terminal programs."
             },
             {
-                tag: "Vibe Coding",
-                fullName: "AI-Assisted Web Development (Vibe Coding)",
-                description: "I use AI tools to help me build websites, fix errors, and learn coding."
+                tag: "AI-Assisted Coding",
+                fullName: "AI-Assisted Development",
+                description: "I use AI tools to help me brainstorm ideas, test layouts, and learn how to fix errors."
             },
             {
-                tag: "AI & Tech",
-                fullName: "AI and Technology",
-                description: "I enjoy learning about AI and new tech tools, trying new ideas, and picking up new skills."
+                tag: "Tech Exploration",
+                fullName: "Technology & Tool Exploration",
+                description: "I enjoy exploring new software tools and learning practical skills with every project."
             }
         ],
         items: [
             {
                 name: "HTML5 & Semantic Markup",
                 level: "Frontend",
-                description: "I use HTML to build the basic structure of websites with proper headings, sections, and forms so the page is easy to read."
+                description: "I use HTML to build the structure of my websites with clear headings, sections, and forms."
             },
             {
                 name: "CSS3 & Responsive Layout Design",
                 level: "Frontend",
-                description: "I use CSS to style web pages, adjust spacing, and make sure layouts look good on both phones and computer screens."
+                description: "I use CSS to style web pages, adjust spacing, and make sure layouts look clean on phones, tablets, and desktops."
             },
             {
                 name: "JavaScript (ES6+)",
                 level: "Frontend",
-                description: "I write basic JavaScript to add buttons that work, open popups, and make web pages interactive."
+                description: "I use JavaScript to add interactive features like popup modals, filter buttons, and game logic."
             },
             {
                 name: "C Programming Fundamentals",
                 level: "College Coursework",
-                description: "I learned basic coding logic in college using C, like working with variables, loops, switch cases, and small terminal programs."
+                description: "I learned programming fundamentals in college using C, practicing loops, conditional logic, and simple terminal tools."
             },
             {
-                name: "AI-Assisted Web Development (Vibe Coding)",
+                name: "AI-Assisted Development",
                 level: "Workflow",
-                description: "I use AI tools to help me build websites and create projects. I am still learning how to improve designs, fix errors, and make websites work properly."
+                description: "I use AI tools to brainstorm ideas, try different layout approaches, and debug code while making sure I understand every line."
             },
             {
-                name: "AI and Technology",
+                name: "Technology & Tool Exploration",
                 level: "Interest",
-                description: "I enjoy learning about AI and new technology. I like trying different tools, exploring new ideas, and learning new skills."
+                description: "I enjoy trying out new programming tools and technologies to see how they work and how I can apply them to my projects."
             }
         ]
     },
@@ -292,39 +292,39 @@ const SKILLS_DATA = [
         id: "mindset",
         eyebrow: "CATEGORY 03 / MINDSET",
         category: "Core Competencies & Mindset",
-        subtitle: "Good habits and ways of thinking I use when doing school projects and studying IT.",
+        subtitle: "The habits and approach I follow when building projects, studying IT, and fixing problems.",
         previewTags: [
             {
                 tag: "Problem Solving",
-                fullName: "Problem Solving & Algorithmic Thinking",
-                description: "When my code breaks or a computer won't boot, I stay calm and test things one by one."
+                fullName: "Problem Solving & Analytical Thinking",
+                description: "When code breaks or a computer won't turn on, I stay patient and test parts one by one."
             },
             {
-                tag: "Technical Communication",
+                tag: "Communication",
                 fullName: "Technical Communication & Teamwork",
-                description: "I explain technical ideas and errors in simple words so classmates and others can understand."
+                description: "I like explaining technical ideas in simple, everyday words so anyone can follow along."
             },
             {
                 tag: "Continuous Learning",
                 fullName: "Adaptability & Continuous Learning",
-                description: "Technology keeps changing, so I like learning new tools, asking questions, and improving."
+                description: "Technology changes fast, so I'm always open to asking questions and learning new skills."
             }
         ],
         items: [
             {
-                name: "Problem Solving & Algorithmic Thinking",
+                name: "Problem Solving & Analytical Thinking",
                 level: "Mindset",
-                description: "When my code breaks or a computer will not boot, I stay calm and test things one by one until I figure out the problem."
+                description: "When code breaks or a computer won't boot, I stay patient and isolate issues step by step until I find the cause."
             },
             {
-                name: "Technical Communication",
+                name: "Technical Communication & Teamwork",
                 level: "Teamwork",
-                description: "I try to explain technical ideas and errors in simple everyday words so classmates and others can easily understand."
+                description: "I try to explain technical ideas and issues in plain English so classmates and others can easily understand."
             },
             {
                 name: "Adaptability & Continuous Learning",
                 level: "Growth",
-                description: "Technology keeps changing, so I like learning new tools, asking questions when I get stuck, and growing as an IT student."
+                description: "I stay curious about new tools, ask questions when I'm stuck, and work on improving my skills with every project."
             }
         ]
     }
@@ -342,11 +342,11 @@ const JOURNAL_DATA = [
         category: "Personal Experiences",
         date: "Student Journey",
         readTime: "3 min read",
-        excerpt: "A personal reflection on my earliest experiments with HTML and CSS, the excitement of making my first web page come alive, and how small coding steps sparked a lasting interest in front-end development.",
+        excerpt: "A look back at when I first tried making web pages with HTML and CSS, and how working on small practice projects helped me get into web development.",
         paragraphs: [
-            "When I first opened a code editor to write HTML, it felt like discovering a completely new creative medium. Seeing a few lines of nested tags transform into a real, visible page in a browser was an unforgettable moment. I started with simple layouts—testing headings, playing with colors, and figuring out how margins and paddings interacted.",
-            "In the beginning, CSS was both thrilling and humbling. Elements wouldn't always align where I expected them to, and getting a page to look consistent across different screen sizes was a real puzzle. But each small breakthrough—mastering Flexbox, understanding the box model, and organizing stylesheets—built my confidence step by step.",
-            "Over time, creating my first portfolio and small web experiments shifted my mindset from merely browsing the internet to thinking about how digital experiences are built, styled, and optimized. It taught me that web development isn't about knowing everything immediately; it's about staying curious, testing ideas patiently, and improving one piece at a time."
+            "When I first started trying out HTML, it was really exciting to see simple code turn into an actual page on my screen. I began by making basic layouts, trying out different headings and colors, and seeing how margins and padding worked.",
+            "At first, CSS was a bit confusing. Boxes and buttons wouldn't always go where I wanted them to, and making things look right on both my laptop and phone took a lot of trial and error. But as I practiced more with Flexbox and page layouts, things slowly started making more sense.",
+            "Working on small practice websites helped me realize how much I enjoy building things for the web. I still have a lot to learn, but I really like figuring things out step by step and watching my projects get better over time."
         ],
         image: ""
     },
@@ -357,11 +357,11 @@ const JOURNAL_DATA = [
         category: "Learning Experiences",
         date: "Development Reflections",
         readTime: "4 min read",
-        excerpt: "Reflections on using AI coding assistants for brainstorming and debugging—and why critically reviewing, testing, and understanding every line of code remains essential.",
+        excerpt: "How I use AI tools to brainstorm ideas and fix code errors, and why testing and understanding everything myself is still the most important step.",
         paragraphs: [
-            "Incorporating AI tools into my workflow has been one of the most eye-opening experiences in my journey as an IT student. When starting a new component or exploring a layout idea, AI can rapidly generate prototypes, suggest alternative CSS approaches, and help break down syntax errors that would otherwise take hours to decipher.",
-            "However, the most important lesson I’ve learned is that AI is a collaborator, not an autopilot. Generated code often looks convincing on the surface but can carry hidden assumptions, redundant styles, or edge-case bugs that break in real browser environments. Blindly copying and pasting without understanding is a quick way to lose control of your own codebase.",
-            "Because of this, I treat AI as a pair programmer: I use it to brainstorm possibilities, generate initial snippets, and explain unfamiliar syntax. But the responsibility to step through the code, verify its responsiveness, test it across devices, and ensure it fits my project's architecture always rests with me."
+            "Using AI tools while studying IT has been really helpful. Whenever I want to try a new website idea or get stuck on a weird error, I can ask AI for suggestions or use it to help me figure out what went wrong.",
+            "One thing I quickly learned is that you can't just copy and paste what AI gives you without checking it. Sometimes the code has extra stuff I don't need, or it doesn't work properly when I test it on my phone. If I don't understand what the code is doing, it's easy to break the website.",
+            "That's why I treat AI more like a study partner or coding helper. I use it to get ideas, learn new tags or CSS tricks, and speed up testing. But I always make sure to read the code, test it myself, and understand how everything works together."
         ],
         image: ""
     },
@@ -372,11 +372,11 @@ const JOURNAL_DATA = [
         category: "Personal Experiences",
         date: "Hands-on Tech",
         readTime: "3 min read",
-        excerpt: "Why tinkering with physical PC components, memory, and cooling systems gives me a deeper appreciation for software performance and system architecture.",
+        excerpt: "Why I enjoy learning about physical computer parts, putting PCs together, and how understanding hardware helps me understand computers better.",
         paragraphs: [
-            "Long before I wrote my first line of JavaScript, I was fascinated by the physical components that power computers. Understanding how CPUs process instructions, how RAM serves as high-speed working memory, and why thermal management dictates overall system stability made computing feel grounded and real.",
-            "Troubleshooting hardware issues—diagnosing why a system won't POST, checking power connections, or inspecting components—taught me methodical problem-solving. You can't just guess; you have to isolate variables step-by-step until you identify the bottleneck or failing link.",
-            "That physical perspective directly influences how I write code today. Knowing how the browser engine interacts with hardware resources makes me more conscious of memory leaks, excessive DOM re-renders, and animation frame rates. Software and hardware aren't separate worlds—they are two sides of the same machine."
+            "Even before I started writing code, I've always loved computer hardware. Learning what each part does—like how the CPU handles tasks, how RAM holds active data, and why good cooling matters—made computers feel really interesting to me.",
+            "Troubleshooting hardware problems is one of my favorite parts. If a PC won't turn on or doesn't give a display, I like checking the parts one by one—reseating the RAM, checking power cables, or inspecting the motherboard until I find the issue.",
+            "Learning about hardware also helps me when I build websites. Knowing how computers use memory and processor power reminds me to keep my code clean and avoid laggy animations. To me, hardware and software go hand in hand."
         ],
         image: ""
     },
@@ -387,11 +387,11 @@ const JOURNAL_DATA = [
         category: "Project Journey",
         date: "Project Case Note",
         readTime: "4 min read",
-        excerpt: "The story behind creating this portfolio: crafting the Interstellar theme, designing an interactive 3D coverflow, and solving real-world responsive challenges.",
+        excerpt: "What it was like creating my portfolio website, adding the Interstellar theme, and learning through trial and error.",
         paragraphs: [
-            "Designing this portfolio has been my most ambitious personal project to date. I wanted it to feel like an authentic reflection of my interests: blending a futuristic, space-inspired aesthetic with practical information architecture that recruiters and visitors can navigate smoothly.",
-            "Building features like the cinematic 3D Coverflow gallery, interactive PC-building playground mini-tools, and a secure contact system with real email verification pushed me far outside my comfort zone. I spent hours tuning CSS perspective values, fine-tuning easing curves, and ensuring that mobile swipe gestures felt natural without interfering with page scroll.",
-            "Every iteration brought unexpected challenges—from background canvas jittering during mobile scroll to modal accessibility. Overcoming those hurdles made this portfolio more than just a showcase of past work; the website itself became my biggest learning laboratory."
+            "Building this portfolio has been one of my favorite projects so far. I wanted to make a website that reflects my own personality and interests—combining a dark space theme inspired by Interstellar with clean sections that are easy to browse.",
+            "Adding things like the 3D project gallery, the mini PC-building tools in the Playground, and the contact verification form took a lot of experimenting. I had to tweak the animations and test swipe gestures over and over so they felt smooth on mobile phones.",
+            "I ran into plenty of bugs along the way, like background canvas lag during scrolling and menus not closing when they should. Fixing those problems taught me a lot, and this website became a great way for me to practice and learn."
         ],
         image: ""
     },
@@ -402,11 +402,11 @@ const JOURNAL_DATA = [
         category: "Learning Experiences",
         date: "Academic Growth",
         readTime: "3 min read",
-        excerpt: "Balancing college coursework with independent projects, embracing bugs as teachers, and cultivating the discipline needed to grow into a capable IT professional.",
+        excerpt: "Balancing college coursework with my own projects, learning from mistakes, and working toward becoming a better IT student.",
         paragraphs: [
-            "Being an IT student is an exciting journey of constant adaptation. College coursework provides essential foundations—database concepts, networking, algorithms, and systems analysis—while independent projects give me the freedom to apply those theories to tangible user experiences.",
-            "One of the biggest lessons I've embraced is that encountering errors and getting stuck is not a sign of failure; it is the exact moment real learning happens. Whether it's debugging SQL queries, resolving PHP session anomalies, or refining responsive CSS breakpoints, each challenge demands patience and research.",
-            "As I continue my studies, my goal is to keep bridging theory with practice: building projects that solve real problems, asking questions when I don't know the answer, and maintaining the curiosity that made me fall in love with technology in the first place."
+            "Being an IT student is an exciting journey of learning something new every day. In college, we cover fundamentals like databases, networking, and programming logic, while my personal projects give me a chance to try those ideas out for real.",
+            "One of the biggest lessons I've learned is that running into errors is just part of the process. Whether it's fixing an SQL query, debugging PHP, or getting CSS to align properly on mobile, getting stuck is usually when I end up learning the most.",
+            "As I keep going with my studies, my goal is to keep practicing by building real projects, asking questions whenever I'm unsure, and staying curious about how technology works."
         ],
         image: ""
     }

@@ -44,6 +44,7 @@
             "build-pc": {
                 badge: "PLAYGROUND / GAME 01",
                 title: "Build a PC",
+                desc: "Try putting together a PC by placing the parts where they belong.",
                 init: () => {
                     if (window.PCSimulator && typeof window.PCSimulator.restartGame === "function") {
                         window.PCSimulator.restartGame();
@@ -55,6 +56,7 @@
             "fix-pc": {
                 badge: "PLAYGROUND / GAME 02",
                 title: "Fix the PC",
+                desc: "Find out what's wrong with a computer and choose how to fix it.",
                 init: () => {
                     if (window.FixPCUI && typeof window.FixPCUI.renderMainMenu === "function") {
                         window.FixPCUI.renderMainMenu();
@@ -64,6 +66,7 @@
             "circuit-connect": {
                 badge: "PLAYGROUND / GAME 03",
                 title: "Circuit Connect",
+                desc: "Connect the right parts to complete each circuit.",
                 init: () => {
                     if (window.CircuitConnectUI && typeof window.CircuitConnectUI.renderMainMenu === "function") {
                         window.CircuitConnectUI.renderMainMenu();
@@ -73,6 +76,7 @@
             "snake": {
                 badge: "PLAYGROUND / GAME 04",
                 title: "Minimal Snake",
+                desc: "Play the classic Snake game and try to beat your best score.",
                 init: () => {
                     if (window.MinimalSnakeGame && typeof window.MinimalSnakeGame.openGame === "function") {
                         window.MinimalSnakeGame.openGame();
@@ -152,6 +156,8 @@
             const meta = GAME_META[gameKey];
             if (playgroundModalBadge) playgroundModalBadge.textContent = meta.badge;
             if (playgroundModalTitle) playgroundModalTitle.textContent = meta.title;
+            const playgroundModalDesc = document.getElementById("playgroundModalDesc");
+            if (playgroundModalDesc && meta.desc) playgroundModalDesc.textContent = meta.desc;
 
             // Show selected game view
             switch (gameKey) {

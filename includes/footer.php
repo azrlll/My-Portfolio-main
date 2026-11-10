@@ -95,7 +95,7 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
                     </div>
                 </div>
                 <p class="invitation-promo-desc">
-                    Planning a birthday, wedding, debut, or special occasion? I can create a personalized invitation website with background music, animations, RSVP forms, photo galleries, countdown timers, and event location maps!
+                    Planning a birthday, wedding, debut, or special celebration? I can build a custom invitation website for you with background music, photo galleries, RSVP forms, countdown timers, and location maps so your guests have an easy, memorable way to see all the details.
                 </p>
                 <div class="invitation-promo-feature-tags" aria-label="Available invitation features">
                     <span class="tag-pill">

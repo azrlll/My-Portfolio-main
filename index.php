@@ -80,7 +80,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="section-header">
                     <span class="section-eyebrow">01 / PROFILE</span>
                     <h2 class="section-title" id="profileHeading">Personal Background &amp; Interests</h2>
-                    <p class="section-subtitle">Academic foundation, hardware curiosity, and approach to building software.</p>
+                    <p class="section-subtitle">A quick look at who I am, what I study in college, and what I enjoy building.</p>
                 </div>
 
                 <div class="profile-details">
@@ -105,17 +105,17 @@ require __DIR__ . '/includes/header.php';
                         </div>
                         <div class="info-stat-card">
                             <span class="info-label">IDENTITY</span>
-                            <strong class="info-value" id="profileIdentity">IT Student, Hardware Enthusiast &amp; Vibe Coder</strong>
+                            <strong class="info-value" id="profileIdentity">IT Student, Hardware Enthusiast &amp; Web Developer</strong>
                         </div>
                         <div class="info-stat-card">
                             <span class="info-label">PRIMARY INTEREST</span>
                             <strong class="info-value" id="profilePrimaryInterest">Computer Hardware</strong>
-                            <p class="info-note">PC architecture, component diagnostics, assembly, and system performance.</p>
+                            <p class="info-note">Building PCs, choosing matching parts, and troubleshooting hardware issues.</p>
                         </div>
                         <div class="info-stat-card">
                             <span class="info-label">ADDITIONAL INTEREST</span>
-                            <strong class="info-value" id="profileAdditionalInterest">Software Development</strong>
-                            <p class="info-note">Web applications, C programming fundamentals, and modern vibe coding workflows.</p>
+                            <strong class="info-value" id="profileAdditionalInterest">Web Development</strong>
+                            <p class="info-note">Building responsive websites, writing code, and trying out new tech tools.</p>
                         </div>
                     </div>
                 </div>
@@ -128,7 +128,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="section-header">
                     <span class="section-eyebrow">02 / PROJECTS</span>
                     <h2 class="section-title" id="projectsHeading">Projects &amp; Builds</h2>
-                    <p class="section-subtitle">Websites, hardware prototypes, and interactive projects.</p>
+                    <p class="section-subtitle">A collection of websites I've built, Arduino circuits I've wired, and projects I've worked on.</p>
                 </div>
 
                 <!-- Cinematic 3D Coverflow Gallery -->
@@ -317,7 +317,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="section-header">
                     <span class="section-eyebrow">04 / DEVELOPER JOURNAL</span>
                     <h2 class="section-title" id="blogHeading">Developer Journal</h2>
-                    <p class="section-subtitle">My experiences, lessons, and discoveries while exploring computer hardware, web development, and technology.</p>
+                    <p class="section-subtitle">Personal notes and lessons I've learned while exploring PC hardware, web development, and technology.</p>
                 </div>
 
                 <!-- Category Filters -->
@@ -350,7 +350,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="section-header">
                     <span class="section-eyebrow">05 / CONTACT</span>
                     <h2 class="section-title" id="contactHeading">Get In Touch</h2>
-                    <p class="section-subtitle">Have a question, project idea, or want to talk about PC hardware and code? Reach out below.</p>
+                    <p class="section-subtitle">Have a question, want to talk about PC hardware or websites, or need an invitation website? Feel free to reach out below.</p>
                 </div>
 
                 <div class="contact-layout">
@@ -358,7 +358,7 @@ require __DIR__ . '/includes/header.php';
                     <div class="contact-channels-card">
                         <h3 class="card-heading">Communication Channels</h3>
                         <p class="card-subtext">
-                            Connect with me through my social profiles or send a direct message using the two-step form.
+                            You can reach me on my social accounts or send me a message directly using the form below.
                         </p>
                         <div class="contact-links-list" id="contactSocialGrid">
                             <!-- Populated from SOCIAL_LINKS in js/config.js -->
@@ -433,7 +433,7 @@ require __DIR__ . '/includes/header.php';
                                     Welcome <?= htmlspecialchars($visitorName !== '' ? $visitorName : 'Visitor', ENT_QUOTES, 'UTF-8') ?> to my Portfolio!
                                 </h3>
                                 <p class="card-subtext">
-                                    Fill in your email address and verify it with the 6-digit code sent to your inbox to submit your message.
+                                    Enter your email address and verify it with the 6-digit code sent to your inbox to submit your message.
                                 </p>
                             </div>
 

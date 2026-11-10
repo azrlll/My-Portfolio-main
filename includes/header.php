@@ -100,7 +100,7 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio of Kevin Christopher — IT Student, Hardware Enthusiast, and Vibe Coder exploring computer hardware and building with code.">
+    <meta name="description" content="Personal portfolio of Kevin Christopher — IT student exploring computer hardware, building websites, and learning about technology.">
     <meta name="build-version" content="<?= htmlspecialchars($deployVersion, ENT_QUOTES, 'UTF-8') ?>">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
 
@@ -282,25 +282,25 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
                                 </a>
                                 <ul class="nav-submenu" id="navPlaygroundSubmenu" aria-label="Playground Games">
                                     <li>
-                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="build-pc">
+                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="build-pc" title="Try putting together a PC by placing the parts where they belong.">
                                             <span class="nav-subitem-index">01</span>
                                             <span>Build a PC</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="fix-pc">
+                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="fix-pc" title="Find out what's wrong with a computer and choose how to fix it.">
                                             <span class="nav-subitem-index">02</span>
                                             <span>Fix the PC</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="circuit-connect">
+                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="circuit-connect" title="Connect the right parts to complete each circuit.">
                                             <span class="nav-subitem-index">03</span>
                                             <span>Circuit Connect</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="snake">
+                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="snake" title="Play the classic Snake game and try to beat your best score.">
                                             <span class="nav-subitem-index">04</span>
                                             <span>Minimal Snake</span>
                                         </a>

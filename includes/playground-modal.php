@@ -16,6 +16,7 @@ declare(strict_types=1);
             <div class="playground-modal-title-group">
                 <span class="playground-modal-badge" id="playgroundModalBadge">PLAYGROUND / GAME 01</span>
                 <h3 class="playground-modal-title" id="playgroundModalTitle">Build a PC</h3>
+                <p class="playground-modal-desc" id="playgroundModalDesc" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">Try putting together a PC by placing the parts where they belong.</p>
             </div>
             <div class="playground-modal-actions">
                 <button type="button" class="playground-modal-exit-btn" id="playgroundModalExitBtn" aria-label="Exit Game to Portfolio">
