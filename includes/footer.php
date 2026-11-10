@@ -89,9 +89,9 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
             </div>
             <div class="modal-body invitation-promo-body">
                 <div class="invitation-promo-image-wrap">
-                    <img src="image/project-jennina-18th-birthday.png" alt="Jennina's 18th Birthday Invitation Website Preview" class="invitation-promo-img">
+                    <img src="image/project-jennina-18th-birthday.png" alt="18th Birthday Invitation Website Preview" class="invitation-promo-img">
                     <div class="invitation-promo-img-caption">
-                        <span>Project Preview: Jennina's 18th Birthday Invitation</span>
+                        <span>Project Preview: 18th Birthday Invitation</span>
                     </div>
                 </div>
                 <p class="invitation-promo-desc">
