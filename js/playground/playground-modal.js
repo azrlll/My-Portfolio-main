@@ -143,8 +143,12 @@
             // Prevent background page scrolling while playing
             document.body.style.overflow = "hidden";
 
-            // Focus close button for accessibility
-            if (playgroundModalCloseBtn && typeof playgroundModalCloseBtn.focus === "function") {
+            // Focus typing input for TypeKalang, or close button for accessibility
+            if (gameKey === "typekalang" && window.TypeKalangGame && typeof window.TypeKalangGame.focus === "function") {
+                setTimeout(() => {
+                    window.TypeKalangGame.focus();
+                }, 120);
+            } else if (playgroundModalCloseBtn && typeof playgroundModalCloseBtn.focus === "function") {
                 playgroundModalCloseBtn.focus();
             }
         }

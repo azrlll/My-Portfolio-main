@@ -102,6 +102,9 @@ declare(strict_types=1);
                             spellcheck="false"
                             inputmode="text"
                             enterkeyhint="done"
+                            data-gramm="false"
+                            data-gramm_editor="false"
+                            data-enable-grammarly="false"
                             aria-label="TypeKalang Typing Input"
                         >
 

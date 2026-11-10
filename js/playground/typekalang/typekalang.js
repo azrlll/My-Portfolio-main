@@ -1,7 +1,10 @@
 /**
- * TypeKalang — Monkeytype-Inspired Typing Speed Game
+ * TypeKalang — Monkeytype-Inspired Typing Speed Benchmark
  * Kevin's Hardware Studio Portfolio
- * Smooth real-time WPM, accuracy, desktop/mobile native input, results screen, and personal best tracking.
+ *
+ * Single unified input engine (HTML hidden input), accurate character validation,
+ * smooth sub-pixel caret positioning, live 5-char word WPM, keystroke accuracy,
+ * desktop/mobile virtual keyboard support, results card & personal best tracking.
  */
 (function (global) {
     "use strict";
@@ -18,7 +21,7 @@
         difficulty: DEFAULT_DIFFICULTY,
         words: [],
         wordIndex: 0,
-        typedWords: [], // Array of strings typed per word
+        typedWords: [], // Array of typed strings, one per word index
         totalKeystrokes: 0,
         correctKeystrokes: 0,
         correctCharsTotal: 0,
@@ -32,7 +35,7 @@
         initialized: false
     };
 
-    // DOM Element References Cache
+    // Cached DOM Element References
     let el = {};
 
     function cacheElements() {
@@ -63,7 +66,7 @@
         };
     }
 
-    // Detect mobile device (Android / iOS / Touch)
+    // Detect mobile device (Android / iOS / Touch viewports)
     function detectMobile() {
         return (
             /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
@@ -97,7 +100,7 @@
                 return true; // New record
             }
         } catch (e) {
-            // Ignore quota/private browsing exceptions
+            // Ignore storage quota/private browsing exceptions
         }
         return false;
     }
@@ -107,7 +110,7 @@
     // ------------------------------------------------------------------------
     function generateWords() {
         if (!global.TypeKalangWords || typeof global.TypeKalangWords.getRandomWords !== "function") {
-            state.words = ["system", "hardware", "keyboard", "display", "typing", "fast", "challenge"];
+            state.words = ["system", "hardware", "software", "keyboard", "display", "typing", "challenge"];
             return;
         }
         state.words = global.TypeKalangWords.getRandomWords(state.difficulty, 80);
@@ -116,8 +119,9 @@
     function appendMoreWords(count = 40) {
         if (!global.TypeKalangWords) return;
         const more = global.TypeKalangWords.getRandomWords(state.difficulty, count);
+        const startIndex = state.words.length;
         state.words.push(...more);
-        renderAppendedWords(more, state.words.length - more.length);
+        renderAppendedWords(more, startIndex);
     }
 
     function renderAllWords() {
@@ -140,7 +144,7 @@
             el.wordsStream.appendChild(wordEl);
         });
 
-        updateCaretPosition();
+        requestAnimationFrame(updateCaretPosition);
     }
 
     function renderAppendedWords(newWords, startIndex) {
@@ -164,7 +168,7 @@
     }
 
     // ------------------------------------------------------------------------
-    // WORD & CHARACTER HIGHLIGHTING
+    // CHARACTER VALIDATION & HIGHLIGHTING
     // ------------------------------------------------------------------------
     function updateCurrentWordUI() {
         if (!el.wordsStream) return;
@@ -174,17 +178,18 @@
         const wordEl = el.wordsStream.querySelector(`[data-word-idx="${state.wordIndex}"]`);
         if (!wordEl) return;
 
-        // Clear existing extra characters if user backspaced
+        // Clear existing extra characters from prior keystrokes
         const existingExtras = wordEl.querySelectorAll(".tk-char.is-extra");
         existingExtras.forEach((n) => n.remove());
 
-        // Update standard characters
+        // Validate standard word characters position-by-position
         const charElements = wordEl.querySelectorAll(".tk-char:not(.is-extra)");
         for (let i = 0; i < currentWord.length; i++) {
             const cEl = charElements[i];
             if (!cEl) continue;
 
             if (i < typed.length) {
+                // Exact character comparison with the displayed word
                 if (typed[i] === currentWord[i]) {
                     cEl.className = "tk-char is-correct";
                 } else {
@@ -195,9 +200,10 @@
             }
         }
 
-        // Add extra characters if user typed past word length
+        // Extra characters typed beyond target word length (up to 10 extras)
         if (typed.length > currentWord.length) {
-            for (let j = currentWord.length; j < typed.length; j++) {
+            const limit = Math.min(typed.length, currentWord.length + 10);
+            for (let j = currentWord.length; j < limit; j++) {
                 const extraEl = document.createElement("span");
                 extraEl.className = "tk-char is-extra is-incorrect";
                 extraEl.textContent = typed[j];
@@ -219,7 +225,7 @@
         const targetWord = state.words[wIdx] || "";
         const typed = state.typedWords[wIdx] || "";
 
-        // If user skipped without finishing, mark untyped characters as missed
+        // Untyped remaining characters in an incomplete word become marked missed
         const charElements = wordEl.querySelectorAll(".tk-char:not(.is-extra)");
         for (let i = typed.length; i < targetWord.length; i++) {
             if (charElements[i]) {
@@ -227,12 +233,13 @@
             }
         }
 
-        // Check if entire word was 100% correct
-        const hasError = typed !== targetWord;
-        if (hasError) {
-            wordEl.classList.add("has-error");
-        } else {
+        // Entire word correctness state
+        if (typed === targetWord) {
             wordEl.classList.add("is-complete-correct");
+            wordEl.classList.remove("has-error");
+        } else {
+            wordEl.classList.add("has-error");
+            wordEl.classList.remove("is-complete-correct");
         }
     }
 
@@ -245,7 +252,7 @@
             scrollActiveWordIntoView(nextWordEl);
         }
 
-        // Keep word generator supplied
+        // Keep word stream replenished as user types
         if (wIdx >= state.words.length - 15) {
             appendMoreWords(40);
         }
@@ -255,70 +262,86 @@
     // SMOOTH CARET & AUTO-SCROLL
     // ------------------------------------------------------------------------
     function updateCaretPosition() {
-        if (!el.caret || !el.wordsStream || state.isFinished) {
+        if (!el.caret || !el.wordsContainer || !el.wordsStream || state.isFinished) {
             if (el.caret) el.caret.style.display = "none";
             return;
         }
 
-        const currentWord = state.words[state.wordIndex] || "";
-        const typed = state.typedWords[state.wordIndex] || "";
         const wordEl = el.wordsStream.querySelector(`[data-word-idx="${state.wordIndex}"]`);
         if (!wordEl) return;
 
+        const typed = state.typedWords[state.wordIndex] || "";
+        const containerRect = el.wordsContainer.getBoundingClientRect();
+
         el.caret.style.display = "block";
 
-        const charEls = wordEl.querySelectorAll(".tk-char");
+        let targetX = 0;
+        let targetY = 0;
+        let caretHeight = 24;
+
         if (typed.length === 0) {
-            // Position at beginning of first char in current word
-            const firstChar = charEls[0];
+            // Position at beginning of first char in active word
+            const firstChar = wordEl.querySelector(".tk-char");
             if (firstChar) {
-                el.caret.style.transform = `translate(${firstChar.offsetLeft}px, ${firstChar.offsetTop}px)`;
-                el.caret.style.height = `${firstChar.offsetHeight}px`;
+                const charRect = firstChar.getBoundingClientRect();
+                targetX = charRect.left - containerRect.left + el.wordsContainer.scrollLeft;
+                targetY = charRect.top - containerRect.top + el.wordsContainer.scrollTop;
+                caretHeight = charRect.height;
             } else {
-                el.caret.style.transform = `translate(${wordEl.offsetLeft}px, ${wordEl.offsetTop}px)`;
+                const wordRect = wordEl.getBoundingClientRect();
+                targetX = wordRect.left - containerRect.left + el.wordsContainer.scrollLeft;
+                targetY = wordRect.top - containerRect.top + el.wordsContainer.scrollTop;
+                caretHeight = wordRect.height;
             }
         } else {
-            // Position right after the last typed char
-            const lastChar = charEls[typed.length - 1];
+            // Position right after the last typed character (standard or extra)
+            const allChars = wordEl.querySelectorAll(".tk-char");
+            const charIdx = Math.min(typed.length - 1, allChars.length - 1);
+            const lastChar = allChars[charIdx];
+
             if (lastChar) {
-                const x = lastChar.offsetLeft + lastChar.offsetWidth;
-                const y = lastChar.offsetTop;
-                el.caret.style.transform = `translate(${x}px, ${y}px)`;
-                el.caret.style.height = `${lastChar.offsetHeight}px`;
+                const charRect = lastChar.getBoundingClientRect();
+                targetX = charRect.right - containerRect.left + el.wordsContainer.scrollLeft;
+                targetY = charRect.top - containerRect.top + el.wordsContainer.scrollTop;
+                caretHeight = charRect.height;
             }
+        }
+
+        el.caret.style.transform = `translate(${Math.round(targetX)}px, ${Math.round(targetY)}px)`;
+        if (caretHeight > 0) {
+            el.caret.style.height = `${Math.round(caretHeight)}px`;
         }
     }
 
     function scrollActiveWordIntoView(wordEl) {
         if (!el.wordsContainer || !wordEl) return;
 
-        // Auto-scroll the word stream container so the active line stays centered
-        const containerTop = el.wordsContainer.scrollTop;
-        const containerHeight = el.wordsContainer.clientHeight;
-        const wordTop = wordEl.offsetTop;
-        const wordHeight = wordEl.offsetHeight;
+        const containerRect = el.wordsContainer.getBoundingClientRect();
+        const wordRect = wordEl.getBoundingClientRect();
 
-        // Ideal position: keep word on line 2 (middle of viewport)
-        const idealScroll = wordTop - containerHeight / 3;
-        if (Math.abs(containerTop - idealScroll) > 30) {
+        // Calculate active word's vertical position relative to wordsContainer
+        const relativeTop = wordRect.top - containerRect.top + el.wordsContainer.scrollTop;
+        const targetScroll = Math.max(0, relativeTop - 40);
+
+        if (Math.abs(el.wordsContainer.scrollTop - targetScroll) > 16) {
             el.wordsContainer.scrollTo({
-                top: Math.max(0, idealScroll),
+                top: targetScroll,
                 behavior: "smooth"
             });
         }
     }
 
     // ------------------------------------------------------------------------
-    // LIVE STATS (WPM & ACCURACY)
+    // LIVE STATS (WPM & KEYSTROKE ACCURACY)
     // ------------------------------------------------------------------------
     function calculateStats() {
-        const elapsedSeconds = state.startTime ? Math.max(1, (Date.now() - state.startTime) / 1000) : 1;
+        const elapsedSeconds = state.startTime ? Math.max(0.5, (Date.now() - state.startTime) / 1000) : 0.5;
         const elapsedMinutes = elapsedSeconds / 60;
 
-        // Count correct and incorrect characters across all completed words + current word
         let correctChars = 0;
         let incorrectChars = 0;
 
+        // Count correct/incorrect characters across all words up to active word
         for (let i = 0; i <= state.wordIndex; i++) {
             const target = state.words[i] || "";
             const typed = state.typedWords[i] || "";
@@ -332,28 +355,32 @@
                 }
             }
 
-            // Extra characters typed count as incorrect
+            // Extra characters count as incorrect
             if (typed.length > target.length) {
                 incorrectChars += (typed.length - target.length);
             }
 
-            // Uncompleted missed chars in previous words count as incorrect
+            // Uncompleted missed characters in past words count as incorrect
             if (i < state.wordIndex && typed.length < target.length) {
                 incorrectChars += (target.length - typed.length);
             }
-        }
 
-        // Add 1 char for each correct space between words
-        const completedWordCount = Math.max(0, state.wordIndex);
-        correctChars += completedWordCount;
+            // 1 character credit for each correct space after a fully correct word
+            if (i < state.wordIndex && typed === target) {
+                correctChars++;
+            }
+        }
 
         state.correctCharsTotal = correctChars;
         state.incorrectCharsTotal = incorrectChars;
 
         // Standard 5-character word WPM: (correct characters / 5) / elapsed minutes
-        const wpm = Math.max(0, Math.round((correctChars / 5) / elapsedMinutes));
+        const rawWpm = (state.hasStarted && elapsedMinutes > 0)
+            ? (correctChars / 5) / elapsedMinutes
+            : 0;
+        const wpm = isFinite(rawWpm) ? Math.max(0, Math.round(rawWpm)) : 0;
 
-        // Accuracy: correct keystrokes / total keystrokes
+        // Keystroke accuracy based on actual input
         const accuracy = state.totalKeystrokes > 0
             ? Math.max(0, Math.min(100, Math.round((state.correctKeystrokes / state.totalKeystrokes) * 100)))
             : 100;
@@ -408,14 +435,14 @@
         state.isFinished = true;
 
         if (el.hiddenInput) {
-            el.hiddenInput.blur();
+            try { el.hiddenInput.blur(); } catch (e) {}
         }
 
         const stats = calculateStats();
         const finalWpm = stats.wpm;
         const finalAcc = stats.accuracy;
 
-        // Save and check Personal Best
+        // Save & evaluate Personal Best
         const isNewBest = savePersonalBest(state.timeMode, state.difficulty, finalWpm);
         const bestScore = getPersonalBest(state.timeMode, state.difficulty) || finalWpm;
 
@@ -428,7 +455,7 @@
             const diffCapitalized = state.difficulty.charAt(0).toUpperCase() + state.difficulty.slice(1);
             el.resultsMode.textContent = `${state.timeMode}s • ${diffCapitalized}`;
         }
-        if (el.resultsBest) el.resultsBest.textContent = `${bestScore} WPM`;
+        if (el.resultsBest) el.resultsBest.textContent = `${Math.max(bestScore, finalWpm)} WPM`;
         if (el.resultsNewBestNotice) {
             el.resultsNewBestNotice.hidden = !isNewBest;
         }
@@ -449,76 +476,49 @@
     }
 
     // ------------------------------------------------------------------------
-    // INPUT HANDLING (DESKTOP PHYSICAL + MOBILE VIRTUAL KEYBOARDS)
+    // UNIFIED INPUT PIPELINE (DESKTOP & MOBILE KEYBOARDS)
     // ------------------------------------------------------------------------
-    function handleKeyDown(e) {
-        if (state.isFinished) return;
 
-        // Ignore modifier-only combinations (Ctrl+C, Alt+Tab, etc.)
-        if (e.ctrlKey || e.altKey || e.metaKey) return;
+    /**
+     * Process typed characters when input changes.
+     * Keeps expected characters strictly synchronized with displayed text.
+     */
+    function processTypedCharacters(newVal) {
+        const prevVal = state.typedWords[state.wordIndex] || "";
+        const targetWord = state.words[state.wordIndex] || "";
 
-        // Focus typing input if visitor presses a key while modal is active
-        if (document.activeElement !== el.hiddenInput && e.key.length === 1 && !e.repeat) {
-            focusInput();
+        // Track new keystroke(s) added
+        if (newVal.length > prevVal.length) {
+            for (let i = prevVal.length; i < newVal.length; i++) {
+                state.totalKeystrokes++;
+                const charTyped = newVal[i];
+                const expectedChar = targetWord[i];
+
+                if (expectedChar !== undefined && charTyped === expectedChar) {
+                    state.correctKeystrokes++;
+                }
+            }
         }
+        // When user backspaces (newVal.length < prevVal.length),
+        // keystroke counts are preserved without double penalties.
 
-        // Start countdown timer on first valid keypress
-        if (!state.hasStarted && (e.key.length === 1 || e.key === "Backspace")) {
-            startTimer();
-        }
-
-        if (e.key === "Backspace") {
-            handleBackspace(e);
-            return;
-        }
-
-        if (e.key === " " || e.key === "Spacebar") {
-            e.preventDefault();
-            handleSpace();
-            return;
-        }
-
-        if (e.key.length === 1) {
-            handleCharacterInput(e.key);
-        }
+        state.typedWords[state.wordIndex] = newVal;
+        updateCurrentWordUI();
+        updateLiveStatsDisplay();
     }
 
-    function handleCharacterInput(char) {
-        if (state.isFinished) return;
-
-        if (!state.hasStarted) {
-            startTimer();
-        }
-
-        state.totalKeystrokes++;
-
-        const currentWord = state.words[state.wordIndex] || "";
-        const currentTyped = state.typedWords[state.wordIndex] || "";
-
-        // Check correctness of this keystroke
-        const expectedChar = currentWord[currentTyped.length];
-        if (char === expectedChar) {
-            state.correctKeystrokes++;
-        }
-
-        // Append to current word's typed string (allow up to 10 extra characters for visual feedback)
-        if (currentTyped.length < currentWord.length + 10) {
-            state.typedWords[state.wordIndex] = currentTyped + char;
-            updateCurrentWordUI();
-        }
-
-        // Sync with hidden input
-        if (el.hiddenInput && el.hiddenInput.value !== state.typedWords[state.wordIndex]) {
-            el.hiddenInput.value = state.typedWords[state.wordIndex];
-        }
-    }
-
-    function handleSpace() {
+    /**
+     * Advance to the next word on spacebar.
+     */
+    function advanceToNextWord() {
         if (state.isFinished) return;
 
         const currentTyped = state.typedWords[state.wordIndex] || "";
-        // Do not advance on space if nothing has been typed in the current word yet
-        if (currentTyped.length === 0) return;
+        if (currentTyped.length === 0) {
+            // Ignore space if nothing has been typed for current word
+            if (el.hiddenInput) el.hiddenInput.value = "";
+            return;
+        }
 
         state.totalKeystrokes++;
         const targetWord = state.words[state.wordIndex] || "";
@@ -536,74 +536,128 @@
 
         activateWord(state.wordIndex);
         updateCurrentWordUI();
+        updateLiveStatsDisplay();
     }
 
-    function handleBackspace(e) {
-        if (state.isFinished) return;
+    /**
+     * Jump back to the previous word on Backspace at start of word.
+     */
+    function returnToPreviousWord() {
+        if (state.isFinished || state.wordIndex <= 0) return;
 
-        const currentTyped = state.typedWords[state.wordIndex] || "";
+        const prevIdx = state.wordIndex - 1;
+        const prevTyped = state.typedWords[prevIdx] || "";
+        const prevWord = state.words[prevIdx] || "";
 
-        if (currentTyped.length > 0) {
-            e && e.preventDefault();
-            // Erase last letter
-            state.typedWords[state.wordIndex] = currentTyped.slice(0, -1);
+        const prevWordEl = el.wordsStream.querySelector(`[data-word-idx="${prevIdx}"]`);
+        // Only jump back if previous word had errors or was left incomplete
+        if (prevWordEl && (prevTyped !== prevWord || prevWordEl.classList.contains("has-error"))) {
+            const currentWordEl = el.wordsStream.querySelector(`[data-word-idx="${state.wordIndex}"]`);
+            if (currentWordEl) {
+                currentWordEl.classList.remove("is-active");
+            }
+
+            state.wordIndex = prevIdx;
             if (el.hiddenInput) {
-                el.hiddenInput.value = state.typedWords[state.wordIndex];
+                el.hiddenInput.value = prevTyped;
             }
+
+            if (prevWordEl) {
+                prevWordEl.classList.add("is-active");
+                prevWordEl.classList.remove("has-error", "is-complete-correct");
+            }
+
             updateCurrentWordUI();
-        } else if (state.wordIndex > 0) {
-            // Jump back to previous word if it had mistakes (Monkeytype behavior)
-            const prevWordIdx = state.wordIndex - 1;
-            const prevWordEl = el.wordsStream.querySelector(`[data-word-idx="${prevWordIdx}"]`);
-            if (prevWordEl && prevWordEl.classList.contains("has-error")) {
-                e && e.preventDefault();
-                markWordCompleted(state.wordIndex); // Clear current
-                state.wordIndex = prevWordIdx;
-                activateWord(prevWordIdx);
-                if (el.hiddenInput) {
-                    el.hiddenInput.value = state.typedWords[prevWordIdx] || "";
-                }
-                updateCurrentWordUI();
-            }
+            updateLiveStatsDisplay();
         }
     }
 
-    // Mobile Virtual Input Event Listener (Handles Android Gboard & iOS soft keyboards seamlessly)
-    function handleMobileInputEvent(e) {
+    /**
+     * Single input event handler attached to #tkInput.
+     * Serves both desktop physical keystrokes and mobile virtual keyboards.
+     */
+    function onHiddenInput() {
         if (state.isFinished) return;
 
-        const val = el.hiddenInput.value;
+        const val = el.hiddenInput ? el.hiddenInput.value : "";
 
-        // If the mobile keyboard inputted a space, trigger word transition
-        if (val.endsWith(" ")) {
-            const stripped = val.slice(0, -1);
-            state.typedWords[state.wordIndex] = stripped;
-            handleSpace();
-            return;
-        }
-
-        // Start timer on mobile typing
+        // Start countdown timer on first typed character
         if (!state.hasStarted && val.length > 0) {
             startTimer();
         }
 
-        const currentTyped = state.typedWords[state.wordIndex] || "";
+        // Check if value includes space (mobile soft keyboard spacebar or paste)
+        if (val.includes(" ")) {
+            const spaceIdx = val.indexOf(" ");
+            const wordPart = val.slice(0, spaceIdx);
 
-        // If value became shorter, visitor pressed mobile backspace
-        if (val.length < currentTyped.length) {
-            state.typedWords[state.wordIndex] = val;
-            updateCurrentWordUI();
+            if (wordPart.length > 0) {
+                processTypedCharacters(wordPart);
+                advanceToNextWord();
+            } else {
+                // Leading space on empty word: clear and ignore
+                if (el.hiddenInput) el.hiddenInput.value = "";
+            }
             return;
         }
 
-        // New character(s) typed
-        const addedChars = val.slice(currentTyped.length);
-        for (let i = 0; i < addedChars.length; i++) {
-            const char = addedChars[i];
-            if (char === " ") {
-                handleSpace();
-            } else {
-                handleCharacterInput(char);
+        processTypedCharacters(val);
+    }
+
+    /**
+     * Keyboard control listener for non-printable keys (Tab, Space, Backspace on empty input).
+     */
+    function handleKeyDown(e) {
+        const modal = document.getElementById("playgroundModal");
+        if (!modal || modal.hidden || !el.root || el.root.hidden) return;
+
+        // Do not intercept if user is focusing a form input elsewhere on the page
+        if (document.activeElement && document.activeElement !== el.hiddenInput && document.activeElement.tagName === "INPUT") {
+            return;
+        }
+
+        // Quick restart shortcut: Tab (matches Monkeytype convention)
+        if (e.key === "Tab") {
+            e.preventDefault();
+            resetTest(true);
+            return;
+        }
+
+        if (state.isFinished) return;
+
+        // Spacebar handling:
+        if (e.key === " " || e.key === "Spacebar") {
+            e.preventDefault();
+            const currentTyped = state.typedWords[state.wordIndex] || "";
+            if (currentTyped.length > 0) {
+                advanceToNextWord();
+            }
+            return;
+        }
+
+        // Backspace handling:
+        if (e.key === "Backspace") {
+            const currentTyped = state.typedWords[state.wordIndex] || "";
+            // When input is already empty, check if we should return to previous word
+            if (currentTyped.length === 0) {
+                e.preventDefault();
+                returnToPreviousWord();
+                return;
+            }
+            // Non-empty: browser natively removes character from el.hiddenInput, firing onHiddenInput
+            return;
+        }
+
+        // Focus fallback: If hiddenInput was blurred and a typing key was pressed, refocus it
+        if (document.activeElement !== el.hiddenInput) {
+            if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                focusInput();
+                // Append key to input and trigger update without duplicating
+                if (el.hiddenInput) {
+                    el.hiddenInput.value += e.key;
+                    onHiddenInput();
+                    e.preventDefault();
+                }
             }
         }
     }
@@ -658,7 +712,6 @@
             el.focusPrompt.classList.remove("is-hidden");
         }
 
-        // Update active buttons in header
         updateHeaderButtonStates();
 
         // Generate and render fresh words
@@ -669,7 +722,6 @@
             el.wordsContainer.scrollTop = 0;
         }
 
-        // Focus input after reset
         setTimeout(focusInput, 60);
     }
 
@@ -713,27 +765,25 @@
     // ------------------------------------------------------------------------
     function bindEvents() {
         // Desktop physical keyboard listener
-        document.addEventListener("keydown", (e) => {
-            // Only process if TypeKalang is the currently active view and modal is open
-            const modal = document.getElementById("playgroundModal");
-            if (!modal || modal.hidden || el.root.hidden) return;
+        document.addEventListener("keydown", handleKeyDown);
 
-            // Don't capture keys if an input outside the game has focus
-            if (document.activeElement && document.activeElement !== el.hiddenInput && document.activeElement.tagName === "INPUT") {
-                return;
-            }
-
-            handleKeyDown(e);
-        });
-
-        // Mobile soft keyboard input listener
+        // Unified HTML input event listener for both desktop and mobile
         if (el.hiddenInput) {
-            el.hiddenInput.addEventListener("input", handleMobileInputEvent);
+            el.hiddenInput.addEventListener("input", onHiddenInput);
+
+            // Handle mobile soft keyboard backspace when input is already empty
+            el.hiddenInput.addEventListener("beforeinput", (e) => {
+                if (e.inputType === "deleteContentBackward" && el.hiddenInput.value.length === 0) {
+                    returnToPreviousWord();
+                }
+            });
+
             el.hiddenInput.addEventListener("blur", () => {
                 if (!state.hasStarted && !state.isFinished && el.focusPrompt) {
                     el.focusPrompt.classList.remove("is-hidden");
                 }
             });
+
             el.hiddenInput.addEventListener("focus", () => {
                 if (el.focusPrompt) {
                     el.focusPrompt.classList.add("is-hidden");
@@ -741,14 +791,14 @@
             });
         }
 
-        // Clicking/tapping words container focuses typing area
-        if (el.wordsContainer) {
-            el.wordsContainer.addEventListener("click", () => {
+        // Clicking anywhere on the game view focuses the typing input
+        if (el.root) {
+            el.root.addEventListener("click", () => {
                 focusInput();
             });
         }
 
-        // Time mode buttons
+        // Time mode selector buttons (15s, 30s, 60s)
         if (el.timeButtons) {
             el.timeButtons.forEach((btn) => {
                 btn.addEventListener("click", (e) => {
@@ -759,7 +809,7 @@
             });
         }
 
-        // Difficulty buttons
+        // Difficulty selector buttons (Easy, Normal, Hard)
         if (el.diffButtons) {
             el.diffButtons.forEach((btn) => {
                 btn.addEventListener("click", (e) => {
@@ -786,21 +836,19 @@
             });
         }
 
-        // Results change time button
+        // Cycle time button in results overlay
         if (el.resultsChangeTimeBtn) {
             el.resultsChangeTimeBtn.addEventListener("click", (e) => {
                 e.preventDefault();
-                // Cycle: 15 -> 30 -> 60 -> 15
                 const nextTime = state.timeMode === 15 ? 30 : (state.timeMode === 30 ? 60 : 15);
                 setTimeMode(nextTime);
             });
         }
 
-        // Results change difficulty button
+        // Cycle difficulty button in results overlay
         if (el.resultsChangeDiffBtn) {
             el.resultsChangeDiffBtn.addEventListener("click", (e) => {
                 e.preventDefault();
-                // Cycle: easy -> normal -> hard -> easy
                 const nextDiff = state.difficulty === "easy" ? "normal" : (state.difficulty === "normal" ? "hard" : "easy");
                 setDifficulty(nextDiff);
             });

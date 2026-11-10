@@ -257,7 +257,7 @@
     opacity: 0.75;
 }
 
-.tk-word.has-error {
+.tk-word.has-error:not(.is-active) {
     border-bottom: 2px solid var(--tk-char-incorrect);
 }
 
