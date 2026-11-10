@@ -387,11 +387,11 @@ const JOURNAL_DATA = [
         category: "Project Journey",
         date: "Project Case Note",
         readTime: "4 min read",
-        excerpt: "What it was like creating my portfolio website, adding the Interstellar theme, and learning through trial and error.",
+        excerpt: "What it was like creating my portfolio website, designing the Hardware Studio theme, and learning through trial and error.",
         paragraphs: [
-            "Building this portfolio has been one of my favorite projects so far. I wanted to make a website that reflects my own personality and interests—combining a dark space theme inspired by Interstellar with clean sections that are easy to browse.",
+            "Building this portfolio has been one of my favorite projects so far. I wanted to make a website that reflects my own personality and interests—combining a clean hardware studio theme with structured sections that are easy to browse.",
             "Adding things like the 3D project gallery, the mini PC-building tools in the Playground, and the contact verification form took a lot of experimenting. I had to tweak the animations and test swipe gestures over and over so they felt smooth on mobile phones.",
-            "I ran into plenty of bugs along the way, like background canvas lag during scrolling and menus not closing when they should. Fixing those problems taught me a lot, and this website became a great way for me to practice and learn."
+            "I ran into plenty of challenges along the way, like getting layouts to align properly across screen sizes and making sure menus close smoothly. Fixing those problems taught me a lot, and this website became a great way for me to practice and learn."
         ],
         image: ""
     },

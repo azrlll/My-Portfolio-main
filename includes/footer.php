@@ -171,12 +171,10 @@ $includePlaygroundScripts = $includePlaygroundScripts ?? true;
 <?php
 $jsConfigVer = function_exists('getPortfolioAssetVersion') ? getPortfolioAssetVersion('js/config.js') : (string)(@filemtime(__DIR__ . '/../js/config.js') ?: '20261102');
 $jsMainVer = function_exists('getPortfolioAssetVersion') ? getPortfolioAssetVersion('js/main.js') : (string)(@filemtime(__DIR__ . '/../js/main.js') ?: '20261102');
-$jsBgVer = function_exists('getPortfolioAssetVersion') ? getPortfolioAssetVersion('js/blackhole-bg.js') : (string)(@filemtime(__DIR__ . '/../js/blackhole-bg.js') ?: '20261102');
 $pgVer = $deployVersion ?? 'live';
 ?>
     <script src="js/config.js?v=<?= $jsConfigVer ?>"></script>
     <script src="js/main.js?v=<?= $jsMainVer ?>"></script>
-    <script src="js/blackhole-bg.js?v=<?= $jsBgVer ?>"></script>
 <?php if ($includePlaygroundScripts): ?>
     <script src="js/playground/build-a-pc/components.js?v=<?= $pgVer ?>"></script>
     <script src="js/playground/build-a-pc/storage.js?v=<?= $pgVer ?>"></script>

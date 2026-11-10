@@ -129,7 +129,7 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
         })();
     </script>
 
-    <!-- Favicon & Touch Icons (Interstellar Black Hole) -->
+    <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
     <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
@@ -145,7 +145,7 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Interstellar-inspired black hole background for Kevin Christopher's portfolio">
+    <meta property="og:image:alt" content="Kevin Christopher | Hardware Studio Portfolio">
     <meta property="og:site_name" content="Kevin Christopher | Personal Portfolio">
 
     <!-- Twitter / X Card Social Link Preview -->
@@ -154,7 +154,7 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
     <meta name="twitter:title" content="Kevin Christopher | Personal Portfolio">
     <meta name="twitter:description" content="Explore my projects, skills, and experiences in computer hardware, web development, and technology.">
     <meta name="twitter:image" content="https://kevin-portfolio.free.nf/image/og-preview.jpg">
-    <meta name="twitter:image:alt" content="Interstellar-inspired black hole background for Kevin Christopher's portfolio">
+    <meta name="twitter:image:alt" content="Kevin Christopher | Hardware Studio Portfolio">
     <!-- Google Fonts: Inter for crisp minimalist typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -164,18 +164,9 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
     <link rel="stylesheet" href="css/playground/fix-the-pc.css?v=<?= getPortfolioAssetVersion('css/playground/fix-the-pc.css') ?>">
     <link rel="stylesheet" href="css/playground/circuit-connect.css?v=<?= getPortfolioAssetVersion('css/playground/circuit-connect.css') ?>">
     <link rel="stylesheet" href="css/playground/minimal-snake.css?v=<?= getPortfolioAssetVersion('css/playground/minimal-snake.css') ?>">
-    <link rel="stylesheet" href="css/blackhole-bg.css?v=<?= getPortfolioAssetVersion('css/blackhole-bg.css') ?>">
 </head>
 <body>
     <!-- Deployment Version: <?= htmlspecialchars($deployVersion, ENT_QUOTES, 'UTF-8') ?> | Built: <?= htmlspecialchars($deployTime, ENT_QUOTES, 'UTF-8') ?> -->
-
-    <!-- Cinematic Interstellar Background (Actual Reference Image + Subtle Cosmic Ambiance) -->
-    <div id="interstellarBg" class="interstellar-background" aria-hidden="true">
-        <div class="interstellar-image-layer" id="interstellarImage"></div>
-        <div class="interstellar-nebula-glow"></div>
-        <canvas id="interstellarStarfieldCanvas" class="interstellar-starfield"></canvas>
-        <div class="interstellar-vignette"></div>
-    </div>
 
     <!-- Mobile Top Header (Visible only on tablet/mobile) -->
     <header class="mobile-header" aria-label="Mobile Navigation Bar">

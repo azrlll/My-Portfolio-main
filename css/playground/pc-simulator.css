@@ -5,13 +5,13 @@
 
 .playground-section,
 .playground-modal-card {
-    --sim-bg-main: #0B0B0B;
-    --sim-bg-card: #191919;
-    --sim-bg-elevated: #252525;
-    --sim-text-primary: #F5F5F5;
-    --sim-text-secondary: #B8B8B8;
-    --sim-border: #343434;
-    --sim-border-active: #F5F5F5;
+    --sim-bg-main: #101114;
+    --sim-bg-card: #17191D;
+    --sim-bg-elevated: #1D2025;
+    --sim-text-primary: #F2F2F0;
+    --sim-text-secondary: #A6ABB3;
+    --sim-border: #30343A;
+    --sim-border-active: #9BAFA8;
 }
 
 [data-theme="light"] .playground-section,
