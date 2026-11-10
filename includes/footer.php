@@ -176,32 +176,10 @@ $pgVer = $deployVersion ?? 'live';
     <script src="js/config.js?v=<?= $jsConfigVer ?>"></script>
     <script src="js/main.js?v=<?= $jsMainVer ?>"></script>
 <?php if ($includePlaygroundScripts): ?>
-    <script src="js/playground/build-a-pc/components.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/build-a-pc/storage.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/build-a-pc/game-state.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/build-a-pc/drag-drop.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/build-a-pc/pc-simulator.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/scenarios.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/diagnostics.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/scoring.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/achievements.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/storage.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/career-mode.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/hints.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/game-engine.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/ui.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/fix-the-pc/main.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/components.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/levels.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/circuit-validator.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/wire-system.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/scoring.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/achievements.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/storage.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/game-engine.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/ui.js?v=<?= $pgVer ?>"></script>
-    <script src="js/playground/circuit-connect/main.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/typekalang/words.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/typekalang/typekalang.js?v=<?= $pgVer ?>"></script>
     <script src="js/playground/minimal-snake/snake.js?v=<?= $pgVer ?>"></script>
+    <script src="js/playground/playground-modal.js?v=<?= $pgVer ?>"></script>
 <?php endif; ?>
 </body>
 </html>

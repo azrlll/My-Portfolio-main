@@ -1740,7 +1740,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const activeGameParam = urlParams.get("game");
         const currentHash = (window.location.hash || "").replace("#", "");
-        const validGames = ["build-pc", "fix-pc", "circuit-connect", "snake"];
+        const validGames = ["typekalang", "snake"];
         if (validGames.includes(activeGameParam) || validGames.includes(currentHash) || currentHash === "playground") {
             return;
         }

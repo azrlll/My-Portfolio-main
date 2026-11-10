@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 /**
  * Playground Game Popup Modal Component
- * Renders on demand when a visitor clicks any of the 4 games in the sidebar dropdown.
+ * Renders on demand when a visitor clicks any of the games in the sidebar dropdown:
+ *   01 - TypeKalang (Monkeytype-inspired typing speed game)
+ *   02 - Minimal Snake (Classic arcade game)
  * Appears above portfolio content with a dimmed backdrop, comfortable responsive layout,
  * prominent Exit Game / Close controls, and zero reserved homepage layout space.
  */
@@ -15,8 +17,8 @@ declare(strict_types=1);
         <div class="playground-modal-header" id="playgroundModalHeader">
             <div class="playground-modal-title-group">
                 <span class="playground-modal-badge" id="playgroundModalBadge">PLAYGROUND / GAME 01</span>
-                <h3 class="playground-modal-title" id="playgroundModalTitle">Build a PC</h3>
-                <p class="playground-modal-desc" id="playgroundModalDesc" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">Try putting together a PC by placing the parts where they belong.</p>
+                <h3 class="playground-modal-title" id="playgroundModalTitle">TypeKalang</h3>
+                <p class="playground-modal-desc" id="playgroundModalDesc" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">Type your way through a quick challenge and see how fast you can go.</p>
             </div>
             <div class="playground-modal-actions">
                 <button type="button" class="playground-modal-exit-btn" id="playgroundModalExitBtn" aria-label="Exit Game to Portfolio">
@@ -36,185 +38,149 @@ declare(strict_types=1);
             </div>
         </div>
 
-        <!-- Scrollable Modal Body containing the 4 Games -->
+        <!-- Scrollable Modal Body containing the 2 Games -->
         <div class="playground-modal-body" id="playgroundModalBody">
-            <!-- GAME 01 VIEW: Build a PC — Mini Simulator (Preserved Intact) -->
-            <div class="playground-game-view" id="buildPcGameView" hidden>
-                <div class="pc-simulator-app" id="pcSimulatorApp">
-                    <!-- Top Bar: Progress Tracker, Timer, Personal Best, Difficulty -->
-                    <div class="pc-sim-topbar">
-                        <div class="pc-sim-progress-block">
-                            <div class="pc-sim-progress-header">
-                                <span class="pc-sim-progress-label" id="pcSimProgressText">COMPONENTS INSTALLED: 0 / 6</span>
+            <!-- GAME 01 VIEW: TypeKalang — Typing Speed Game -->
+            <div class="playground-game-view" id="typekalangGameView" hidden>
+                <div class="typekalang-app" id="typekalangApp">
+                    <!-- Top Control Bar: Mode, Difficulty & Restart -->
+                    <div class="tk-control-bar">
+                        <div class="tk-selectors-group">
+                            <!-- Time Selector -->
+                            <div class="tk-selector-row" role="radiogroup" aria-label="Test Duration">
+                                <span class="tk-selector-label">TIME</span>
+                                <button type="button" class="tk-mode-btn" data-tk-time="15" aria-pressed="false">15s</button>
+                                <button type="button" class="tk-mode-btn is-active" data-tk-time="30" aria-pressed="true">30s</button>
+                                <button type="button" class="tk-mode-btn" data-tk-time="60" aria-pressed="false">60s</button>
                             </div>
-                            <div class="pc-sim-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0">
-                                <div class="pc-sim-progress-fill" id="pcSimProgressFill"></div>
+
+                            <!-- Difficulty Selector -->
+                            <div class="tk-selector-row" role="radiogroup" aria-label="Test Difficulty">
+                                <span class="tk-selector-label">DIFFICULTY</span>
+                                <button type="button" class="tk-mode-btn" data-tk-diff="easy" aria-pressed="false">Easy</button>
+                                <button type="button" class="tk-mode-btn is-active" data-tk-diff="normal" aria-pressed="true">Normal</button>
+                                <button type="button" class="tk-mode-btn" data-tk-diff="hard" aria-pressed="false">Hard</button>
                             </div>
                         </div>
 
-                        <div class="pc-sim-metrics">
-                            <div class="pc-metric-pill" aria-live="off">
-                                <span class="pc-metric-label">TIME:</span>
-                                <span class="pc-metric-val" id="pcSimTimer">00:00</span>
-                            </div>
+                        <!-- Manual Restart Button -->
+                        <button type="button" class="tk-restart-btn" id="tkRestartBtn" aria-label="Restart typing test">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                            </svg>
+                            <span>Restart</span>
+                        </button>
+                    </div>
 
-                            <div class="pc-metric-pill">
-                                <span class="pc-metric-label">BEST:</span>
-                                <span class="pc-metric-val" id="pcSimBestTime">--:--</span>
-                                <button type="button" class="pc-reset-best-btn" id="pcSimResetBestBtn" hidden aria-label="Reset personal best time">Reset</button>
-                            </div>
-
-                            <div class="pc-difficulty-group" role="group" aria-label="Simulator difficulty">
-                                <button type="button" class="pc-diff-btn active" data-difficulty="beginner" aria-pressed="true">Beginner</button>
-                                <button type="button" class="pc-diff-btn" data-difficulty="intermediate" aria-pressed="false">Intermediate</button>
-                                <button type="button" class="pc-diff-btn" data-difficulty="advanced" aria-pressed="false">Advanced</button>
-                            </div>
+                    <!-- Live Metrics Strip -->
+                    <div class="tk-stats-strip" aria-label="Live Typing Metrics">
+                        <div class="tk-stat-pill">
+                            <span class="tk-stat-label">TIME</span>
+                            <strong class="tk-stat-value highlight" id="tkTimerDisplay">30s</strong>
+                        </div>
+                        <div class="tk-stat-pill">
+                            <span class="tk-stat-label">WPM</span>
+                            <strong class="tk-stat-value" id="tkWpmDisplay">0</strong>
+                        </div>
+                        <div class="tk-stat-pill">
+                            <span class="tk-stat-label">ACC</span>
+                            <strong class="tk-stat-value" id="tkAccuracyDisplay">100%</strong>
                         </div>
                     </div>
 
-                    <!-- Two-Column Simulator Interface -->
-                    <div class="pc-sim-workspace">
-                        <!-- Left Column: PC Case & Motherboard Assembly Area -->
-                        <div class="pc-sim-case-panel">
-                            <div class="pc-panel-title-row">
-                                <h3 class="pc-panel-heading">PC Case &amp; Motherboard Assembly</h3>
-                                <span class="pc-panel-subtag">ATX Mid-Tower</span>
-                            </div>
+                    <!-- Main Typing Arena -->
+                    <div class="tk-typing-arena" id="tkTypingArena">
+                        <!-- Real Hidden Input for Native Keyboard Support (Desktop, Laptop, Android & iOS) -->
+                        <input
+                            type="text"
+                            class="tk-hidden-input"
+                            id="tkInput"
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            inputmode="text"
+                            enterkeyhint="done"
+                            aria-label="TypeKalang Typing Input"
+                        >
 
-                            <div class="pc-chassis-diagram" id="pcSimChassis" data-difficulty="beginner">
-                                <!-- Motherboard Tray (Upper Section) -->
-                                <div class="pc-motherboard-tray" aria-label="Motherboard installation area">
-                                    <div class="mobo-header-strip">
-                                        <span>MOTHERBOARD PCB (ATX)</span>
-                                        <span>VRM / I/O</span>
-                                    </div>
-
-                                    <!-- Upper Row: CPU Socket (and Cooler Mount) + DDR5 DIMM Slots -->
-                                    <div class="mobo-upper-grid">
-                                        <div class="pc-drop-slot slot-cpu-zone" id="pcSlotCpu" data-slot-id="slot-cpu" role="button" tabindex="0" aria-label="CPU Socket and CPU Cooler mounting location">
-                                            <!-- Hydrated by pc-simulator.js -->
-                                        </div>
-
-                                        <div class="pc-drop-slot slot-ram-zone" id="pcSlotRam" data-slot-id="slot-ram" role="button" tabindex="0" aria-label="DDR5 DIMM memory slots">
-                                            <!-- Hydrated by pc-simulator.js -->
-                                        </div>
-                                    </div>
-
-                                    <!-- Lower Stack: M.2 NVMe Storage Slot + PCIe x16 GPU Slot -->
-                                    <div class="mobo-lower-stack">
-                                        <div class="pc-drop-slot slot-ssd-zone" id="pcSlotSsd" data-slot-id="slot-ssd" role="button" tabindex="0" aria-label="M.2 NVMe SSD slot">
-                                            <!-- Hydrated by pc-simulator.js -->
-                                        </div>
-
-                                        <div class="pc-drop-slot slot-gpu-zone" id="pcSlotGpu" data-slot-id="slot-gpu" role="button" tabindex="0" aria-label="PCIe x16 graphics card slot">
-                                            <!-- Hydrated by pc-simulator.js -->
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Lower Case PSU Shroud Compartment -->
-                                <div class="pc-psu-compartment" aria-label="PC Case Power Supply Compartment">
-                                    <div class="psu-shroud-label">
-                                        <span>LOWER CASE COMPARTMENT</span>
-                                        <span>PSU SHROUD</span>
-                                    </div>
-                                    <div class="pc-drop-slot slot-psu-zone" id="pcSlotPsu" data-slot-id="slot-psu" role="button" tabindex="0" aria-label="Power Supply Unit case compartment">
-                                        <!-- Hydrated by pc-simulator.js -->
-                                    </div>
-                                </div>
+                        <!-- Words Stream & Smooth Animated Caret -->
+                        <div class="tk-words-container" id="tkWordsContainer">
+                            <div class="tk-caret" id="tkCaret" aria-hidden="true"></div>
+                            <div class="tk-words-stream" id="tkWordsStream" aria-live="polite">
+                                <!-- Populated dynamically by typekalang.js -->
                             </div>
                         </div>
 
-                        <!-- Right Column: Instructions, Controls, Feedback & Available Components -->
-                        <div class="pc-sim-control-panel">
-                            <!-- Component Inspector & Action Controls -->
-                            <div class="pc-inspector-card">
-                                <div class="pc-inspector-top">
-                                    <h3 class="pc-inspector-title" id="pcSimSelectedTitle">Select or Drag a Component</h3>
-                                    <div class="pc-action-btns">
-                                        <button type="button" class="pc-ctrl-btn" id="pcSimHintBtn">Hint</button>
-                                        <button type="button" class="pc-ctrl-btn" id="pcSimRestartBtn">Restart</button>
+                        <!-- Click / Tap to Focus Prompt -->
+                        <div class="tk-focus-prompt" id="tkFocusPrompt">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                <line x1="6" y1="8" x2="6" y2="8"></line>
+                                <line x1="10" y1="8" x2="10" y2="8"></line>
+                                <line x1="14" y1="8" x2="14" y2="8"></line>
+                                <line x1="18" y1="8" x2="18" y2="8"></line>
+                                <line x1="6" y1="12" x2="6" y2="12"></line>
+                                <line x1="18" y1="12" x2="18" y2="12"></line>
+                                <line x1="7" y1="16" x2="17" y2="16"></line>
+                            </svg>
+                            <span>Click here or start typing to begin the challenge</span>
+                        </div>
+
+                        <!-- Results Overlay Screen (Revealed on Timer Expiration) -->
+                        <div class="tk-results-overlay" id="tkResultsOverlay" role="dialog" aria-labelledby="tkResultsTitle" hidden>
+                            <div class="tk-results-card">
+                                <div class="tk-results-header">
+                                    <span class="tk-results-badge">TEST COMPLETE</span>
+                                    <h3 class="tk-results-title" id="tkResultsTitle">TypeKalang Results</h3>
+                                    <div class="tk-new-best-banner" id="tkResultsNewBestNotice" hidden>
+                                        &starf; NEW PERSONAL BEST! &starf;
                                     </div>
                                 </div>
-                                <p class="pc-inspector-desc" id="pcSimSelectedDesc">
-                                    Click or drag any hardware component below to view its function and install it into the PC case or motherboard.
-                                </p>
-                                <p class="pc-inspector-inst" id="pcSimSelectedInst">
-                                    Tip: On desktop, drag a component to its slot or click to select and click the target slot. On mobile, tap a component then tap its destination.
-                                </p>
-                            </div>
 
-                            <!-- Dismissible Contextual Hint Banner -->
-                            <div class="pc-hint-banner" id="pcSimHintBanner" role="region" aria-label="Component Hint" hidden>
-                                <span id="pcSimHintText"></span>
-                                <button type="button" class="pc-hint-dismiss" id="pcSimHintDismiss">Dismiss</button>
-                            </div>
-
-                            <!-- Live Placement Status Feedback -->
-                            <div class="pc-sim-feedback is-neutral" id="pcSimFeedback" role="status" aria-live="polite">
-                                [STATUS] Simulator ready. Drag a component or click to select and assemble the PC.
-                            </div>
-
-                            <!-- Available Hardware Components Tray -->
-                            <div>
-                                <div class="pc-panel-title-row">
-                                    <h3 class="pc-panel-heading">Available Components</h3>
-                                    <span class="pc-panel-subtag">Drag or Tap to Install</span>
+                                <div class="tk-results-grid">
+                                    <div class="tk-result-stat">
+                                        <span class="tk-result-label">WPM</span>
+                                        <strong class="tk-result-val highlight" id="tkResultsWpm">0</strong>
+                                    </div>
+                                    <div class="tk-result-stat">
+                                        <span class="tk-result-label">Accuracy</span>
+                                        <strong class="tk-result-val" id="tkResultsAcc">100%</strong>
+                                    </div>
+                                    <div class="tk-result-stat">
+                                        <span class="tk-result-label">Correct</span>
+                                        <strong class="tk-result-val" id="tkResultsCorrect">0</strong>
+                                    </div>
+                                    <div class="tk-result-stat">
+                                        <span class="tk-result-label">Incorrect</span>
+                                        <strong class="tk-result-val alert" id="tkResultsIncorrect">0</strong>
+                                    </div>
                                 </div>
-                                <div class="pc-components-tray" id="pcSimComponentsTray">
-                                    <!-- Hydrated by pc-simulator.js -->
+
+                                <div class="tk-results-meta-row">
+                                    <span>Mode: <strong id="tkResultsMode">30s • Normal</strong></span>
+                                    <span>Personal Best: <strong id="tkResultsBest">-- WPM</strong></span>
+                                </div>
+
+                                <div class="tk-results-actions">
+                                    <button type="button" class="btn btn-primary" id="tkPlayAgainBtn">
+                                        <span>PLAY AGAIN</span>
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="tkResultsChangeTimeBtn">
+                                        <span>CHANGE TIME</span>
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="tkResultsChangeDiffBtn">
+                                        <span>CHANGE DIFFICULTY</span>
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Build Completion Screen -->
-                    <div class="pc-completion-overlay" id="pcSimCompletionOverlay" role="region" aria-labelledby="pcSimCompleteHeading" hidden>
-                        <div class="pc-completion-header">
-                            <span class="pc-completion-badge" id="pcSimFinalBestNotice">Personal Best</span>
-                            <h3 class="pc-completion-title" id="pcSimCompleteHeading">BUILD COMPLETE!</h3>
-                            <p class="pc-completion-lead">Nice work! You've successfully assembled your virtual PC.</p>
-                            <p class="pc-completion-sub">Interested in seeing what I've been building? Explore my projects.</p>
-                        </div>
-
-                        <div class="pc-completion-stats">
-                            <div class="pc-stat-box">
-                                <span class="pc-stat-label">Completion Time</span>
-                                <strong class="pc-stat-val" id="pcSimFinalTime">00:00</strong>
-                            </div>
-                            <div class="pc-stat-box">
-                                <span class="pc-stat-label">Incorrect Attempts</span>
-                                <strong class="pc-stat-val" id="pcSimFinalErrors">0</strong>
-                            </div>
-                            <div class="pc-stat-box">
-                                <span class="pc-stat-label">Hints Used</span>
-                                <strong class="pc-stat-val" id="pcSimFinalHints">0</strong>
-                            </div>
-                        </div>
-
-                        <div class="pc-completion-actions">
-                            <button type="button" class="btn btn-primary" id="pcSimPlayAgainBtn">
-                                <span>PLAY AGAIN</span>
-                            </button>
-                            <a href="#projects" class="btn btn-secondary" id="pcSimViewProjectsBtn">
-                                <span>VIEW MY PROJECTS</span>
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- GAME 02 VIEW: Fix the PC — Troubleshooting Simulator -->
-            <div class="playground-game-view" id="fixPcGameView" hidden>
-                <div id="fixPcAppRoot"></div>
-            </div>
-
-            <!-- GAME 03 VIEW: Circuit Connect — Electronics Puzzle Simulator -->
-            <div class="playground-game-view" id="circuitConnectGameView" hidden>
-                <div id="circuitConnectAppRoot"></div>
-            </div>
-
-            <!-- GAME 04 VIEW: Minimal Snake — Classic Arcade Simulator -->
+            <!-- GAME 02 VIEW: Minimal Snake — Classic Arcade Simulator -->
             <div class="playground-game-view" id="snakeGameView" hidden>
                 <div class="snake-game-wrapper">
                     <!-- Mode & Difficulty Selection Bar -->

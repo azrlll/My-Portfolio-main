@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * Main Portfolio Entry Page (index.php)
  * Preserves all existing sections, projects, skills, blog notes, and
- * all 4 interactive Playground games (Build a PC, Fix the PC, Circuit Connect, Minimal Snake).
+ * both interactive Playground games (TypeKalang, Minimal Snake).
  */
 
 $currentPage = 'index';

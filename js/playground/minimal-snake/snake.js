@@ -564,22 +564,8 @@
     }
 
     function openSnakeGame() {
-        // Clean up any running simulators
-        if (window.CircuitConnectEngine && typeof window.CircuitConnectEngine.cleanup === "function") {
-            window.CircuitConnectEngine.cleanup();
-        }
-        if (window.FixPCGameEngine && typeof window.FixPCGameEngine.cleanup === "function") {
-            window.FixPCGameEngine.cleanup();
-        }
-
-        const buildPcView = document.getElementById("buildPcGameView");
-        const fixPcView = document.getElementById("fixPcGameView");
-        const circuitConnectView = document.getElementById("circuitConnectGameView");
-
-        if (hubView) hubView.hidden = true;
-        if (buildPcView) buildPcView.hidden = true;
-        if (fixPcView) fixPcView.hidden = true;
-        if (circuitConnectView) circuitConnectView.hidden = true;
+        const typekalangView = document.getElementById("typekalangGameView");
+        if (typekalangView) typekalangView.hidden = true;
         if (snakeView) snakeView.hidden = false;
 
         document.querySelectorAll(".nav-subitem[data-open-game]").forEach((item) => {

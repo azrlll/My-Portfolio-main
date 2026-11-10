@@ -1,16 +1,10 @@
-// ============================================================================
-// PLAYGROUND MODAL MANAGER & SIDEBAR NAVIGATION COORDINATOR
-// Manages opening, closing, and switching the four interactive games inside a
-// smooth, cinematic modal overlay above the portfolio content:
-//   01 - Build a PC
-//   02 - Fix the PC
-//   03 - Circuit Connect
-//   04 - Minimal Snake
-//
-// Ensures zero reserved homepage space when closed, complete cleanup of
-// timers/loops/listeners on exit, mobile & desktop responsiveness, and clean URLs.
-// ============================================================================
-
+/**
+ * Playground Modal Manager & Navigation Coordinator
+ * Kevin's Hardware Studio Portfolio
+ * Coordinates opening, closing, and switching the two playground games:
+ *   01 - TypeKalang (Monkeytype-inspired typing speed game)
+ *   02 - Minimal Snake (Classic arcade game)
+ */
 (function () {
     "use strict";
 
@@ -21,13 +15,11 @@
         const playgroundModalExitBtn = document.getElementById("playgroundModalExitBtn");
         const playgroundModalBadge = document.getElementById("playgroundModalBadge");
         const playgroundModalTitle = document.getElementById("playgroundModalTitle");
+        const playgroundModalDesc = document.getElementById("playgroundModalDesc");
 
         // Game Views
-        const buildPcView = document.getElementById("buildPcGameView");
-        const fixPcView = document.getElementById("fixPcGameView");
-        const circuitConnectView = document.getElementById("circuitConnectGameView");
+        const typekalangView = document.getElementById("typekalangGameView");
         const snakeView = document.getElementById("snakeGameView");
-        const circuitConnectMount = document.getElementById("circuitConnectAppRoot");
 
         // Sidebar Navigation
         const navGroupPlayground = document.getElementById("navGroupPlayground") || document.querySelector(".nav-group-playground");
@@ -41,45 +33,33 @@
         // 1. GAME METADATA & INITIALIZERS
         // --------------------------------------------------------------------
         const GAME_META = {
-            "build-pc": {
+            "typekalang": {
                 badge: "PLAYGROUND / GAME 01",
-                title: "Build a PC",
-                desc: "Try putting together a PC by placing the parts where they belong.",
+                title: "TypeKalang",
+                desc: "Type your way through a quick challenge and see how fast you can go.",
                 init: () => {
-                    if (window.PCSimulator && typeof window.PCSimulator.restartGame === "function") {
-                        window.PCSimulator.restartGame();
-                    } else if (window.PCSimState && typeof window.PCSimState.resetState === "function") {
-                        window.PCSimState.resetState();
+                    if (window.TypeKalangGame && typeof window.TypeKalangGame.openGame === "function") {
+                        window.TypeKalangGame.openGame();
                     }
-                }
-            },
-            "fix-pc": {
-                badge: "PLAYGROUND / GAME 02",
-                title: "Fix the PC",
-                desc: "Find out what's wrong with a computer and choose how to fix it.",
-                init: () => {
-                    if (window.FixPCUI && typeof window.FixPCUI.renderMainMenu === "function") {
-                        window.FixPCUI.renderMainMenu();
-                    }
-                }
-            },
-            "circuit-connect": {
-                badge: "PLAYGROUND / GAME 03",
-                title: "Circuit Connect",
-                desc: "Connect the right parts to complete each circuit.",
-                init: () => {
-                    if (window.CircuitConnectUI && typeof window.CircuitConnectUI.renderMainMenu === "function") {
-                        window.CircuitConnectUI.renderMainMenu();
+                },
+                cleanup: () => {
+                    if (window.TypeKalangGame && typeof window.TypeKalangGame.cleanup === "function") {
+                        window.TypeKalangGame.cleanup();
                     }
                 }
             },
             "snake": {
-                badge: "PLAYGROUND / GAME 04",
+                badge: "PLAYGROUND / GAME 02",
                 title: "Minimal Snake",
                 desc: "Play the classic Snake game and try to beat your best score.",
                 init: () => {
                     if (window.MinimalSnakeGame && typeof window.MinimalSnakeGame.openGame === "function") {
                         window.MinimalSnakeGame.openGame();
+                    }
+                },
+                cleanup: () => {
+                    if (window.MinimalSnakeGame && typeof window.MinimalSnakeGame.cleanup === "function") {
+                        window.MinimalSnakeGame.cleanup();
                     }
                 }
             }
@@ -89,94 +69,67 @@
         // 2. CLEANUP ACTIVE SESSIONS & STOP LOOPS / TIMERS
         // --------------------------------------------------------------------
         function cleanupAllGames() {
-            // Build a PC cleanup
-            if (window.PCSimulator && typeof window.PCSimulator.cleanup === "function") {
-                try { window.PCSimulator.cleanup(); } catch (e) { /* ignore */ }
-            } else if (window.PCSimState && typeof window.PCSimState.resetState === "function") {
-                try { window.PCSimState.resetState(); } catch (e) { /* ignore */ }
+            if (GAME_META.typekalang && typeof GAME_META.typekalang.cleanup === "function") {
+                try { GAME_META.typekalang.cleanup(); } catch (e) {}
             }
-
-            // Fix the PC cleanup
-            if (window.FixPCGameEngine && typeof window.FixPCGameEngine.cleanup === "function") {
-                try { window.FixPCGameEngine.cleanup(); } catch (e) { /* ignore */ }
-            }
-
-            // Circuit Connect cleanup
-            if (window.CircuitConnectEngine && typeof window.CircuitConnectEngine.cleanup === "function") {
-                try { window.CircuitConnectEngine.cleanup(); } catch (e) { /* ignore */ }
-            }
-
-            // Minimal Snake cleanup
-            if (window.MinimalSnakeGame && typeof window.MinimalSnakeGame.cleanup === "function") {
-                try { window.MinimalSnakeGame.cleanup(); } catch (e) { /* ignore */ }
+            if (GAME_META.snake && typeof GAME_META.snake.cleanup === "function") {
+                try { GAME_META.snake.cleanup(); } catch (e) {}
             }
         }
 
         // --------------------------------------------------------------------
-        // 3. SIDEBAR SUBMENU HIGHLIGHTING & MOBILE DRAWER
+        // 3. SET ACTIVE SIDEBAR SUBMENU INDICATOR
         // --------------------------------------------------------------------
         function setActiveSubmenuGame(gameKey) {
-            currentGameKey = gameKey;
             sidebarSubItems.forEach((item) => {
-                const matches = item.getAttribute("data-open-game") === gameKey;
-                item.classList.toggle("active", matches);
+                const target = item.getAttribute("data-open-game");
+                if (target === gameKey) {
+                    item.classList.add("active");
+                } else {
+                    item.classList.remove("active");
+                }
             });
-        }
-
-        function closeMobileDrawerIfOpen() {
-            const sidebar = document.getElementById("sidebar");
-            const mobileMenuBtn = document.getElementById("mobileMenuToggle");
-            const backdrop = document.getElementById("sidebarBackdrop");
-            if (sidebar) sidebar.classList.remove("is-open");
-            if (backdrop) backdrop.classList.remove("is-visible");
-            if (mobileMenuBtn) mobileMenuBtn.setAttribute("aria-expanded", "false");
         }
 
         // --------------------------------------------------------------------
         // 4. OPEN PLAYGROUND MODAL
         // --------------------------------------------------------------------
-        function openPlaygroundModal(gameKey, triggerBtn) {
+        function openPlaygroundModal(gameKey, triggerBtn = null) {
             if (!playgroundModal) return;
+
             if (triggerBtn) lastTriggerElement = triggerBtn;
 
+            // Default to typekalang if key is invalid or unrecognized
             if (!GAME_META[gameKey]) {
-                gameKey = "build-pc";
+                gameKey = "typekalang";
             }
 
             // End any currently running game session first
             cleanupAllGames();
 
             // Hide all game views
-            if (buildPcView) buildPcView.hidden = true;
-            if (fixPcView) fixPcView.hidden = true;
-            if (circuitConnectView) circuitConnectView.hidden = true;
+            if (typekalangView) typekalangView.hidden = true;
             if (snakeView) snakeView.hidden = true;
 
             // Update modal header information
             const meta = GAME_META[gameKey];
             if (playgroundModalBadge) playgroundModalBadge.textContent = meta.badge;
             if (playgroundModalTitle) playgroundModalTitle.textContent = meta.title;
-            const playgroundModalDesc = document.getElementById("playgroundModalDesc");
             if (playgroundModalDesc && meta.desc) playgroundModalDesc.textContent = meta.desc;
 
             // Show selected game view
             switch (gameKey) {
-                case "fix-pc":
-                    if (fixPcView) fixPcView.hidden = false;
-                    break;
-                case "circuit-connect":
-                    if (circuitConnectView) circuitConnectView.hidden = false;
-                    break;
                 case "snake":
                     if (snakeView) snakeView.hidden = false;
                     break;
-                case "build-pc":
+                case "typekalang":
                 default:
-                    if (buildPcView) buildPcView.hidden = false;
+                    if (typekalangView) typekalangView.hidden = false;
                     break;
             }
 
             // Start a fresh game session
+            currentGameKey = gameKey;
             meta.init();
             setActiveSubmenuGame(gameKey);
 
@@ -213,9 +166,7 @@
                 playgroundModal.classList.remove("is-closing");
 
                 // Hide all views inside the modal
-                if (buildPcView) buildPcView.hidden = true;
-                if (fixPcView) fixPcView.hidden = true;
-                if (circuitConnectView) circuitConnectView.hidden = true;
+                if (typekalangView) typekalangView.hidden = true;
                 if (snakeView) snakeView.hidden = true;
 
                 // Restore page scroll
@@ -280,11 +231,14 @@
         if (navPlaygroundHubLink) {
             navPlaygroundHubLink.addEventListener("click", (e) => {
                 e.preventDefault();
-                if (!navGroupPlayground) return;
-
-                const willBeExpanded = !navGroupPlayground.classList.contains("is-expanded");
-                navGroupPlayground.classList.toggle("is-expanded", willBeExpanded);
-                navPlaygroundHubLink.setAttribute("aria-expanded", String(willBeExpanded));
+                const isExpanded = navGroupPlayground && navGroupPlayground.classList.contains("is-expanded");
+                if (isExpanded) {
+                    navGroupPlayground.classList.remove("is-expanded");
+                    navPlaygroundHubLink.setAttribute("aria-expanded", "false");
+                } else {
+                    if (navGroupPlayground) navGroupPlayground.classList.add("is-expanded");
+                    navPlaygroundHubLink.setAttribute("aria-expanded", "true");
+                }
             });
         }
 
@@ -294,22 +248,26 @@
                 navGroupPlayground.classList.remove("is-expanded");
                 if (navPlaygroundHubLink) {
                     navPlaygroundHubLink.setAttribute("aria-expanded", "false");
+                    if (typeof navPlaygroundHubLink.blur === "function") navPlaygroundHubLink.blur();
                 }
             });
         }
 
-        // Close dropdown when clicking outside
-        document.addEventListener("click", (e) => {
-            if (navGroupPlayground && !navGroupPlayground.contains(e.target)) {
-                navGroupPlayground.classList.remove("is-expanded");
-                if (navPlaygroundHubLink) {
-                    navPlaygroundHubLink.setAttribute("aria-expanded", "false");
-                }
+        // Helper to close mobile drawer when link clicked
+        function closeMobileDrawerIfOpen() {
+            const sidebar = document.getElementById("sidebar");
+            const backdrop = document.getElementById("sidebarBackdrop");
+            const toggle = document.getElementById("mobileMenuToggle");
+            if (sidebar && sidebar.classList.contains("is-open")) {
+                sidebar.classList.remove("is-open");
+                if (backdrop) backdrop.classList.remove("is-active");
+                if (toggle) toggle.setAttribute("aria-expanded", "false");
+                document.body.style.overflow = "";
             }
-        });
+        }
 
         // --------------------------------------------------------------------
-        // 8. SIDEBAR GAME SELECTION: OPEN POPUP MODAL
+        // 8. SIDEBAR SUBITEMS CLICK ACTION: OPEN POPUP MODAL
         // --------------------------------------------------------------------
         sidebarSubItems.forEach((subLink) => {
             subLink.addEventListener("click", (e) => {
@@ -332,22 +290,13 @@
         });
 
         // --------------------------------------------------------------------
-        // 9. MOUNT CIRCUIT CONNECT UI
-        // --------------------------------------------------------------------
-        if (circuitConnectMount && window.CircuitConnectUI) {
-            window.CircuitConnectUI.init(circuitConnectMount, {
-                onReturnToPlayground: closePlaygroundModal
-            });
-        }
-
-        // --------------------------------------------------------------------
-        // 10. HANDLE INCOMING URL PARAMETERS (?game=...) SAFELY
+        // 9. HANDLE INCOMING URL PARAMETERS (?game=...) SAFELY
         // --------------------------------------------------------------------
         try {
             const params = new URLSearchParams(window.location.search);
             let queryGame = params.get("game");
             const hash = (window.location.hash || "").replace("#", "");
-            const validGames = ["build-pc", "fix-pc", "circuit-connect", "snake"];
+            const validGames = ["typekalang", "snake"];
 
             // Check if game was stored in sessionStorage by earlier Clean URL sanitizer
             if (!queryGame) {
@@ -358,6 +307,14 @@
                         queryGame = savedGame;
                     }
                 } catch (e) {}
+            }
+
+            // Map old game links to typekalang gracefully
+            if (queryGame && ["build-pc", "fix-pc", "circuit-connect"].includes(queryGame)) {
+                queryGame = "typekalang";
+            }
+            if (hash && ["build-pc", "fix-pc", "circuit-connect"].includes(hash)) {
+                queryGame = "typekalang";
             }
 
             if (queryGame && validGames.includes(queryGame)) {
@@ -380,7 +337,7 @@
         }
 
         // --------------------------------------------------------------------
-        // 11. EXPOSE PLAYGROUND MANAGER GLOBALLY
+        // 10. EXPOSE PLAYGROUND MANAGER GLOBALLY
         // --------------------------------------------------------------------
         window.PlaygroundManager = {
             openModal: openPlaygroundModal,

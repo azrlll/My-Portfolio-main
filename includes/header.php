@@ -160,9 +160,7 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=<?= getPortfolioAssetVersion('css/style.css') ?>">
-    <link rel="stylesheet" href="css/playground/pc-simulator.css?v=<?= getPortfolioAssetVersion('css/playground/pc-simulator.css') ?>">
-    <link rel="stylesheet" href="css/playground/fix-the-pc.css?v=<?= getPortfolioAssetVersion('css/playground/fix-the-pc.css') ?>">
-    <link rel="stylesheet" href="css/playground/circuit-connect.css?v=<?= getPortfolioAssetVersion('css/playground/circuit-connect.css') ?>">
+    <link rel="stylesheet" href="css/playground/typekalang.css?v=<?= getPortfolioAssetVersion('css/playground/typekalang.css') ?>">
     <link rel="stylesheet" href="css/playground/minimal-snake.css?v=<?= getPortfolioAssetVersion('css/playground/minimal-snake.css') ?>">
 </head>
 <body>
@@ -273,26 +271,14 @@ $assetVersion = getPortfolioAssetVersion('css/style.css');
                                 </a>
                                 <ul class="nav-submenu" id="navPlaygroundSubmenu" aria-label="Playground Games">
                                     <li>
-                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="build-pc" title="Try putting together a PC by placing the parts where they belong.">
+                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="typekalang" title="Type your way through a quick challenge and see how fast you can go.">
                                             <span class="nav-subitem-index">01</span>
-                                            <span>Build a PC</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="fix-pc" title="Find out what's wrong with a computer and choose how to fix it.">
-                                            <span class="nav-subitem-index">02</span>
-                                            <span>Fix the PC</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="circuit-connect" title="Connect the right parts to complete each circuit.">
-                                            <span class="nav-subitem-index">03</span>
-                                            <span>Circuit Connect</span>
+                                            <span>TypeKalang</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="<?= $basePrefix ?>#playground" class="nav-subitem" data-open-game="snake" title="Play the classic Snake game and try to beat your best score.">
-                                            <span class="nav-subitem-index">04</span>
+                                            <span class="nav-subitem-index">02</span>
                                             <span>Minimal Snake</span>
                                         </a>
                                     </li>
